@@ -1,15 +1,16 @@
+// routes/donationRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getDonations, addDonation } = require('../controller/donation');
+const { getDonations, addDonation } = require('../controller/donation'); // Ensure correct path
 const { verifyJWT } = require('../middleware/authMiddleware');
 
 
-router.get('/donations', verifyJWT, getDonations);      // Fetch donations for a user
-router.post('/donations', verifyJWT, addDonation);     // Add a new donation
+// Route to get donations
+router.get('/', verifyJWT, (req, res) => {
+  getDonations(req, res);  // Call getDonations directly
+});
 
+// // Route to add a donation
+router.post('/', verifyJWT, addDonation);  // Call addDonation directly
 
-router.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ message: 'Internal Server Error' });
-  });
 module.exports = router;

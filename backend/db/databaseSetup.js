@@ -101,7 +101,53 @@ connection.query(createUserPreferencesTable, (err, results) => {
   }
   console.log('User preferences table created or already exists!');
 })
-// Start the Express server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+const createYearlyGoalsTable = `
+  CREATE TABLE IF NOT EXISTS yearly_goals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    goal_type ENUM('fixed_amount', 'percentage_salary') NOT NULL,
+    target_amount DECIMAL(10, 2) DEFAULT NULL,
+    percentage FLOAT DEFAULT NULL,
+    calculated_goal_amount DECIMAL(10, 2) DEFAULT NULL, -- New column to store calculated value
+
+    year INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    status ENUM('active', 'achieved', 'expired') NOT NULL DEFAULT 'active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX (user_id),
+    CHECK (start_date <= end_date)
+  );
+`;
+
+connection.query(createYearlyGoalsTable, (err, results) => {
+  if (err) {
+    console.error('Error creating Yearly Goals table:', err.message);
+    return;
+  }
+  console.log('Yearly Goals table created or already exists!');
 });
+
+
+const alterUsersTable = `
+  ALTER TABLE users
+  ADD COLUMN annual_salary DECIMAL(10, 2) DEFAULT NULL,
+  ADD COLUMN salary_last_updated DATETIME DEFAULT NULL;
+`;
+
+connection.query(alterUsersTable, (err, results) => {
+  if (err) {
+    if (err.code === 'ER_DUP_FIELDNAME') {
+      console.log('Columns already exist in the Users table.');
+    } else {
+      console.error('Error altering Users table:', err.message);
+    }
+    return;
+  }
+  console.log('Users table updated successfully!');
+});
+
+// Start the Express server
+module.exports = connection;
