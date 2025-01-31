@@ -9,7 +9,7 @@ const moment = require('moment');
 
 const router = express.Router();
 
-// Signup Route
+// Signup Route- includes setting goals 
 router.post("/signup", (req, res) => {
     const {
         email,
@@ -93,7 +93,7 @@ router.post("/signup", (req, res) => {
         // Debugging: Check goalData before insertion
         console.log("Goal Data:", goalData);
   
-        connection.query(goalQuery, goalData, (err) => {
+        connection.query(goalQuery, goalData, (err, result) => {
           if (err) {
             console.error("Error inserting goal into yearly_goals:", err);
             return res.status(500).json({ error: "Error inserting goal" });

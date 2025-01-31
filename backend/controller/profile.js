@@ -25,8 +25,9 @@ const getProfile = (req, res) => {
   });
 };
 
+
+// update profile
 const putProfile = (req, res) => {
-    console.log('putProfile function called');
     const { userId, email, first_name, last_name, preferences } = req.body;
 
     // Validate input

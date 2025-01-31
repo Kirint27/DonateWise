@@ -148,6 +148,18 @@ connection.query(alterUsersTable, (err, results) => {
   }
   console.log('Users table updated successfully!');
 });
+const addGofundmeColumn = `
+ALTER TABLE donations
+ADD COLUMN goFundMe BOOLEAN;
+`;
+
+connection.query(addGofundmeColumn, (err, results) => {
+if (err) {
+  console.error('Error adding gofundme column:', err);
+  return;
+}
+console.log('Gofundme column added!');
+});
 
 // Start the Express server
 module.exports = connection;

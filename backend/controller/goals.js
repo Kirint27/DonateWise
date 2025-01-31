@@ -67,3 +67,65 @@ const getGoals = (req, res) => {
     });
   });
 };
+
+
+
+const updateGoal = (req, res) => {
+const userId = req.userId; // From the verified JWT token
+const year = req.query.year || new Date().getFullYear();
+const goalId = req.body.goalId;
+
+if (!userId) {
+  return res.status(400).json({ error: "User ID is required." });       
+ }
+if(!goalId){    
+  return res.status(400).json({ error: "Goal ID is required." });
+ }
+
+const query = ` UPDATE yearly_goals SET ? WHERE id = ? AND user_id = ? AND year = ?`;
+
+connection.query(query, [req.body.goal_type, req.body.target_amount, req.body.percentage, goalId, userId, year], (err, results) => {
+    if(err){
+      console.error("Error updating goal:", err.message);
+      return res.status(500).json({ error: "Failed to update goal." });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Goal not found." });
+    }
+    res.json({ message: "Goal updated successfully." });
+  });
+
+}
+
+
+
+const deleteGoal = (req, res) => {
+    const userId = req.body.userId; // From the verified JWT token
+    const year = req.query.year || new Date().getFullYear();
+    const goalId = req.body.goalId;
+  
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required." });
+    }
+  
+    if (!goalId) {
+      return res.status(400).json({ error: "Goal ID is required." });
+    }
+  
+    const query = `DELETE FROM yearly_goals WHERE id = ? AND user_id = ? AND year = ?`;
+  
+    connection.query(query, [goalId, userId, year], (err, results) => {
+      if (err) {
+        console.error("Error deleting goal:", err.message);
+        return res.status(500).json({ error: "Failed to delete goal." });
+      }
+  
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "Goal not found." });
+      }
+  
+      res.json({ message: "Goal deleted successfully." });
+    });
+  };
+
+  module.exports = { getGoals, updateGoal, deleteGoal };

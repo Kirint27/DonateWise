@@ -29,4 +29,17 @@ const addDonation = (req, res) => {
     });
 };
 
-module.exports = { getDonations, addDonation };  // Ensure this line is correct!
+const deleteDonation = (req, res) => {
+    const donationId = req.body.id;
+    const userId = req.user.id;
+    const query = 'DELETE FROM donations WHERE id = ? AND user_id = ?';
+    connection.query(query, [donationId, userId], (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Internal server error' });
+        } else {
+            res.json({ message: 'Donation deleted successfully' });
+        }
+    });
+};
+
+module.exports = { getDonations, addDonation,deleteDonation };  // Ensure this line is correct!

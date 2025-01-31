@@ -1,7 +1,7 @@
 // routes/donationRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getDonations, addDonation } = require('../controller/donation'); // Ensure correct path
+const { getDonations, addDonation, deleteDonation } = require('../controller/donation'); // Ensure correct path
 const { verifyJWT } = require('../middleware/authMiddleware');
 
 
@@ -13,4 +13,7 @@ router.get('/', verifyJWT, (req, res) => {
 // // Route to add a donation
 router.post('/', verifyJWT, addDonation);  // Call addDonation directly
 
+router.delete('/', verifyJWT, (req, res) => {
+  deleteDonation(req, res);  // Call getDonations directly
+});
 module.exports = router;
