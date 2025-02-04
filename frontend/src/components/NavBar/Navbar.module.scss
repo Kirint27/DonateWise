@@ -1,0 +1,43 @@
+.navbar {
+    position: absolute;
+    display: flex;
+    
+    top: 0;
+    left: 0;
+    right: 0; /* add this property */
+    height: 100px; /* adjust the height as needed */
+    background-color: #9f0819; /* deep red */
+}
+img{
+    height: 80px;
+    width: 100px;
+    margin-top:10px;
+    margin-left: 10px;
+    padding: 0;
+
+}
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin-left: 70%;
+    font-weight: bold;
+    color: #ffff;
+    height: 100%;
+    align-items: center;
+  }
+  
+  li {
+    margin-bottom: 30px;
+    margin-right: 25px;
+  }
+
+  .iconText {
+    display: flex;
+    align-items: center;
+    svg{
+        margin-right: 8px;
+    }
+  }
