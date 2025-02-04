@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./CharitySearch.module.scss";
+import Navbar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 
 const graphQl = "https://charitybase.uk/api/graphql";
 
@@ -97,45 +99,53 @@ const CharitySearch = () => {
     }
   };
   return (
-    <div>
-      <p>charitySearch works</p>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search for a charity"
-        />
-        <button type="submit" disabled={loading}>
-          Search
-        </button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-
-      <div> 
-        {charities.length > 0 ? (
-          charities.map((charity) => (
-            <div key={charity.id}>
-              <h3>{charity.names.value}</h3>
-              {charity.image?.logo?.small && (
-              <img
-                src={charity.image.logo.small}
-                alt={charity.names[0].value}
-                style={{ width: "100px", height: "100px", objectFit: "cover" }}
-              />
-            )}
-            <p>{charity.activities}</p>
-              <a href={charity.website} target="_blank" rel="noopener noreferrer">
-{charity.website}              </a>
-            </div>
-          ))
-        ) : (
-          <p>No charities found</p>
-        )}
+    <div className={styles.container}>
+      <Navbar />
+      <h2>Find a Charity to Support</h2>
+      <div className={styles.mainContent}>
+        <h3>Search for a Charity</h3>
+        <form onSubmit={handleSearch} className={styles.searchForm}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for a charity"
+            className={styles.searchInput}
+          />
+          <button type="submit" disabled={loading} className={styles.searchButton}>
+            Search
+          </button>
+        </form>
+  
+        {loading && <p className={styles.loading}>Loading...</p>}
+        {error && <p className={styles.error}>{error}</p>}
+  
+        <div className={styles.resultsContainer}>
+          {charities.length > 0 ? (
+            charities.map((charity) => (
+              <div key={charity.id} className={styles.charityCard}>
+                <h3 className={styles.charityName}>{charity.names.value}</h3>
+                {charity.image?.logo?.small && (
+                  <img
+                    src={charity.image.logo.small}
+                    alt={charity.names[0].value}
+                    className={styles.charityLogo}
+                  />
+                )}
+                <p className={styles.charityDescription}>{charity.activities}</p>
+                <a href={charity.website} target="_blank" rel="noopener noreferrer">
+                  <button className={styles.websiteButton}>Website</button>
+                </a>
+              </div>
+            ))
+          ) : (
+            <p className={styles.noResults}>No charities found</p>
+          )}
+        </div>
       </div>
+<Footer />
     </div>
+    
   );
 };
 

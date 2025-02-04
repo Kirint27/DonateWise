@@ -1,0 +1,133 @@
+// Variables for colors and spacing
+$primary-color: #007bff;
+$secondary-color: #ffff;
+$text-color: #333;
+$border-radius: 5px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 900px;
+  background-color: $secondary-color;
+  padding: 2% 3%;
+}
+
+.mainContent {
+  width: 100%;
+  max-width: 800px;
+  margin: 2% 5%;
+  padding: 2% 2%;
+  background: #dbdadab1; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: $border-radius;
+  text-align: center;
+  
+}
+
+h2 {
+  color: $text-color;
+  margin-bottom: 2%;
+  margin-top: 8%;
+  font-size: 24px;
+}
+
+.searchForm {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 2%;
+
+  .searchInput {
+    padding: 10px;
+    border: 1px solid $secondary-color;
+    border-radius: $border-radius;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .searchButton {
+    padding: 10px 15px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+
+    border-radius: $border-radius;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.loading,
+.error,
+.noResults {
+  color: $text-color;
+  font-size: 20px;
+  margin-top: 2%;
+}
+
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.charityCard {
+  padding: 2% 5%;
+  background: $secondary-color;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  margin-bottom: 5%;
+
+  .charityName {
+    margin: 0;
+    font-size: 20px;
+    color: $text-color;
+  }
+
+  .charityLogo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: $border-radius;
+    margin-top: 2%;
+  }
+
+  .charityDescription {
+    margin-top: 2%;
+    font-size: 15px;
+    color: $text-color;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .websiteButton {
+    margin-top: 2%;
+    padding: 8px 12px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+ 
+}
