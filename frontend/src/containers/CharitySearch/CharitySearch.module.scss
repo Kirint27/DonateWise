@@ -9,9 +9,10 @@ $border-radius: 5px;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 900px;
+  min-height: fit-content;
   background-color: $secondary-color;
-  padding: 2% 3%;
+  padding: 2% 2%;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -26,10 +27,13 @@ $border-radius: 5px;
   
 }
 
+h3 {
+  color: black;
+}
 h2 {
   color: $text-color;
-  margin-bottom: 2%;
-  margin-top: 8%;
+  margin-top: 10%;
+  margin-left: 5%;
   font-size: 24px;
 }
 
@@ -37,15 +41,17 @@ h2 {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-bottom: 2%;
+  margin-bottom: 5%;
+  width: 500px;
+  margin-left: 20%;
 
   .searchInput {
     padding: 10px;
-    border: 1px solid $secondary-color;
+    border: 1px solid #333;
     border-radius: $border-radius;
     font-size: 16px;
     width: 100%;
-    max-width: 300px;
+
   }
 
   .searchButton {
@@ -102,7 +108,7 @@ h2 {
     height: 100px;
     object-fit: cover;
     border-radius: $border-radius;
-    margin-top: 2%;
+    margin-top: 10;
   }
 
   .charityDescription {
@@ -129,5 +135,4 @@ h2 {
       background-color: darken($primary-color, 10%);
     }
   }
- 
 }

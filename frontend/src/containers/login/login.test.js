@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import login from "./login";
+import Login from "./Login";
 
-describe("login tests", () => {
+describe("Login tests", () => {
   it("should render", () => {
-    expect(render(<login />)).toBeTruthy();
+    expect(render(<Login />)).toBeTruthy();
   });
 });
