@@ -1,12 +1,12 @@
 .navbar {
     position: absolute;
     display: flex;
-    
     top: 0;
-    left: 0;
-    right: 0; /* add this property */
+    left: 0;  bottom: 0;
+
     height: 100px; /* adjust the height as needed */
     background-color: #9f0819; /* deep red */
+    width: 100vw;
 }
 img{
     height: 80px;
@@ -22,7 +22,7 @@ img{
     display: flex;
     flex-direction: row;
     padding: 0;
-    margin-left: 70%;
+    margin-left: 60%;
     font-weight: bold;
     color: #ffff;
     height: 100%;
@@ -31,12 +31,19 @@ img{
   
   li {
     margin-bottom: 30px;
-    margin-right: 25px;
+    margin-right: 20px;  
+    padding: 10px 10px;
+    width: 100px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+
   }
 
   .iconText {
     display: flex;
     align-items: center;
+  
     svg{
         margin-right: 8px;
     }

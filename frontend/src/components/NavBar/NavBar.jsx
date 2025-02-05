@@ -17,7 +17,7 @@ const Navbar = () => {
 
             <li>Charity-Search</li>
             <li className={styles.iconText}>
-            <FontAwesomeIcon icon={faUser} style={{ fontSize: 20 }} />
+            <FontAwesomeIcon icon={faUser} style={{ fontSize: 20 }} title="Account" />
             </li>
 
           </ul>
