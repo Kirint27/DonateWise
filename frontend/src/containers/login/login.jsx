@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer";
 const Login = () => {
   return (
     <div className={styles.pageContainer}>
-    <h1 className={styles.title}>CharityTrackr</h1>
+    <h1 className={styles.title}>ImpactTrack</h1>
     <div className={styles.loginContainer}>
       <div className={styles.loginBox}>
         <div className={styles.loginLogo}>
@@ -21,16 +21,17 @@ const Login = () => {
             <div className={styles.formGroup}>
               <label>Password</label>
               <input type="password" placeholder="Enter password" />
+              <a className={styles.forgotten}>Forgot Password</a>
             </div>
-            <button type="submit">Login</button>
+            <button  className={styles.primaryButton}type="submit">Login</button>
           </form>
+            <button onClick={() => window.location.href = '/register'} className={styles.secondaryButton}>Create Account</button>
         </div>
       </div>
     </div>
     <Footer/>
-    </div>
+  </div>
   );
-
 };
 
 export default Login;
