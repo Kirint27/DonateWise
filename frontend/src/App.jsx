@@ -3,7 +3,7 @@ import CharitySearch from "./containers/CharitySearch/CharitySearch";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Login from "./containers/Login/Login";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import Account from "./containers/Account/Account";
 const App = () => {
   
 
@@ -22,6 +22,13 @@ const App = () => {
             path="/dashboard"
             element={
                 <Dashboard  />
+            }
+          />
+
+<Route
+            path="/register"
+            element={
+                <Account  />
             }
           />
           <Route
