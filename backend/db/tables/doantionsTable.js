@@ -1,4 +1,3 @@
-const connection = require('../databaseConnection');
 
 const createDonationsTable = `
   CREATE TABLE IF NOT EXISTS donations (

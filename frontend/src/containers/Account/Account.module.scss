@@ -9,7 +9,8 @@ $text-color: #333;
 
 .title {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  margin-top: 3px;
   font-size: 36px;
   font-weight: bold;
   color: #2196F3;
@@ -17,25 +18,30 @@ $text-color: #333;
 
 .registerForm {
     background-color: #F5F5F5; /* Change the background color to dark gray */
-    border: 1px solid #CCCCCC; /* Add a border to the form */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow to the form */
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 40%;
+    max-width: 500px;  // Prevents it from being too wide
     height: fit-content;
-    margin: 10px 0% 20px 30%;
-  }
+    margin: 20px auto 20px auto;  // Centered horizontally
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .formGroup {
-  p {
-    width: fit-content;
-    margin-top: 25px;
-    margin-left: 15px;
-    font-weight: bold;
-    color: #333;
-  }
+    width: 100%;
+  
+    label {
+      display: block;
+      margin: 15px 0 5px 0;
+      font-weight: bold;
+      color: $text-color;
+    }
   label {
     display: block;
     margin-bottom: 5px;
-    margin-left: 10%;
+    margin-left: 1%;
     color: $text-color;
   }
   input[type="text"],
@@ -44,12 +50,11 @@ $text-color: #333;
   input[type="search"] {
     display: block;
     margin-bottom: 20px;
-    width: 300px;
-    height: 50px;
-    margin-left: 10%;
+    width: 95%;
+    height: 30px;
+    margin-left: 1%;
     padding: 10px;
-    background-color: #d7d6d6f3;
-    border: 2px solid #eae8e8;
+    border: 2px solid lightgray;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     font-size: 16px;
@@ -62,12 +67,12 @@ $text-color: #333;
   input[type="email"]:focus,
   input[type="password"]:focus,
   input[type="search"]:focus {
-    border-color: #2196F3;
+    border-color:  #2196F3;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
   input[type="checkbox"] {
     display: block;
-margin: 5px 10px 10px 1%;
+margin: 5px 10px 5px 1%;
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -76,29 +81,23 @@ margin: 5px 10px 10px 1%;
 
 .causes {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: space-between;
+  grid-template-columns: repeat(2, 1fr);
   margin-bottom: 10px;
 }
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+p{
+    margin-top: 30px;
+    font-weight: bold;
+}
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
   
-
-  
-  .checkbox-group label {
-    font-size: 16px;
-    font-family: "Open Sans", sans-serif;
-    color: #333;
-    cursor: pointer;
-  }
 button {
   height: 40px;
   width: 120px;
-  margin: 30px 0px 10px 10px;
+  margin: 20px 0px 10px 10px;
   background-color: #2196F3;
   color: #fff;
   border: none;

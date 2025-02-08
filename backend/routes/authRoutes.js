@@ -1,115 +1,74 @@
 require("dotenv").config(); // Load environment variables
-console.log("JWT Secret:", process.env.JWT_SECRET); // Should print the JWT secret key
 
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const connection = require("../db/databaseSetup"); // Import the connection object
 const moment = require('moment');
+const connection = require("../db/databaseConnection");
 
 const router = express.Router();
 
 // Signup Route- includes setting goals 
-router.post("/signup", (req, res) => {
-    const {
-        email,
-        password,
-        first_name,
-        last_name,
-        preferences,
-        goalType, // 'fixed_amount' or 'percentage_salary'
-        targetAmount, // Amount if goalType is 'fixed_amount'
-        percentage, // Percentage if goalType is 'percentage_salary'
-        annualSalary: annualSalary, // Salary if goalType is 'percentage_salary'
-    } = req.body;
-    // Validate input
-    if (!email || !password || !first_name || !last_name) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-  
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const preferencesJson = JSON.stringify(preferences || {});
-  
-    if (goalType === "percentage_salary" && (!percentage || !annualSalary)) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Percentage and annual salary are required for percentage-based goal",
-        });
-    }
-    if (goalType === "fixed_amount" && !targetAmount) {
-      return res
-        .status(400)
-        .json({ error: "Target amount is required for fixed-amount goal" });
-    }
-  
-    // Insert user into users table
-    const query = `INSERT INTO users (email, password, first_name, last_name, annual_salary, preferences) 
-                     VALUES (?, ?, ?, ?, ?, ?)`;
-  
-    connection.query(
-      query,
-      [email, hashedPassword, first_name, last_name, annualSalary, preferencesJson],
-      (err, result) => {
+router.post("/signup", async (req, res) => {
+  const { fullName, email, password, annualSalary, location, giftAid } = req.body;
+  console.log("Incoming Signup Request:", req.body);
+  if (!email || !password || !fullName || !annualSalary) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  try {
+    // Hash the password asynchronously
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user into the database
+    const query = `INSERT INTO users (email, password, full_name, annual_salary, location, gift_aid) VALUES (?, ?, ?, ?, ?, ?)`;
+    const result = await new Promise((resolve, reject) => {
+      connection.query(query, [email, hashedPassword, fullName, annualSalary, location, giftAid], (err, result) => {
         if (err) {
-          if (err.code === "ER_DUP_ENTRY") {
-            return res.status(400).json({ error: "Email already exists" });
-          }
-          return res.status(500).json({ error: "Internal server error" });
+          reject(err);
+        } else {
+          resolve(result);
         }
-  
-        // Debugging: Check the userId (result.insertId)
-        console.log("User created with ID: ", result.insertId);
-  
-        const goalQuery = `INSERT INTO yearly_goals (user_id, goal_type, target_amount, percentage, year, start_date, end_date, calculated_goal_amount) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      });
+    });
 
-        // Set current year
-        const currentYear = new Date().getFullYear();
-        const startDate = `${currentYear}-01-01`;
-        const endDate = `${currentYear}-12-31`;
-  
-        let goalData = [
-            result.insertId, // userId
-            goalType,
-            null,
-            null,
-            currentYear,
-            startDate,
-            endDate,
-            null
-          ];
-          
-          if (goalType === "fixed_amount") {
-            goalData[2] = targetAmount;
-          } else if (goalType === "percentage_salary") {
-           
-            goalData[3] = percentage;
-            const calculatedGoalAmount = (annualSalary * percentage) / 100; // Percentage calculation
-            goalData[7] = calculatedGoalAmount;
-          }
+    const userId = result.insertId;
+    console.log("User ID:", userId);
+    res.status(201).json({ userId });
+  } catch (error) {
+    console.error("Error inserting user:", error);
+    console.error(error.stack); // Add this line to log the error stack
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-        // Debugging: Check goalData before insertion
-        console.log("Goal Data:", goalData);
-  
-        connection.query(goalQuery, goalData, (err, result) => {
-          if (err) {
-            console.error("Error inserting goal into yearly_goals:", err);
-            return res.status(500).json({ error: "Error inserting goal" });
-          }
-  
-          const token = jwt.sign(
-            { userId: result.insertId },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
-          );
-  
-          res.status(201).json({ message: "User created successfully", token });
-        });
-      }
-    );
+router.post("/users/:id/preferences", (req, res) => {
+  console.log('Route called');
+
+  const userId = req.params.userId;
+  const { causes } = req.body;
+
+  if (!causes || causes.length === 0) {
+    return res.status(400).json({ error: "Causes are required" });
+  }
+
+  const query = `INSERT INTO user_preferences (user_id, preference_key, preference_value) VALUES ?`;
+  const values = causes.map((cause) => [userId, cause, true]);
+  console.log("Values:", values);
+
+  connection.query(query, [values], (err, result) => {
+    if (err) {
+      console.error("Error inserting preferences:", err);
+      return res.status(500).json({ error: "Error inserting preferences" });
+    }
+    res.status(201).json({ message: "Preferences updated successfully" });
   });
+});
+
+
 
 // Login Route
 router.post("/login", (req, res) => {
