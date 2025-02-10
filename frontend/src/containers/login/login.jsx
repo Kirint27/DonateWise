@@ -5,11 +5,12 @@ import Footer from "../../components/Footer/Footer";
 const Login = () => {
   return (
     <div className={styles.pageContainer}>
-    <h1 className={styles.title}>ImpactTrack</h1>
+    <h1 className="title">ImpactTrack</h1>
     <div className={styles.loginContainer}>
       <div className={styles.loginBox}>
         <div className={styles.loginLogo}>
-          <img src="logo.png" alt="Logo" />
+          <img src="https://picsum.photos/seed/picsum/200/300" alt="Logo" />
+          
         </div>
         <div className={styles.loginForm}>
           <h2>Login</h2>
@@ -25,7 +26,9 @@ const Login = () => {
             </div>
             <button  className={styles.primaryButton}type="submit">Login</button>
           </form>
-            <button onClick={() => window.location.href = '/register'} className={styles.secondaryButton}>Create Account</button>
+          <button onClick={() => window.location.href = '/register'} className="secondaryButton">
+  Create Account
+</button>
         </div>
       </div>
     </div>

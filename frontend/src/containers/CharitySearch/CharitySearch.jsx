@@ -4,91 +4,76 @@ import Navbar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
 
 const graphQl = "https://charitybase.uk/api/graphql";
+export const fetchCharities = async (search, setCharities, setError, setLoading, skip = 0) => {
+  setLoading(true);
 
+  const query = `
+    query CBWEB_LIST_CHARITIES($filters: FilterCHCInput!, $skip: Int, $sort: SortCHC) {
+      CHC {
+        getCharities(filters: $filters) {
+          count
+          list(limit: 30 skip: $skip, sort: "default") {
+            id
+            names { value primary }
+            activities
+            geo { latitude longitude }
+            contact { social { platform handle } }
+            image { logo { small } }
+            website
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch("https://charitybase.uk/api/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Apikey c2fa6fe8-e9b9-421a-b9de-37f4a12275da`
+      },
+      body: JSON.stringify({ query, variables: { filters: { search }, skip, sort: "default" } }),
+    });
+
+    const result = await response.json();
+
+    if (result.data?.CHC?.getCharities?.list.length > 0) {
+      // ✅ Transform response to match expected output
+      const transformedData = result.data.CHC.getCharities.list.map((charity) => ({
+        id: charity.id,
+        name: charity.names?.find((n) => n.primary)?.value || charity.names[0]?.value || "Unknown",
+        activities: charity.activities,
+        location: {
+          latitude: charity.geo?.latitude,
+          longitude: charity.geo?.longitude,
+        },
+        social: charity.contact?.social || [],
+        logo: charity.image?.logo?.small || "",
+        website: charity.website || "",
+      }));
+
+      setCharities(transformedData);
+      setError(null);
+    } else {
+      setCharities([]);
+      setError("No charities found");
+    }
+  } catch (error) {
+    setError("Failed to fetch charities.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+;
 const CharitySearch = () => {
   const [searchTerm, setSearchTerm] = useState(""); // For search term input (charity name or location)
   const [charities, setCharities] = useState([]); // Charity data
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(null); // Error state
-  const fetchCharities = (search, skip = 0, charities = []) => {
-    const query = `
-      query CBWEB_LIST_CHARITIES($filters: FilterCHCInput!, $skip: Int, $sort: SortCHC) {
-        CHC {
-          getCharities(filters: $filters) {
-            count
-            list(limit: 30 skip: $skip, sort: $sort) {
-              id
-              names(all: true) {
-                value
-                primary
-                __typename
-              }
-              activities
-              geo {
-                latitude
-                longitude
-                __typename
-              }
-              
-              contact {
-                social {
-                  platform
-                  handle
-                  __typename
-                }
-                __typename
-              }
-              image {
-                logo {
-                  small
-                  __typename
-                }
-                __typename
-              }
-              website
-              __typename
-            }
-            __typename
-          }
-          __typename
-        }
-      }
-    `;
-    const variables = {
-      filters: {
-        search: search
-      },
-      skip: 0,
-      sort: "default"
-    };
-  
-    fetch("https://charitybase.uk/api/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Apikey c2fa6fe8-e9b9-421a-b9de-37f4a12275da	`
-      },
-      body: JSON.stringify({
-        query,
-        variables
-      }),
-    })
-    .then(response => response.json())
-    .then(result => {
-      if (result.data?.CHC?.getCharities?.list.length > 0) {
-        setCharities(result.data.CHC.getCharities.list);
-      } else {
-        console.warn("⚠️ No charities found for:", searchTerm);
-        setCharities([]);
-      }
-    })
-    .catch(err => {
-      setError("Failed to fetch charities.");
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-  };
+
 
 
   // Handle Search Trigger
