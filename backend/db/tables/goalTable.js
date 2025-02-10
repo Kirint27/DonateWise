@@ -1,4 +1,3 @@
-const connection = require('../databaseConnection');
 
 
 const createYearlyGoalsTable = `

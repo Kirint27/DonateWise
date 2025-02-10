@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require("dotenv").config(); // Load environment variables
 
 const verifyJWT = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -25,5 +26,6 @@ const verifyJWT = (req, res, next) => {
         next();
     });
 };
+
 
 module.exports = { verifyJWT };

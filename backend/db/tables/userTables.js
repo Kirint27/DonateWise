@@ -1,4 +1,3 @@
-const connection = require('../databaseConnection');
 
 const createUsersTable = `
 CREATE TABLE IF NOT EXISTS users (
