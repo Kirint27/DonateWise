@@ -15,7 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "cypress": "^13.16.1",
+    "cypress": "^13.17.0",
     "dotenv": "^16.4.7",
     "firebase": "^10.14.1",
     "firestore": "^1.1.6",
