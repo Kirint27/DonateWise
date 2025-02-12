@@ -6,7 +6,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
+  position: relative;
+  min-height: 100vh;
+ 
+
 }
+ 
+.main-wrapper {
+  min-height: 100vh; /* Ensures the page fills at least the viewport */
+  position: relative; /* Allows absolute positioning of footer */
+  padding-bottom: 50px; /* Reserves space for the footer */
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

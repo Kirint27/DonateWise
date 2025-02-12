@@ -12,8 +12,8 @@ const Footer = () => {
         <p>Copyright by Kirin Thapar &#169; {getCurrentYear()}</p>
 
 
-<ul>
-  <li>Privacy Policy</li>
+<ul className={styles.links}>
+  <li >Privacy Policy</li>
 </ul>
     </footer>
 
