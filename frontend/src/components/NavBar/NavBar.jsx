@@ -15,7 +15,7 @@ console.log("document.cookie:", document.cookie);
     <>
       <nav>
         <div className={styles.navbar}>
-        <img src="https://picsum.photos/seed/picsum200/300" alt="Logo" />
+        <img src={require('../../containers/Login/logo.png')} alt="" />
           <ul>
             <li>Dashboard </li>
             <li>Tax-Report </li>

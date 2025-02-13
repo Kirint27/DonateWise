@@ -59,8 +59,11 @@ const Login = ({ onLogin }) => {
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <div className={styles.loginLogo}>
-            <img src="https://picsum.photos/seed/picsum/200/300" alt="Logo" />
-          </div>
+          <img src={require('./logo.png')} alt="" />
+<br />
+             <p className={styles.slogan}>"Track Your Giving, Amplify Your Impact".</p>
+          </div>           
+
           <div className={styles.loginForm}>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
@@ -96,7 +99,7 @@ const Login = ({ onLogin }) => {
             </button>
           </div>
         </div>
-      </div>
+      </div><p className={styles.learn}>New to GivingTracker: <a href="">Learn more</a></p>
       <Footer />
     </div>
     </div>
