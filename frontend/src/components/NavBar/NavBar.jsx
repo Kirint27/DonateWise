@@ -7,17 +7,25 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 const Navbar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-window.location.href = "/";
-console.log("document.cookie:", document.cookie);
-  };
+    fetch("http://localhost:3001/api/logout", {
+        method: "POST",
+        credentials: "include" // ✅ Ensures cookies are included in the request
+    })
+    .then(response => response.json())
+    .then(() => {
+   
+      navigate("/");
+    })
+    .catch(error => console.error("Logout error:", error));
+};
+
   return (
     <>
       <nav>
         <div className={styles.navbar}>
         <img src={require('../../containers/Login/logo.png')} alt="" />
           <ul>
-            <li>Dashboard </li>
+            <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li>Tax-Report </li>
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
