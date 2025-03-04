@@ -18,52 +18,62 @@ const Account = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+
     // Collect selected causes
-    const causes = [];
-    event.target.elements.causes.forEach((cause) => {
-      if (cause.checked) {
-        causes.push(cause.value);
-      }
-    });
-  
+    const causes = Array.from(event.target.elements.causes)
+      .filter((cause) => cause.checked)
+      .map((cause) => cause.value);
+
     // Ensure goal type is selected
     if (!goalType) {
       alert("Please select a goal type before submitting.");
       return;
     }
-  
+
     // Validate salary
-const salary = parseFloat(annualSalary)
+    const salary = parseFloat(annualSalary);
     if (isNaN(salary) || salary < 0) {
       alert("Please enter a valid annual salary.");
       return;
     }
-  
+
     // Calculate goal amount based on salary or manual entry
-    const goalAmount =
-      goalType === "percentage" ? (salary * parseFloat(goalAmount)) / 100 : goalAmount;
-  
-    if (!goalAmount || goalAmount <= 0) {
-      alert("Please enter a valid goal amount.");
-      return;
+    let goalAmountValue = null;
+    if (goalType === "manual") {
+      goalAmountValue = parseFloat(goalAmount);
+      if (isNaN(goalAmountValue) || goalAmountValue <= 0) {
+        alert("Please enter a valid goal amount.");
+        return;
+      }
+    } else if (goalType === "percentage") {
+      const percentage = parseFloat(goalAmount);
+      if (isNaN(percentage) || percentage <= 0 || percentage > 100) {
+        alert("Please enter a valid percentage (1-100).");
+        return;
+      }
+      goalAmountValue = (salary * percentage) / 100;
     }
-  
-    // API request setup
+
+    console.log("Goal Amount:", goalAmountValue);
+
+    setGoalAmount(goalAmountValue);
+    // Prepare the API request
     const url = new URL("http://localhost:3001/api/signup");
     const headers = { "Content-Type": "application/json" };
-  
+
     const body = JSON.stringify({
-      fullName: event.target.elements["fullName"].value,
-      email: event.target.elements["email"].value,
-      password: event.target.elements["password"].value,
-      annualSalary: annualSalary,
-      location: event.target.elements["location"].value,
-      giftAid: event.target.elements["giftAid"].checked,
+      fullName: event.target.elements["fullName"].value.trim() || null,
+      email: event.target.elements["email"].value.trim() || null,
+      password: event.target.elements["password"].value || null,
+      annualSalary: salary,
+      location: event.target.elements["location"].value.trim() || "",
+      giftAid: event.target.elements["giftAid"].checked ? 1 : 0,
       goalType: goalType,
-      goalAmount: goalAmount
+      goalAmount: goalAmountValue,
     });
-  
+
+    console.log("Payload being sent to backend:", body);
+
     fetch(url, { method: "POST", headers, body })
       .then((response) => {
         if (!response.ok) {
@@ -75,7 +85,7 @@ const salary = parseFloat(annualSalary)
       })
       .then((data) => {
         const userId = data.userId;
-  
+
         // Save user preferences (causes)
         return fetch(`http://localhost:3001/api/users/${userId}/preferences`, {
           method: "POST",
@@ -88,98 +98,148 @@ const salary = parseFloat(annualSalary)
         return response.json();
       })
       .then(() => {
-        setShowConfirmation(true);
-      })
+        // ✅ Delay showing the confirmation message
+        setTimeout(() => {
+            setShowConfirmation(true);
+        }, 100); // Delay of 100ms to avoid ResizeObserver issues
+    })
       .catch((error) => {
+        console.error("Error during signup process:", error);
         alert(error.message);
       });
   };
-  
 
   const handleContinue = () => {
     setShowConfirmation(false);
-    window.location.href = "/";
-  };
+    // ✅ Add delay to avoid layout shifts when navigating away
+    setTimeout(() => {
+        window.location.href = "/";
+    }, 100);
+};
+
   return (
-    <div className={styles.accountPage}>
+
+     <div className={styles.accountPage}>
+    {showConfirmation ? (
+      <div className={styles.confirmationMessage}>
+        <h3>Success</h3>
+        <p className={styles.confirmationText}>Thank you for setting up your account,
+
+Your account is now ready to use. Explore our features and get started!
+
+</p>
+        <button className="continue-button" onClick={handleContinue}>
+          Continue
+        </button>
+      </div>
+    ) : (
       <div className={styles.registerForm}>
         {" "}
-        <div>
-          {showConfirmation ? (
-            <div className="confirmation-message">
-              <p className="confirmation-text">Registration successful!</p>
-              <button className="continue-button" onClick={handleContinue}>
-                Continue
-              </button>
-            </div>
-          ) : (
+        
             <form onSubmit={handleSubmit} className={styles.regsi}>
-              <h3 className="title">GivingTacker</h3>
-              <div class={styles.formGroup}>
+              <h3 className="title">CharityTrackr</h3>
+
+              <div className={styles.formGroup}>
                 <label>Full Name</label>
-                <input type="text" placeholder="Enter Full name" required />
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Enter Full name"
+                  required
+                />
+
                 <label>Email</label>
-                <input type="email" placeholder="Enter email" required />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter email"
+                  required
+                />
+
                 <label>Password</label>
-                <input type="password" placeholder="Enter password" required />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter password"
+                  required
+                />
+
                 <label>Confirm Password</label>
                 <input
                   type="password"
+                  name="confirmPassword"
                   placeholder="Enter password again"
                   required
                 />
-                <label>Annual salary</label>
+
+                <label>Annual Salary</label>
                 <input
-  type="text"
-  onChange={(e) => setAnnualSalary(e.target.value ? parseFloat(e.target.value) : "")}
-  placeholder="Enter your Annual salary"
-  required
-  pattern="[0-9]*"
-
-/>
-<label>How do you want to set your yearly donation goal?</label>
-{!goalType && (
-  <select value={goalType} onChange={handleGoalChange}>
-    <option value="">Select an option</option>
-    <option value="manual">Enter a Specific Amount</option>
-    <option value="percentage">% of Salary</option>
-  </select>
-)}
-
-{/* Show the input field only when a goal type is selected */}
-{goalType === "manual" && (
-  <input
-    type="number"
-    value={goalAmount}
-    onChange={(e) => setGoalAmount(parseFloat(e.target.value) || "")} // Ensures it's a number
-    placeholder="Enter goal amount (£)"
-    min="1"
-    required
-  />
-)}
-
-{goalType === "percentage" && (
-  <input
-    type="number"
-    value={goalAmount}
-    onChange={(e) => setGoalAmount(parseFloat(e.target.value) || "")} // Ensures it's a number
-    placeholder="Enter % of salary"
-    min="1"
-    max="100"
-    required
-  />
-)}
-
-                <label>Location (optional)</label>
-                <input
-                  style={{ height: "40px" }}
-                  type="text"
-                  placeholder="Search for  your location"
+                  type="number"
+                  name="annualSalary"
+                  onChange={(e) => setAnnualSalary(e.target.valueAsNumber)}
+                  placeholder="Enter your Annual salary"
+                  required
+                  pattern="[0-9]*"
                 />
+
+                <label htmlFor="goal-type">
+                  How do you want to set your yearly donation goal?
+                </label>
+                {!goalType && (
+                  <select
+                    id="goal-type"
+                    name="goalType"
+                    value={goalType}
+                    onChange={handleGoalChange}
+                    required
+                  >
+                    <option value="">Select an option</option>
+                    <option value="manual">Enter a Specific Amount</option>
+                    <option value="percentage">% of Salary</option>
+                  </select>
+                )}
+
+                {/* Show the input field only when a goal type is selected */}
+                {goalType === "manual" && (
+                  <input
+                    type="number"
+                    name="goalAmount"
+                    value={goalAmount}
+                    onChange={(e) => setGoalAmount(e.target.value)}
+                    placeholder="Enter goal amount (£)"
+                    min="1"
+                    required
+                    pattern="[0-9]*"
+                  />
+                )}
+
+                {goalType === "percentage" && (
+                  <input
+                    type="number"
+                    name="goalPercentage"
+                    value={goalAmount}
+                    onChange={(e) => setGoalAmount(e.target.value)}
+                    placeholder="Enter % of salary"
+                    min="1"
+                    max="100"
+                    required
+                    pattern="[0-9]*"
+                  />
+                )}
+
+                <label>City you live in</label>
+                <input
+                  type="text"
+                  name="location"
+                  placeholder="Enter ciy you live in"
+                  required
+                />
+
                 <label>
-                  <input type="checkbox" name="gift aid " />
+                  <input type="checkbox" name="giftAid" />
                   Gift aid (optional)
-                </label>{" "}
+                </label>
+
                 <p>Select Causes You Care About:</p>
                 <div className={styles.causes}>
                   <label>
@@ -246,13 +306,13 @@ const salary = parseFloat(annualSalary)
                     <input type="checkbox" name="causes" value="arts-culture" />
                   </label>
                 </div>
+
                 <button type="submit">Create Account</button>
-              </div>
-            </form>
-          )}
-        </div>
+                </div>
+      </form>
       </div>
-    </div>
+    )}  
+  </div>
   );
 };
 
