@@ -4,7 +4,7 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 import Login from "./containers/Login/Login";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-
+import TaxReporting from "./containers/TaxReporting/TaxReporting";
 import Account from "./containers/Account/Account";
 const App = () => {
   return (
@@ -19,6 +19,10 @@ const App = () => {
         <Route
           path="/CharitySearch"
           element={<PrivateRoute element={<CharitySearch />} />}
+        />
+             <Route
+          path="/tax-reporting"
+          element={<PrivateRoute element={<TaxReporting />} />}
         />
       </Routes>
     </Router>
