@@ -26,7 +26,7 @@ const Navbar = () => {
         <img src={require('../../containers/Login/logo.png')} alt="" />
           <ul>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
-            <li>Tax-Report </li>
+            <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
            <li className={styles.iconText}>
