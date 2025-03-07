@@ -1,14 +1,13 @@
-
 .navbar {
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 80px;
   background-color: #2E7D32;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 20px;
+  padding: 0 20px;
 
   img {
     height: 40px;
@@ -22,50 +21,48 @@
 
   ul {
     list-style: none;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
     border-radius: 5px;
-margin-right: 25%;
+    margin-right: 25%;
 
-li {
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  margin: 20px 20px 20px 0;
-  width: 150px;
-  padding: 0 15px;
-  height: 60px;
-  display: flex;
-  align-items: center;
+    li {
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      margin: 20px 20px 20px 0;
+      width: auto;
+      padding: 0 15px;
+      height: 60px;
+      display: flex;
+      align-items: center;
 
-  &:not(:first-child) {
-    border-left: 1px solid #fff;
-  }
+      &:not(:first-child) {
+        border-left: 1px solid #fff;
+      }
 
-  &:nth-child(4) {
-    margin-bottom: 20px;
-  }
+      &:nth-child(4) {
+        margin-bottom: 20px;
+      }
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-}
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
   }
 
   .iconText {
     display: flex;
-    align-items: center;
+    margin-top: 10%;
     margin-right: 10px;
-    
 
     svg {
       margin-right: 5px;
-
     }
   }
 
@@ -78,11 +75,51 @@ li {
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
-    margin: 5px 20px 5px 30px;
+    margin: 20px 20px 5px 30px;
 
     &:hover {
       background-color: #B71C1C;
     }
   }
+}
 
+// Mobile Styles
+@media (max-width: 768px) {
+  .navbar {
+    padding: 5px; // Maintain reduced padding for mobile
+    height: 50px;
+    margin-bottom: 10px;
+
+    img {
+      display: none; // Hide the logo on mobile
+    }
+
+    ul {
+      margin-right: 0; // Ensure no right margin
+      display: flex; // Keep the items in a row
+      justify-content: space-around; // Improved spacing handling
+
+      li {
+        margin: 2px; // Reduce individual item margin
+        padding: 0 10px; // Maintain padding inside items
+        flex: 1; // Allow items to grow equally
+        font-size: 14px; // Adjust font size for mobile
+        height: 40px; // Adjust height for mobile
+
+        &:not(:first-child) {
+          border-left: 1px solid #fff; // Maintain border for subsequent items
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+
+    .logoutButton {
+      margin: 5px; // Adjust margin for the button
+      padding: 5px 10px; // Smaller padding on mobile
+      font-size: 14px; // Adjusted font size for mobile
+    }
+  }
 }

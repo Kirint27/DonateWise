@@ -1,16 +1,12 @@
-$secondary-color: #ffff;
-
+$secondary-color: #ffffff; // Adjusted from #ffff to #ffffff for clarity
 
 .pageContainer {
   background-color: #edebeb;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
 }
-
-
 
 .loginBox {
   display: flex;
@@ -20,27 +16,34 @@ $secondary-color: #ffff;
   border-radius: 10px;
   background-color: $secondary-color;
   justify-content: space-between;
+  margin-top: 100px;
+}
+.loginLogo {
+  width: 50%; /* Keep this for your layout */
+  height: auto; /* Set to auto for better scaling */
+  background-color: #2e7d32;
+  display: flex; /* Use flex to center items */
+  flex-direction: column; /* Stack logo and slogan */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center; /* Center text for slogan */
+  padding: 20px; /* Add some padding for spacing */
 }
 
-.loginLogo {
-  width: 50%;
-  height: 100%;
-  background-color: #2E7D32 ; 
-    display: block;
-  text-align: center;
+img {
+  width: 100%; /* Full width of the container */
+  height: auto; /* Maintain aspect ratio */
+  margin: 0 0 10px; /* Remove top margin, keep bottom margin */
+  display: block; /* Ensure it's a block for spacing */
+  background: transparent; /* Keep the background clean */
 }
-img{
-  width: 100%;
-  height: 50%;
-margin: 50px 20px 10px;
-  display: block;
-background: transparent;  
-}
-.slogan{
-  color: $secondary-color;
-  padding-left: 20px;
-  padding-right: 5px;
-  font-size: 14px;
+
+.slogan {
+  color: $secondary-color; /* Ensure the color is defined somewhere */
+  padding: 0 5px; /* Consistent padding */
+  font-size: 14px; /* Uniform font size */
+  text-align: center; /* Ensure slogan text is centered */
+  margin-top: 10px; /* Space above slogan */
 }
 .loginForm {
   width: 50%;
@@ -48,8 +51,7 @@ background: transparent;
   padding: 20px;
 
   h2 {
-    margin-top: 0;
-    margin-left: 30%;
+    margin: 0 0 20px 30%;  // Use margin for spacing
   }
 
   form {
@@ -68,14 +70,27 @@ background: transparent;
     border-radius: 5px;
   }
 
+  input[type="email"],
+  input[type="password"] {
+    font-size: 20px;
+  }
+
+  span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+  }
+
   .forgotten {
     font-size: 14px;
     color: #666;
     text-decoration: underline;
-    margin-top: 5px;
-    margin-left: 5px;
-    display: block;
+    margin: 5px 0 0 5px; // Top margin combined, consistent spacing
   }
+
   .primaryButton {
     width: 50%;
     height: 40px;
@@ -84,36 +99,51 @@ background: transparent;
     border-radius: 5px;
     cursor: pointer;
   }
-  .learn{
-  margin-top: 50px;
-  color: #000
-  a{
+
+  .learn {
+    margin-top: 50px;
     color: #000;
+
+    a {
+      color: #000;
+    }
   }
 }
-}
-
 @media (max-width: 768px) {
-  .pageContainer {
-    height: 800px;
+
+  .mainWrapper {
+    min-height: 130vh;
+    
+    background-color: #edebeb;
+    /* Ensures the wrapper takes the full height of the viewport */
+    display: flex;
+    flex-direction: column;
+}    .pageContainer {
     padding-top: 0;
+height: fit-content;
+flex: 1; /* Allow the page container to grow */
+
   }
   .loginBox {
-    width: 350px; /* Make it more fluid for smaller screens */
-    height: auto; /* Allow height to adjust dynamically */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center content */
-    padding: 20px;
-  }
-
+    width: 90%;
+    margin-left: 5%;
+    height: 800px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
   .loginLogo {
-    width: 100%; /* Make it full width */
-    height: 150px; /* Reduce height */
+    width: 90%; /* Make it full width */
+    height: 250px; /* Reduce height */
   }
 
   .loginForm {
-    width: 100%; /* Full width on mobile */
+    width: 90%; /* Full width on mobile */
     height: auto; /* Adjust dynamically */
     padding: 15px;
-  }
+ h2{
+  text-align: center;
+ }
+ }
+  
 }

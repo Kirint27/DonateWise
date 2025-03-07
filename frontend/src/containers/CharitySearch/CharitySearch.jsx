@@ -108,13 +108,13 @@ const CharitySearch = () => {
 
     <div className={styles.container}>
       <div className={styles.mainContent}>
-        <h3>Search for a Charity</h3>
+
         <form onSubmit={handleSearch} className={styles.searchForm}>
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for a charity"
+            placeholder="Search by charity, cause, area..."
             className={styles.searchInput}
           />
           <button type="submit" disabled={loading} className={styles.searchButton}>

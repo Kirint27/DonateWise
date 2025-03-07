@@ -8,7 +8,7 @@ footer {
   left: 0;
   position: absolute;
   right: 0;
-  background-color: #1B5E20; /* Dark Green */
+  background-color: #2e7d32;
   color: #ffffff; /* White text */
   padding: 0 20px; /* Adds space on left & right */
 }
@@ -21,6 +21,25 @@ footer p {
   display: flex; /* Makes it a flex container */
   gap: 20px; /* Space between links */
   padding: 0;
-margin-right: 100px;
+  margin-right: 100px;
+}
 
+@media (max-width: 768px) {
+  footer {
+    height: 80px;
+
+    width: 100%;
+
+    flex-direction: row; /* Stack items vertically on small screens */
+    align-items: flex-start; /* Align items to the start */
+    margin-top: 20px;
+  }
+
+  .links {
+    margin-left: 40%;
+
+    margin-top: 5px; /* Add spacing above the links when stacked */
+
+    margin-right: 0 !important;
+  }
 }

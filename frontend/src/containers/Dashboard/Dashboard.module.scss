@@ -1,8 +1,24 @@
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+
+
 .addDonation{
     margin-left: 90%;
+    transform: translateX(-90%); 
+
+}
+
+section{
+    height:150px ;
+    margin-bottom: 100px;
 }
 h2, h3 {
-    margin: 20px 0;
+    margin: 20px 0 ;
     text-align: center;
     
 }
@@ -12,3 +28,12 @@ margin-bottom: 30px;    height: 100px;
 }
 
 
+@media (max-width: 768px) {
+.dashboard {
+    min-height: 100vh;
+    overflow: hidden;
+
+}
+
+
+}

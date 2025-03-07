@@ -53,7 +53,7 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="main-wrapper">
+    <div className={styles.mainWrapper}>
           <div className={styles.pageContainer}>
       <h1 className="title">GivingTacker</h1>
       <div className={styles.loginContainer}>
