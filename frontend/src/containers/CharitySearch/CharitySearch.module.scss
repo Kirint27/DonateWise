@@ -1,42 +1,42 @@
 // Variables for colors and spacing
 $primary-color: #007bff;
-$secondary-color: #ffff;
+$secondary-color: #ffffff;
 $text-color: #333;
 $border-radius: 5px;
 
-
-
+// Main container for the content
 .mainContent {
   width: 100%;
   max-width: 800px;
-  margin: 0 5%;
+  margin: 0 auto; // Center the content horizontally
   padding-left: 2%;
+  padding-right: 2%;
   border-radius: $border-radius;
   text-align: center;
-  
 }
 
 h2 {
-
   font-size: 24px;
+  margin-bottom: 20px; // Adds some space below the heading
 }
 
+// Form for searching
 .searchForm {
   display: flex;
   flex-direction: row;
   align-items: center;
-
   justify-content: center;
   margin-bottom: 5%;
-  width: 90%;
-  margin-left: 40%;
+  width: 100%; // Use full width
+  max-width: 600px; // Limit form width for better control on larger screens
+  margin: 0 auto; // Center form horizontally
 
   .searchInput {
     padding: 10px;
     border: 1px solid #333;
     border-radius: $border-radius;
     font-size: 16px;
-    width: 80%;
+    width: 80%; // Input takes up most of the space
   }
 
   .searchButton {
@@ -47,7 +47,8 @@ h2 {
     border-radius: $border-radius;
     cursor: pointer;
     margin-left: 10px;
-margin-bottom: 30px;
+    margin-bottom: 30px;
+
     &:disabled {
       background-color: gray;
       cursor: not-allowed;
@@ -59,6 +60,7 @@ margin-bottom: 30px;
   }
 }
 
+// Loading, Error, and No Results Text
 .loading,
 .error,
 .noResults {
@@ -67,23 +69,27 @@ margin-bottom: 30px;
   margin-top: 2%;
 }
 
+// Results container
 .resultsContainer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px; // Add more space between results
   width: 100%;
+  margin-top: 20px; // Adds space between search form and results
 }
 
+// Charity card for each result
 .charityCard {
   padding: 2% 5%;
   background: $secondary-color;
   border-radius: $border-radius;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 5%;
-
-  margin-left: 30%;
-  width: 600px;
+  margin-bottom: 20px;
+  width: 90%; // Make charity card responsive
+  max-width: 600px; // Limit width to maintain readability
+  margin-left: auto;
+  margin-right: auto;
 
   .charityName {
     margin: 0;
@@ -96,7 +102,7 @@ margin-bottom: 30px;
     height: 100px;
     object-fit: cover;
     border-radius: $border-radius;
-    margin-top: 10;
+    margin-top: 10px;
   }
 
   .charityDescription {
@@ -124,15 +130,24 @@ margin-bottom: 30px;
     }
   }
 }
+
+// Media Query for smaller screens (max-width 768px)
 @media (max-width: 768px) {
   .searchForm {
     margin-left: 0;
     justify-content: flex-start;
+    width: 90%; // Adjust the width to fit on smaller screens
+    margin: 0 auto; // Center form horizontally
   }
 
   .searchInput {
-    width: 50%; // Use full width on smaller screens
-    max-width: 400px; // Optional: Set a max-width for larger screens
-    margin-right: 10px; // Optional: Add some spacing if needed
+    width: 100%; // Use full width on smaller screens
+    max-width: none; // Remove max-width for better use of available space
+    margin-right: 10px;
+  }
+
+  .charityCard {
+    width: 100%; // Make charity card take full width on smaller screens
+    padding: 10px; // Increase padding for readability
   }
 }
