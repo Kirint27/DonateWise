@@ -1,69 +1,39 @@
-import React, { useState } from "react";
-import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
+import React, { useState, useEffect } from "react";
+import { ApolloClient, InMemoryCache, HttpLink, gql } from "@apollo/client";
 import styles from "./CharitySearch.module.scss";
 import Navbar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
-import { useQuery } from "@apollo/client";
 
-// GraphQL Query to Search Charities by Name or Location
 const SEARCH_CHARITIES = gql`
-  query SearchCharities($search: String!) {
+  query SearchCharities($search: String!, $skip: Int!, $limit: PageLimit,  ) {
     CHC {
-      searchCharities(search: $search, exactMatch: true) {
-        id
-        names {
-          value
-        }
-        activities
-        geo {
-          latitude
-          longitude
-        }
-      causes {
+      getCharities(filters: { search: $search  }) {
+        list(limit: $limit, skip: $skip) {
+          id
+          names {
+            value
+          }
+          activities
+          geo {
+            latitude
+            longitude
+          }
+          causes {
             id
             name
           }
-        contact {
-          social {
-            handle
-            platform
-          }
-        }
-        image {
-          logo {
-            small
-          }
-        }
-      }
-    }
-  }
-`;
-
-const AGG_GEOHASH_CHARITIES = gql`
-  query CBWEB_AGG_GEOHASH_CHARITIES(
-    $filters: FilterCHCInput!
-    $top: Float
-    $left: Float
-    $bottom: Float
-    $right: Float
-  ) {
-    CHC {
-      getCharities(filters: $filters) {
-        aggregate {
-          geo(
-            top: $top
-            left: $left
-            bottom: $bottom
-            right: $right
-          ) {
-            geohash {
-              buckets {
-                key
-                name
-                count
-              }
+          contact {
+            social {
+              handle
+              platform
             }
           }
+          image {
+            logo {
+              small
+            }
+          }
+          website
         }
       }
     }
@@ -71,131 +41,101 @@ const AGG_GEOHASH_CHARITIES = gql`
 `;
 
 const CharitySearch = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // For search term input (charity name or location)
-  const [charities, setCharities] = useState([]); // Charity data
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [charities, setCharities] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [skip, setSkip] = useState(0);
+  const [limit] = useState(30); // Set your desired limit here
+  const [hasMore, setHasMore] = useState(true);
+  const [selectedCause, setSelectedCause] = useState("");
+  const [isSearched, setIsSearched] = useState(false); // State to track if search has been done
+
   const API_KEY = process.env.REACT_APP_CHARITY_BASE_API_KEY;
-  const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL;
-  
-  // Fetch charities when a search term is set
-  const { loading: queryLoading, error: queryError, data } = useQuery(SEARCH_CHARITIES, {
-    variables: { search: searchTerm },
-    skip: !searchTerm,
-    context: {
-      headers: {
-        Authorization: `Apikey ${API_KEY}`, // API Key
-      },
-    },
-  });
 
-  // Fetch geohash charities when location is provided
-  const { loading: geoLoading, error: geoError, data: geoData } = useQuery(AGG_GEOHASH_CHARITIES, {
-    variables: { filters: { search: searchTerm }, top: 90, left: -180, bottom: -90, right: 180 }, // Example bounding box for search area
-    skip: !searchTerm,
-    context: {
-      headers: {
-        Authorization: `Apikey ${API_KEY}`, // API Key
-      },
-    },
-  });
-
-  // Handles selection from CharityBaseSearch (optional)
-  const onSelect = (item) => {
-    console.log(item);
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    if (searchTerm && searchTerm.trim() !== "") {
-      setLoading(true);
-      // Fetch charities for search term
-      fetchCharities(searchTerm);
-    } else {
-      console.log("Please enter a search term");
-    }
-  };
-
-  const fetchCharities = (search) => {
-    const query = `
-      query CBWEB_LIST_CHARITIES($filters: FilterCHCInput!, $skip: Int, $sort: SortCHC) {
-        CHC {
-          getCharities(filters: $filters) {
-            count
-            list(limit: 30 skip: $skip, sort: $sort) {
-              id
-              names(all: true) {
-                value
-                primary
-              }
-              activities
-              geo {
-                latitude
-                longitude
-              }
-                     causes {
-            id
-            name
-          }
-              contact {
-                social {
-                  platform
-                  handle
-                }
-              }
-              image {
-                logo {
-                  small
-                }
-              }
-              website
-            }
-          }
-        }
-      }
-    `;
-    const variables = {
-      filters: { search: search },
-      skip: 0,
-      sort: "default",
-    };
-  
-    fetch("https://charitybase.uk/api/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Apikey ${API_KEY}`, // API Key
-      },
-      body: JSON.stringify({
-        query,
-        variables,
+  const fetchCharities = (search, skip, limit) => {
+    setLoading(true);
+    const client = new ApolloClient({
+      link: new HttpLink({
+        uri: "https://charitybase.uk/api/graphql",
+        headers: {
+          Authorization: `Apikey ${API_KEY}`,
+        },
       }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        const allCharities = result.data?.CHC?.getCharities?.list || [];
-        setCharities(allCharities); // Update charities state with all results
+      cache: new InMemoryCache(),
+    });
+
+    client
+      .query({
+        query: SEARCH_CHARITIES,
+        variables: { search, skip, limit },
       })
-      .catch((err) => {
+      .then((result) => {
+        if (result.data?.CHC?.getCharities?.list.length > 0) {
+          setCharities((prevCharities) => [
+            ...prevCharities,
+            ...result.data.CHC.getCharities.list,
+          ]);
+        } else {
+          setHasMore(false);
+        }
+      })
+      .catch((error) => {
         setError("Failed to fetch charities.");
       })
       .finally(() => {
         setLoading(false);
       });
   };
-  
+
+  useEffect(() => {
+    if (searchTerm.trim() !== "") {
+      setCharities([]);
+      setSkip(0);
+      setHasMore(true);
+      fetchCharities(searchTerm, 0, limit);
+    }
+  }, [searchTerm, limit]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchTerm(e.target.search.value);
+    setIsSearched(true);
+  };
+
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      const newSkip = skip + limit;
+      fetchCharities(searchTerm, newSkip, limit);
+      setSkip(newSkip);
+    }
+  };
+
+
+  const handleCauseChange = (e) => {
+    setSelectedCause(e.target.value);
+  };
+
+  const filterCharities = () => {
+    return charities.filter((charity) => {
+      const matches = charity.causes.some((cause) =>
+        cause.name.toLowerCase().includes(selectedCause.toLowerCase())
+      );
+      return selectedCause ? matches : true;
+    });
+  };
+
   return (
-    <div className="main-wrapper">
+    <div className="mainWrapper">
       <Navbar />
       <h2>Find a Charity to Support</h2>
-  
+    
       <div className={styles.container}>
         <div className={styles.mainContent}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <input
               type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              name="search"
               placeholder="Search by charity, cause, area..."
               className={styles.searchInput}
             />
@@ -203,39 +143,64 @@ const CharitySearch = () => {
               Search
             </button>
           </form>
-  
+    
           {loading && <p className={styles.loading}>Loading...</p>}
           {error && <p className={styles.error}>{error}</p>}
+     {/* Show the filter dropdown only after searching */}
+    { searchTerm && (
+      <div className={styles.filterContainer}>
+                <label htmlFor="cause">Filter results by cause:</label>
+                <select
+                  id="cause"
+                  value={selectedCause}
+                  onChange={handleCauseChange}
+                >
+                  <option value="">All Causes</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Poverty">Poverty</option>
+                  <option value="Environment">Environment</option>
+                  <option value="Animal">Animals</option>
+                </select>
+              </div>
+            )}
   
-          <div className={styles.resultsContainer}>
-            {charities.length > 0 &&
-              charities.map((charity) => (
-                <div key={charity.id} className={styles.charityCard}>
-                  <h3 className={styles.charityName}>{charity.names[0].value}</h3>
-                  {charity.image?.logo?.small && (
-                    <img
-                      src={charity.image.logo.small}
-                      alt={charity.names[0].value}
-                      className={styles.charityLogo}
-                    />
-                  )}
-                  <p className={styles.charityDescription}>{charity.activities}</p>
-                  <a href={charity.website} target="_blank" rel="noopener noreferrer">
-                    <button className={styles.websiteButton}>Website</button>
-                  </a>
-                </div>
-              ))}
+            <div className={styles.resultsContainer}>
+            {filterCharities().length > 0 ? (
+                filterCharities().map((charity) => (
+                  <div key={charity.id} className={styles.charityCard}>
+                    <h3 className={styles.charityName}>{charity.names[0].value}</h3>
+                    {charity.image?.logo?.small && (
+                      <img
+                        src={charity.image.logo.small}
+                        alt={charity.names[0].value}
+                        className={styles.charityLogo}
+                      />
+                    )}
+                    <p className={styles.charityDescription}>{charity.activities}</p>
+                    <a href={charity.website} target="_blank" rel="noopener noreferrer">
+                      <button className={styles.websiteButton}>Website</button>
+                    </a>
+                  </div>
+                ))
+              ) : (
+                searchTerm ? (
+                  <p>No charities found.</p>
+                ) : (
+                  // don't show anything
+                  <></>
+                )
+              )}
+            </div>
+            {searchTerm && hasMore && (
+              <button className={styles.loadMoreButton} onClick={loadMore} disabled={loading}>
+                Load More
+              </button>
+            )}
           </div>
-  
-          {/* Handle geolocation search results if available */}
-         
         </div>
+        <Footer /> 
       </div>
-  
-      <Footer />
-    </div>
-  );
-  
-};
-
+    );
+  }
 export default CharitySearch;

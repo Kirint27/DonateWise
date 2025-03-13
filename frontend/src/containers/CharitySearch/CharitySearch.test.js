@@ -106,11 +106,9 @@ describe("fetchCharities", () => {
         });
       }
       return Promise.resolve({
-        json: jest
-          .fn()
-          .mockResolvedValue({
-            data: { CHC: { getCharities: { count: 0, list: [] } } },
-          }),
+        json: jest.fn().mockResolvedValue({
+          data: { CHC: { getCharities: { count: 0, list: [] } } },
+        }),
       });
     });
 
