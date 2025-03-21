@@ -9,19 +9,19 @@ footer {
   position: absolute;
   right: 0;
   background-color: #2e7d32;
+  overflow: hidden;
   color: #ffffff; /* White text */
-  padding: 0 20px; /* Adds space on left & right */
 }
 
 footer p {
-  margin: 0; /* Remove default margin */
+  margin-left: 10px; /* Remove default margin */
 }
 .links {
   list-style: none; /* Remove bullet points */
   display: flex; /* Makes it a flex container */
-  gap: 20px; /* Space between links */
-  padding: 0;
-  margin-right: 100px;
+  height: 30px;
+  width: 150px;
+  
 }
 
 @media (max-width: 768px) {

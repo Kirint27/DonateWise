@@ -11,12 +11,10 @@ const Footer = () => {
       <footer>
         <p>Copyright by Kirin Thapar &#169; {getCurrentYear()}</p>
 
-
-<ul className={styles.links}>
-  <li >Privacy Policy</li>
-</ul>
-    </footer>
-
+        <ul className={styles.links}>
+          <li>Privacy Policy</li>
+        </ul>
+      </footer>
     </>
   );
 };

@@ -1,73 +1,72 @@
 .progressContainer {
-    margin: 0px 50px;
-    width: 80%;
-    padding: 10px;
-    // border: 1px solid #ddd;
-   border-radius: 8px;
-    // background-color: #fff;
+  margin: 0px 50px;
+  width: 80%;
+  padding: 10px;
+  // border: 1px solid #ddd;
+  border-radius: 8px;
+  // background-color: #fff;
 }
 
 .progressTitle {
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .progressBarContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
 
-    position: relative;
+  position: relative;
 }
 
 .progressText {
-    font-size: 15px;
-    color: #555;
-    margin-right: 10px;
-    flex-shrink: 0;
-    font-weight: bold;
+  font-size: 15px;
+  color: #555;
+  margin-right: 10px;
+  flex-shrink: 0;
+  font-weight: bold;
 }
 
 .progressBar {
-    background-color: #fff;
-    border-radius: 10px;
-    border: 2px solid black;
-    height: 25px;
-    width: 70%;
-    height: 30px;
-    overflow: hidden;
-    position: relative;
-    margin-right: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 2px solid black;
+  height: 25px;
+  width: 70%;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  margin-right: 10px;
 }
 
 .progressFill {
-    height: 100%;
-    border-radius: 10px;
-    transition: width 0.5s ease;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
 }
 
 .lowProgress {
-    background-color: #f44336; /* Red */
+  background-color: #f44336;
 }
 
 .highProgress {
-    background-color: #4caf50; /* Green */
+  background-color: #4caf50;
 }
-
 
 .goalAmount {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    flex-shrink: 0;
-    white-space: nowrap;
-    padding: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 5px;
 }
 .donationInfo {
-    font-size: 18px;
-    color: #555;
-    text-align: center;
-    margin-top: 10px;
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
 }

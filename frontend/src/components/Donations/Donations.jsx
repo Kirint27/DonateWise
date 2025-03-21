@@ -87,7 +87,7 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
     const donationType = event.target.elements.donationType.value;
     const donationDate = event.target.elements.donationDate.value;
     const paymentMethod = event.target.elements.paymentMethod.value;
-    const goFundMe = event.target.elements["goFundMe"].checked ? 1 : 0;
+    const giftAid = event.target.elements["giftAid"].checked ? 1 : 0;
   
     if (isNaN(donationAmount) || donationAmount <= 0) {
       alert("Please enter a valid donation amount.");
@@ -109,7 +109,7 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
           donationType,
           paymentMethod,
           donationDate,
-          goFundMe,
+          giftAid,
           charity_cause: charityCauses, // Pass the causes as an array directly
         });
   
@@ -165,8 +165,9 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
     <option value="cash">Cash</option>
     <option value="other">Other</option>
   </select>
+
   <label>
-    <input name="goFundMe" type="checkbox" />Via GoFundME
+    <input name="giftAid" type="checkbox" />Gift Aid
   </label>
   
   <div className="buttonGroup">
