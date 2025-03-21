@@ -57,7 +57,6 @@ const Account = () => {
     console.log("Goal Amount:", goalAmountValue);
 
     setGoalAmount(goalAmountValue);
-    // Prepare the API request
     const url = new URL("http://localhost:3001/api/signup");
     const headers = { "Content-Type": "application/json" };
 
@@ -86,7 +85,6 @@ const Account = () => {
       .then((data) => {
         const userId = data.userId;
 
-        // Save user preferences (causes)
         return fetch(`http://localhost:3001/api/users/${userId}/preferences`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,11 +96,10 @@ const Account = () => {
         return response.json();
       })
       .then(() => {
-        // ✅ Delay showing the confirmation message
         setTimeout(() => {
-            setShowConfirmation(true);
-        }, 100); // Delay of 100ms to avoid ResizeObserver issues
-    })
+          setShowConfirmation(true);
+        }, 100);
+      })
       .catch((error) => {
         console.error("Error during signup process:", error);
         alert(error.message);
@@ -111,208 +108,197 @@ const Account = () => {
 
   const handleContinue = () => {
     setShowConfirmation(false);
-    // ✅ Add delay to avoid layout shifts when navigating away
+
     setTimeout(() => {
-        window.location.href = "/";
+      window.location.href = "/";
     }, 100);
-};
+  };
 
   return (
+    <div className={styles.accountPage}>
+      {showConfirmation ? (
+        <div className={styles.confirmationMessage}>
+          <h3>Success</h3>
+          <p className={styles.confirmationText}>
+            Thank you for setting up your account, Your account is now ready to
+            use. Explore our features and get started!
+          </p>
+          <button className="continue-button" onClick={handleContinue}>
+            Continue
+          </button>
+        </div>
+      ) : (
+        <div className={styles.registerForm}>
+          {" "}
+          <form onSubmit={handleSubmit} className={styles.regsi}>
+            <h3 className="title">CharityTrackr</h3>
 
-     <div className={styles.accountPage}>
-    {showConfirmation ? (
-      <div className={styles.confirmationMessage}>
-        <h3>Success</h3>
-        <p className={styles.confirmationText}>Thank you for setting up your account,
+            <div className={styles.formGroup}>
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Enter Full name"
+                required
+              />
 
-Your account is now ready to use. Explore our features and get started!
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter email"
+                required
+              />
 
-</p>
-        <button className="continue-button" onClick={handleContinue}>
-          Continue
-        </button>
-      </div>
-    ) : (
-      <div className={styles.registerForm}>
-        {" "}
-        
-            <form onSubmit={handleSubmit} className={styles.regsi}>
-              <h3 className="title">CharityTrackr</h3>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+              />
 
-              <div className={styles.formGroup}>
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Enter Full name"
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Enter password again"
+                required
+              />
+
+              <label>Annual Salary</label>
+              <input
+                type="number"
+                name="annualSalary"
+                onChange={(e) => setAnnualSalary(e.target.valueAsNumber)}
+                placeholder="Enter your Annual salary"
+                required
+                pattern="[0-9]*"
+              />
+
+              <label htmlFor="goal-type">
+                How do you want to set your yearly donation goal?
+              </label>
+              {!goalType && (
+                <select
+                  id="goal-type"
+                  name="goalType"
+                  value={goalType}
+                  onChange={handleGoalChange}
                   required
-                />
+                >
+                  <option value="">Select an option</option>
+                  <option value="manual">Enter a Specific Amount</option>
+                  <option value="percentage">% of Salary</option>
+                </select>
+              )}
 
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter email"
-                  required
-                />
-
-                <label>Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter password"
-                  required
-                />
-
-                <label>Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Enter password again"
-                  required
-                />
-
-                <label>Annual Salary</label>
+              {/* Show the input field only when a goal type is selected */}
+              {goalType === "manual" && (
                 <input
                   type="number"
-                  name="annualSalary"
-                  onChange={(e) => setAnnualSalary(e.target.valueAsNumber)}
-                  placeholder="Enter your Annual salary"
+                  name="goalAmount"
+                  value={goalAmount}
+                  onChange={(e) => setGoalAmount(e.target.value)}
+                  placeholder="Enter goal amount (£)"
+                  min="1"
                   required
                   pattern="[0-9]*"
                 />
+              )}
 
-                <label htmlFor="goal-type">
-                  How do you want to set your yearly donation goal?
-                </label>
-                {!goalType && (
-                  <select
-                    id="goal-type"
-                    name="goalType"
-                    value={goalType}
-                    onChange={handleGoalChange}
-                    required
-                  >
-                    <option value="">Select an option</option>
-                    <option value="manual">Enter a Specific Amount</option>
-                    <option value="percentage">% of Salary</option>
-                  </select>
-                )}
-
-                {/* Show the input field only when a goal type is selected */}
-                {goalType === "manual" && (
-                  <input
-                    type="number"
-                    name="goalAmount"
-                    value={goalAmount}
-                    onChange={(e) => setGoalAmount(e.target.value)}
-                    placeholder="Enter goal amount (£)"
-                    min="1"
-                    required
-                    pattern="[0-9]*"
-                  />
-                )}
-
-                {goalType === "percentage" && (
-                  <input
-                    type="number"
-                    name="goalPercentage"
-                    value={goalAmount}
-                    onChange={(e) => setGoalAmount(e.target.value)}
-                    placeholder="Enter % of salary"
-                    min="1"
-                    max="100"
-                    required
-                    pattern="[0-9]*"
-                  />
-                )}
-
-                <label>City you live in</label>
+              {goalType === "percentage" && (
                 <input
-                  type="text"
-                  name="location"
-                  placeholder="Enter ciy you live in"
+                  type="number"
+                  name="goalPercentage"
+                  value={goalAmount}
+                  onChange={(e) => setGoalAmount(e.target.value)}
+                  placeholder="Enter % of salary"
+                  min="1"
+                  max="100"
                   required
+                  pattern="[0-9]*"
                 />
+              )}
+
+              <label>City you live in</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="Enter ciy you live in"
+                required
+              />
+
+              <label>
+                <input type="checkbox" name="giftAid" />
+                Gift aid (optional)
+              </label>
+
+              <p>Select Causes You Care About:</p>
+              <div className={styles.causes}>
+                <label>
+                  Health & Medical
+                  <input type="checkbox" name="causes" value="health-medical" />
+                </label>
 
                 <label>
-                  <input type="checkbox" name="giftAid" />
-                  Gift aid (optional)
+                  Children & Education
+                  <input
+                    type="checkbox"
+                    name="causes"
+                    value="children-education"
+                  />
                 </label>
 
-                <p>Select Causes You Care About:</p>
-                <div className={styles.causes}>
-                  <label>
-                    Health & Medical
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="health-medical"
-                    />
-                  </label>
+                <label>
+                  Animal Welfare
+                  <input type="checkbox" name="causes" value="animal-welfare" />
+                </label>
 
-                  <label>
-                    Children & Education
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="children-education"
-                    />
-                  </label>
+                <label>
+                  Environment & Sustainability
+                  <input
+                    type="checkbox"
+                    name="causes"
+                    value="environment-sustainability"
+                  />
+                </label>
 
-                  <label>
-                    Animal Welfare
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="animal-welfare"
-                    />
-                  </label>
+                <label>
+                  Human Rights & Social Justice
+                  <input type="checkbox" name="causes" value="human-rights" />
+                </label>
 
-                  <label>
-                    Environment & Sustainability
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="environment-sustainability"
-                    />
-                  </label>
+                <label>
+                  Community & Local Causes
+                  <input
+                    type="checkbox"
+                    name="causes"
+                    value="community-local"
+                  />
+                </label>
 
-                  <label>
-                    Human Rights & Social Justice
-                    <input type="checkbox" name="causes" value="human-rights" />
-                  </label>
+                <label>
+                  International Aid & Development
+                  <input
+                    type="checkbox"
+                    name="causes"
+                    value="international-aid"
+                  />
+                </label>
 
-                  <label>
-                    Community & Local Causes
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="community-local"
-                    />
-                  </label>
+                <label>
+                  Arts, Culture & Heritage
+                  <input type="checkbox" name="causes" value="arts-culture" />
+                </label>
+              </div>
 
-                  <label>
-                    International Aid & Development
-                    <input
-                      type="checkbox"
-                      name="causes"
-                      value="international-aid"
-                    />
-                  </label>
-
-                  <label>
-                    Arts, Culture & Heritage
-                    <input type="checkbox" name="causes" value="arts-culture" />
-                  </label>
-                </div>
-
-                <button type="submit">Create Account</button>
-                </div>
-      </form>
-      </div>
-    )}  
-  </div>
+              <button type="submit">Create Account</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
   );
 };
 

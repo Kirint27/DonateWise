@@ -3,21 +3,25 @@ $primary-color: #007bff;
 $secondary-color: #ffffff;
 $text-color: #333;
 $border-radius: 5px;
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 40px;
+  justify-content: space-between;
 
+  min-height: 100vh;
+  padding: 0;
+}
 // Main container for the content
 .mainContent {
-  width: 100%;
   max-width: 800px;
   margin: 0 auto; // Center the content horizontally
   padding-left: 2%;
   padding-right: 2%;
-  overflow: auto;
+
   border-radius: $border-radius;
   text-align: center;
-  
-  min-height: auto; 
-    height: auto;
-
 }
 
 h2 {
@@ -74,24 +78,26 @@ h2 {
   margin-top: 2%;
 }
 
-// Results container 
+// Results container
 .resultsContainer {
   display: flex;
   flex-direction: column;
   gap: 20px; // Add more space between results
   width: 100%;
-  max-height: calc(100vh - 300px); /* Adjust height to ensure button and footer are visible */
+  max-height: calc(
+    100vh - 300px
+  ); /* Adjust height to ensure button and footer are visible */
 
   margin-top: 20px; // Adds space between search form and results
   overflow-y: auto; /* Allow scrolling */
-  
+
   /* Hide the scrollbar */
   ::-webkit-scrollbar {
     display: none; /* Hide scrollbar for webkit browsers */
   }
 
-  -ms-overflow-style: none;  /* For Internet Explorer */
-  scrollbar-width: none;  /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+  scrollbar-width: none; /* For Firefox */
 }
 
 // Charity card for each result
@@ -163,7 +169,7 @@ h2 {
 
 .loadMoreButton {
   display: block;
-  margin: 10px auto;
+  margin: 20 auto 20px;
   padding: 10px 20px;
   background-color: $primary-color;
   color: white;
@@ -204,4 +210,3 @@ h2 {
     padding: 10px;
   }
 }
-

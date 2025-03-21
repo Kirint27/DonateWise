@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import styles from "./Login.module.scss";
 import Footer from "../../components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -9,11 +10,11 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     console.log("Updated Email:", e.target.value);
   };
+  const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -51,19 +52,17 @@ const Login = ({ onLogin }) => {
         setError(" Wrong email or password"); // Set error message for display
       });
   };
-
   return (
-    <div className={styles.mainWrapper}>
-          <div className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
       <h1 className="title">GivingTacker</h1>
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <div className={styles.loginLogo}>
-          <img src={require('./logo.png')} alt="" />
-<br />
-             <p className={styles.slogan}>"Track Your Giving, Amplify Your Impact".</p>
-          </div>           
-
+            <img src={require('./logo.png')} alt="" />
+            <br />
+            <p className={styles.slogan}>"Track Your Giving, Amplify Your Impact".</p>
+          </div>
+  
           <div className={styles.loginForm}>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
@@ -99,9 +98,11 @@ const Login = ({ onLogin }) => {
             </button>
           </div>
         </div>
-      </div><p className={styles.learn}>New to GivingTracker: <a href="">Learn more</a></p>
+      </div>
+      <p className={styles.learn}>
+  New to GivingTracker: <Link to="/LearnMore">Learn more</Link>
+</p>
       <Footer />
-    </div>
     </div>
   );
 };

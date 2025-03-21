@@ -126,7 +126,7 @@ const CharitySearch = () => {
   };
 
   return (
-    <div className="mainWrapper">
+    <div className={styles.mainWrapper}>
       <Navbar />
       <h2>Find a Charity to Support</h2>
     

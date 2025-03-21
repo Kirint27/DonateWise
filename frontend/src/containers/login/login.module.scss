@@ -5,7 +5,9 @@ $secondary-color: #ffffff; // Adjusted from #ffff to #ffffff for clarity
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+
+
+min-height: 100vh;
 }
 
 .loginBox {
@@ -16,7 +18,7 @@ $secondary-color: #ffffff; // Adjusted from #ffff to #ffffff for clarity
   border-radius: 10px;
   background-color: $secondary-color;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 40px;
 }
 .loginLogo {
   width: 50%; /* Keep this for your layout */
@@ -101,7 +103,7 @@ img {
   }
 
   .learn {
-    margin-top: 50px;
+    margin-top: 20px;
     color: #000;
 
     a {
