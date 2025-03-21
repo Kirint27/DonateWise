@@ -6,11 +6,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import TaxReporting from "./containers/TaxReporting/TaxReporting";
 import Account from "./containers/Account/Account";
+import LearnMore from "./containers/LearnMore/LearnMore";
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/LearnMore" element={<LearnMore />} />
+
         <Route path="/register" element={<Account />} />
         <Route
           path="/dashboard"
@@ -20,7 +23,7 @@ const App = () => {
           path="/CharitySearch"
           element={<PrivateRoute element={<CharitySearch />} />}
         />
-             <Route
+        <Route
           path="/tax-reporting"
           element={<PrivateRoute element={<TaxReporting />} />}
         />
