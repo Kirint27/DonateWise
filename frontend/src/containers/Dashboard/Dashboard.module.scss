@@ -1,39 +1,197 @@
 .dashboard {
-    min-height: 100vh;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+flex-grow: 1;
+min-height: 100vh;
+padding: 0;
+  padding-bottom: 40px; /* adjust this value to match the height of the footer */
+
+}
+
+.addDonation {
+  margin-left: 90%;
+  transform: translateX(-90%);
+  font-weight: bold;
+  margin-bottom: 20px;
+  width: 150px;
+  height: 50px;
+}
+
+section {
+  height: 150px;
+  margin-bottom: 70px;
+}
+h2,
+h3 {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.goal {
+  margin-bottom: 30px;
+  height: 100px;
+}
+
+.donationList {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  width: 500px;
+  margin-left: 30%;
+}
+
+.donationItem {
+  margin-bottom: 15px;
+  display: flex;
+  flex: 1 1 calc(33.33% - 20px); /* Makes three cards per row */
+}
+
+.donationCard {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  height: 120px;
+  width: 100%;
+  text-align: center;
+}
+
+.donationText {
+  font-size: 16px;
+  line-height: 20px;
+  color: #444;
+  margin-top: 5px;
+}
+
+.amount {
+  font-weight: bold;
+  color: #2c7a7b;
+}
+
+.charityName {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.date {
+  color: #666;
+  font-size: 18px;
+}
+@media (max-width: 768px) {
+ 
+
+  .dashboard {
+    flex-grow: 1; /* Allows dashboard to take up available space */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    min-height: 0; /* Override the min-height property on mobile screens */
+height: 1200px;
+    justify-content: flex-start;
+    padding-bottom: 60px; /* Ensure space for footer */
   }
 
+  .donationList {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-left: 0;
+  }
 
+  .donationItem {
+    width: 90%;
+    margin-bottom: 20px;
+  }
 
-.addDonation{
-    margin-left: 90%;
-    transform: translateX(-90%); 
+  .donationCard {
+    height: auto;
+    width: 100%;
+  }
 
+  .goal {
+    margin-bottom: 20px;
+  }
+
+  section {
+    height: auto;
+    margin-bottom: 20px;
+  }
+.showcase{
+  margin-top: 300px;
+}
+  footer {
+
+    margin-top: auto; /* Push footer to bottom */
+  }
 }
 
-section{
-    height:150px ;
-    margin-bottom: 100px;
+@media (max-width: 480px) {
+  .donationCard {
+    width: 95%;
+  }
+
+  .donationText {
+    font-size: 14px;
+  }
+
+  .amount {
+    font-size: 16px;
+  }
+
+  .charityName {
+    font-size: 14px;
+  }
+
+  .date {
+    font-size: 16px;
+  }
 }
-h2, h3 {
-    margin: 20px 0 ;
-    text-align: center;
-    
+
+
+@media (max-width: 480px) {
+  .donationCard {
+    width: 95%;
+  }
+
+  .donationText {
+    font-size: 14px;
+  }
+
+  .amount {
+    font-size: 16px;
+  }
+
+  .charityName {
+    font-size: 14px;
+  }
+
+  .date {
+    font-size: 16px;
+  }
 }
 
-.goal{
-margin-bottom: 30px;    height: 100px;
-}
+@media (max-width: 480px) {
+  .donationCard {
+    width: 90%;
+  }
 
+  .donationText {
+    font-size: 14px;
+  }
 
-@media (max-width: 768px) {
-.dashboard {
-    min-height: 100vh;
-    overflow: hidden;
+  .amount {
+    font-size: 16px;
+  }
 
-}
+  .charityName {
+    font-size: 14px;
+  }
 
-
+  .date {
+    font-size: 16px;
+  }
 }

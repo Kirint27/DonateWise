@@ -70,3 +70,29 @@
   text-align: center;
   margin-top: 10px;
 }
+
+
+@media (max-width: 768px) {
+  .progressContainer {
+    margin-left: 0;
+    width: 95%;
+  }
+  .highProgress {
+    height: 30px !important; /* Make it bigger only on mobile */
+    background-color: #28a745; /* Stronger green for full completion */
+    width: 100% !important; /* Force full width */
+
+  }
+  .progressBar {
+    height: 25px; /* Make it slightly bigger for mobile */
+  }
+
+  .progressText {
+    font-size: 14px;
+  }
+
+  .goalAmount, .donationInfo {
+    font-size: 16px;
+  }
+}
+
