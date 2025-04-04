@@ -28,6 +28,7 @@ min-height: 100vh;
   flex-direction: column; /* Stack logo and slogan */
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
+  margin: 0;
   text-align: center; /* Center text for slogan */
   padding: 20px; /* Add some padding for spacing */
 }
@@ -76,7 +77,14 @@ img {
   input[type="password"] {
     font-size: 20px;
   }
-
+  .passwordVisibilityIcon{
+    position: 'absolute';
+      right: '10px'; 
+      top: '50%';
+      transform: 'translateY(-50%)';
+      cursor: 'pointer';
+      z-index:  1,
+  }
   span {
     position: absolute;
     right: 10px;

@@ -1,6 +1,7 @@
-
 import React, { useState } from "react";
 import styles from "./Login.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -9,6 +10,7 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,13 +22,16 @@ const Login = ({ onLogin }) => {
     setPassword(e.target.value);
     console.log("Updated Password:", e.target.value);
   };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    console.log("Sending login request with:");
-    console.log(email);
-    console.log(password);
+
     const url = new URL("http://localhost:3001/api/login"); // Adjust based on your backend
 
     fetch(url, {
@@ -42,7 +47,6 @@ const Login = ({ onLogin }) => {
         if (data.error) {
           throw new Error(data.error);
         }
-        console.log("Navigation triggered");
 
         setLoading(false);
         navigate("/dashboard", { replace: true }); // Add { replace: true } to navigate correctly
@@ -54,15 +58,17 @@ const Login = ({ onLogin }) => {
   };
   return (
     <div className={styles.pageContainer}>
-      <h1 className="title">GivingTacker</h1>
+      <h1 className="title">GivingTracker</h1>
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <div className={styles.loginLogo}>
-            <img src={require('./logo.png')} alt="" />
+            <img alt="" />
             <br />
-            <p className={styles.slogan}>"Track Your Giving, Amplify Your Impact".</p>
+            <p className={styles.slogan}>
+              "Track Your Giving, Amplify Your Impact".
+            </p>
           </div>
-  
+
           <div className={styles.loginForm}>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
@@ -78,13 +84,24 @@ const Login = ({ onLogin }) => {
               </div>
               <div className={styles.formGroup}>
                 <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <a className={styles.forgotten}>Forgot Password</a>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type={isPasswordVisible ? "text" : "password"}
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                  />
+                  <span
+                    onClick={togglePasswordVisibility}
+                    className={styles.passwordVisibilityIcon}
+                  >
+                    <FontAwesomeIcon
+                      icon={isPasswordVisible ? faEye : faEyeSlash}
+                    />
+                  </span>
+                </div>
+                <a className={styles.forgotten}><Link to="/forgot-password">Forgot Password</Link></a>
               </div>
               <button className={styles.primaryButton} type="submit">
                 Login
@@ -93,16 +110,18 @@ const Login = ({ onLogin }) => {
                 <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
               )}
             </form>
-            <button onClick={() => navigate("/register")} className="secondaryButton">
+            <button
+              onClick={() => navigate("/register")}
+              className="secondaryButton"
+            >
               Create Account
             </button>
           </div>
         </div>
       </div>
       <p className={styles.learn}>
-  New to GivingTracker: <Link to="/LearnMore">Learn more</Link>
-</p>
-      <Footer />
+        New to GivingTracker: <Link to="/LearnMore">Learn more</Link>
+      </p>
     </div>
   );
 };
