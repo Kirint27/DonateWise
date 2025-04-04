@@ -1,115 +1,163 @@
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  justify-content: space-between;
+
+  min-height: 160vh;
+  padding: 0;
+}
+.totalDonated {
+  margin-left: 40%;
+  font-size: 18px;
+}
+
+.section {
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
 .info {
-    margin-top: 20px;
-    margin-left: 15px;
-    font-size: 13px;
-    font-weight: 500;
+  margin-top: 20px;
+  margin-left: 15px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 // Unordered List Styling
 ul {
-    width: 300px;
-    height: 100px;
-    margin: 30px 0 20px 10px;
+  width: 300px;
+  height: 100px;
+  margin: 30px 0 20px 10px;
 
-    li {
-        padding-bottom: 10px;
-        font-size: 18px;
-    }
+  li {
+    padding-bottom: 10px;
+    font-size: 18px;
+  }
 }
 
 // Download Buttons Container
 .downloadContainer {
-    margin-left: auto;
-    margin-right: 10%;
-    text-align: right;
+  margin-left: auto;
+  margin-right: 20%;
+  text-align: right;
 
-    .downloadOptions {
-        width: 180px;
-        display: inline-block;
-        padding: 10px;
-        text-align: center;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-align: left;
- 
-        &.csv {
-            background-color: #1E88E5;
-            color: white;
+  .downloadOptions {
+    width: 180px;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: left;
 
-            &:hover {
-                background-color: #1565C0;
-            }
-        }
+    &.pdf {
+      background-color: #43a047;
+      color: white;
 
-        &.pdf {
-            background-color: #43A047;
-            color: white;
-
-            &:hover {
-                background-color: #2E7D32;
-            }
-        }
+      &:hover {
+        background-color: #2e7d32;
+      }
     }
+  }
 }
 
 // Table Styling
 table {
-    border-collapse: collapse;
-    width: 80%;
-    margin: 2% auto 5% auto;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
+  width: 60%;
+  margin: 1% auto 10% auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: left;
-    }
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
 
-    // Table Header
-    th {
-        background-color: #37474F;
-        color: white;
-        font-weight: bold;
-    }
+  // Table Header
+  th {
+    background-color: #37474f;
+    color: white;
+    font-weight: bold;
+  }
 
-    // Alternating row colors
-    tr:nth-child(odd) {
-        background-color: #FFFFFF; // White
-    }
+  // Alternating row colors
+  tr:nth-child(odd) {
+    background-color: #ffffff; // White
+  }
 
-    tr:nth-child(even) {
-        background-color: #F8F9FA; // Light gray
-    }
+  tr:nth-child(even) {
+    background-color: #f8f9fa; // Light gray
+  }
 
-    // Hover effect on rows
-    tr:hover {
-        background-color: #E3F2FD;
-        transition: background-color 0.3s ease;
-    }
+  // Hover effect on rows
+  tr:hover {
+    background-color: #e3f2fd;
+    transition: background-color 0.3s ease;
+  }
 
-    // Column Width Adjustments
-    th:nth-child(3), td:nth-child(3), 
-    th:nth-child(5), td:nth-child(5),
-    th:last-child, td:last-child {
-        width: 80px;
-        height: 30px;
-    }
-
-    th:nth-child(1), td:nth-child(1),
-    th:nth-child(2), td:nth-child(2),
-    th:nth-child(4), td:nth-child(4) {
-        width: 160px;
-    }
+  // Column Width Adjustments
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(5),
+  td:nth-child(5),
+  th:last-child,
+  td:last-child {
+    height: 30px;
+  }
 }
 
 // Tax Relief Section
 .taxRelief {
-    margin-left: 30px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
+  margin-left: 30px;
+  margin-bottom: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+// Mobile - for very small screens
+@media (max-width: 480px) {
+  .mainWrapper {
+    min-height: 150vh;
+    padding: 0;
+  }
+  th,
+  td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1),
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 120px;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 100px;
+  }
+
+  th:nth-child(5),
+  td:nth-child(5) {
+    width: 80px;
+  }
+}
+
+// Tax Relief Section
+.taxRelief {
+  margin-left: 30px;
+  margin-bottom: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
