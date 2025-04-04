@@ -1,14 +1,12 @@
 .dashboard {
-
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-flex-grow: 1;
-min-height: 100vh;
-padding: 0;
+  flex-grow: 1;
+  min-height: 100vh;
+  padding: 0;
   padding-bottom: 40px; /* adjust this value to match the height of the footer */
-
 }
 
 .addDonation {
@@ -22,7 +20,10 @@ padding: 0;
 
 section {
   height: 150px;
-  margin-bottom: 70px;
+  margin-bottom: 150px;
+}
+.section {
+  margin-bottom: 50px;
 }
 h2,
 h3 {
@@ -82,15 +83,16 @@ h3 {
   color: #666;
   font-size: 18px;
 }
+.showcase {
+  text-align: center;
+}
 @media (max-width: 768px) {
- 
-
   .dashboard {
     flex-grow: 1; /* Allows dashboard to take up available space */
     display: flex;
     flex-direction: column;
     min-height: 0; /* Override the min-height property on mobile screens */
-height: 1200px;
+    height: 1200px;
     justify-content: flex-start;
     padding-bottom: 60px; /* Ensure space for footer */
   }
@@ -120,11 +122,10 @@ height: 1200px;
     height: auto;
     margin-bottom: 20px;
   }
-.showcase{
-  margin-top: 300px;
-}
+  .showcase {
+    margin-top: 300px;
+  }
   footer {
-
     margin-top: auto; /* Push footer to bottom */
   }
 }
@@ -150,7 +151,6 @@ height: 1200px;
     font-size: 16px;
   }
 }
-
 
 @media (max-width: 480px) {
   .donationCard {
@@ -193,5 +193,11 @@ height: 1200px;
 
   .date {
     font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .donationList {
+    margin-left: 40%;
   }
 }
