@@ -22,7 +22,6 @@ const Navbar = () => {
     <>
       <nav>
         <div className={styles.navbar}>
-          <img src={require("../../containers/Login/logo.png")} alt="" />
           <ul>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
