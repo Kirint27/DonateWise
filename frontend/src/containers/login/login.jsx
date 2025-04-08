@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Login.module.scss";
+import styles from "./login.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
