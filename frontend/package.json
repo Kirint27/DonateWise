@@ -45,7 +45,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "mkdir -p public && cp ./index.html public/"
     "test": "jest --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build",
