@@ -16,7 +16,7 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     const fetchData = () => {
-      fetch("http://localhost:3001/api/donations/recent-donations", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const Dashboard = ({ user }) => {
           return response.json();
         })
         .then((recentDonationsData) => {
-          fetch("http://localhost:3001/api/donations/goal-amount", {
+          fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const Dashboard = ({ user }) => {
               return response.json();
             })
             .then((goalAmountData) => {
-              fetch("http://localhost:3001/api/donations/current-amount", {
+              fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",

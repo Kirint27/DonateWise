@@ -1,25 +1,27 @@
-const express = require('express');
-const authRouter = require('./routes/authRoutes'); // Auth routes
-const donationRouter = require('./routes/donationRoutes'); // Donation routes
-const profileRouter = require('./routes/profileRoutes'); // Profile route
-const goalRouter = require('./routes/goalRoutes');
-const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+const app = express();
 
 app.use(express.json()); // Middleware to parse JSON in requests
-app.use(cors()); // Allow all origins
+app.use(cookieParser()); // Enable cookie parsing
 
-app.use('/', profileRouter);
+// Ensure correct CORS settings for frontend
+app.use(cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000", // Default to localhost during local development
+    credentials: true 
+}));
 
-// Set up route handlers for each resource
-app.use('/api', authRouter); // <--- Updated route definition
-app.use('/api/donations', donationRouter); // Donation routes under '/donations'
-app.use('/api/profile', profileRouter);
-app.use('/api/goals',goalRouter);
+// Register your routes
+app.use("/api", authRouter);
+app.use("/api/donations", donationRouter);
+app.use("/api/profile", profileRouter);
+app.use("/api/goals", goalRouter);
+app.use("/api/charities", charityRouter);
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Charity Tracker API!');
-  });
-// Add a catch-all route for the root path
+// Welcome route
+app.get("/", (req, res) => {
+    res.send("Welcome to the Charity Tracker API!");
+});
 
 module.exports = app;

@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 
   const handleRequestReset = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3001/api/forgot-password", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/forgot-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

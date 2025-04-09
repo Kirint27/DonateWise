@@ -16,7 +16,7 @@ router.get('/', verifyJWT, (req, res) => {
 
 // POST add a donation
 router.post('/', verifyJWT, async (req, res) => {
-  const { charityName, donationAmount, donationType, donationDate, paymentMethod, goFundMe, charity_cause } = req.body;
+  const { charityName, donationAmount, donationType, donationDate, paymentMethod, gifAid, charity_cause } = req.body;
   console.log('req.user:', req.user);
   
   const userId = req.user.userId; // Ensure consistent userId access
@@ -33,11 +33,11 @@ router.post('/', verifyJWT, async (req, res) => {
   // Updated query
   const query = `
     INSERT INTO donations 
-    (charity_name, donation_amount, donation_type, donation_date, payment_method, goFundMe, user_id, charity_cause) 
+    (charity_name, donation_amount, donation_type, donation_date, payment_method, giftAid, user_id, charity_cause) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
   
-  connection.query(query, [charityName, donationAmount, donationType, donationDate, paymentMethod, goFundMe, userId, charityCauses], (err, results) => {
+  connection.query(query, [charityName, donationAmount, donationType, donationDate, paymentMethod, gifAid, userId, charityCauses], (err, results) => {
     if (err) {
       console.error('Error inserting donation:', err);
       return res.status(500).json({ error: 'Internal server error' });
@@ -123,5 +123,53 @@ router.get('/current-amount', verifyJWT, async (req, res) => {
     res.json({ currentAmount: totalAmount });
   });
 });
+
+
+
+router.get('/all-donations', verifyJWT, async (req, res) => {
+  console.log('Received request for /all-donations');
+  console.log('Request headers:', req.headers);
+
+  const userId = req.user?.userId;
+  console.log('Extracted userId:', userId); // Debug log
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+  }
+
+  const query = `
+    SELECT donation_date, charity_name, donation_amount,  payment_method
+    FROM donations 
+    WHERE user_id = ?
+    ORDER BY donation_date DESC
+  `;
+
+  console.log('Executing query:', query, 'with userId:', userId);
+
+  connection.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Database error:', err); // Log error for debugging
+      return res.status(500).json({ message: 'Error fetching donations', error: err.message });
+    }
+
+    console.log('Query results:', results); // Log fetched donations
+
+    if (results.length === 0) {
+      return res.status(200).json({ donations: [] });
+    }
+
+    const donations = results.map(donation => ({
+      date: donation.donation_date
+        ? new Date(donation.donation_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+        : 'N/A',
+      charityName: donation.charity_name,
+      amount: donation.donation_amount, // Corrected column name
+      paymentMethod: donation.payment_method, // Corrected aliasing
+    }));
+
+    res.json(donations);
+  });
+});
+
 
 module.exports = router;

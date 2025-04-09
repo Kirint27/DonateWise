@@ -7,7 +7,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 const Navbar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    fetch("http://localhost:3001/api/logout", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/logout`, {
       method: "POST",
       credentials: "include", // ✅ Ensures cookies are included in the request
     })
@@ -28,11 +28,11 @@ const Navbar = () => {
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
             <li className={styles.iconText}>
-              <FontAwesomeIcon
+              {/* <FontAwesomeIcon
                 icon={faUser}
                 style={{ fontSize: 20 }}
                 title="Account"
-              />
+              /> */}
             </li>
             <button className={styles.logoutButton} onClick={handleLogout}>
               Logout

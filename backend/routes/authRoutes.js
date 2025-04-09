@@ -9,7 +9,7 @@ const connection = require("../db/databaseConnection");
 const router = express.Router();
 
 // Signup Route- includes setting goals
- // Signup route
+// Signup route
 router.post("/signup", async (req, res) => {
   const {
     fullName,
@@ -102,7 +102,6 @@ router.post("/users/:id/preferences", (req, res) => {
 });
 
 
-// Login Route
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -133,8 +132,8 @@ router.post("/login", (req, res) => {
 
       // Set token as HTTP-only cookie
       res.cookie("authToken", token, {
-        httpOnly: false, // Prevent JavaScript access (XSS protection)
-        secure: process.env.NODE_ENV === "production", // HTTPS in production
+        httpOnly: true, // Now, the token can't be accessed via JavaScript
+        secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS in production
         sameSite: "Strict", // Prevent CSRF
         maxAge: 3600000, // 1 hour expiry
       });
@@ -163,4 +162,114 @@ router.post("/logout", (req, res) => {
   res.clearCookie("authToken");
   res.json({ message: "Logout successful" });
 });
+
+require("dotenv").config();
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+router.post("/forgot-password", (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const query = "SELECT * FROM users WHERE email = ?";
+    connection.query(query, [email], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      if (results.length === 0) {
+        return res.status(400).json({ error: "User not found" });
+      }
+
+      const resetToken = jwt.sign(
+        { userId: results[0].id },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+      const resetLink = `https://charitytrackr.onrender.com/reset-password?token=${resetToken}`;
+
+      const msg = {
+        to: email, // User's email
+        from: "kirinthapar86@gmail.com", 
+        subject: "Password Reset Request",
+        text: `Click the following link to reset your password: ${resetLink}`,
+        html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+      };
+
+      sgMail
+        .send(msg)
+        .then((response) => {
+          console.log("Email sent successfully:", response);
+          res.json({
+            success: true,
+            message: "Password reset link sent to your email",
+          });
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+          res.status(500).json({ error: "Failed to send reset email" });
+        });
+    });
+  } catch (error) {
+    console.error("Server-side error:", error);
+    res.status(500).json({ error: "Server-side error" });
+  }
+});
+// GET route to validate the reset token
+router.get("/reset-password", (req, res) => {
+  res.json({
+    success: true,
+    message: "Token is valid. You can now reset your password.",
+    token: req.query.token, // Return token to frontend if needed
+  });
+});
+
+// POST route to reset the password
+router.post("/reset-password", (req, res) => {
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res
+      .status(400)
+      .json({ error: "Token and New Password are required" });
+  }
+
+  // Verify the token before proceeding
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
+
+    const userId = decoded.userId; // Extract user ID from token
+
+    // Hash the new password before saving it
+    bcrypt.hash(newPassword, 10, (hashErr, hashedPassword) => {
+      if (hashErr) {
+        console.error("Error hashing password:", hashErr);
+        return res.status(500).json({ error: "Failed to hash password" });
+      }
+
+      // Update the user's password in the database
+      const query = "UPDATE users SET password = ? WHERE id = ?";
+      connection.query(query, [hashedPassword, userId], (queryErr, result) => {
+        if (queryErr) {
+          console.error("Database error:", queryErr);
+          return res.status(500).json({ error: "Database error" });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(400).json({ error: "User not found" });
+        }
+
+        res.json({ success: true, message: "Password reset successfully" });
+      });
+    });
+  });
+});
+
 module.exports = router;

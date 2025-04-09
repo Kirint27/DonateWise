@@ -21,15 +21,15 @@
 
   ul {
     list-style: none;
-    margin: 0;
+    margin: 50%;
     padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
     border-radius: 5px;
-    margin-right: 25%;
 
+    
     li {
       font-size: 16px;
       font-weight: bold;
@@ -95,7 +95,7 @@
     }
 
     ul {
-      margin-right: 0; // Ensure no right margin
+      margin-right: 200px; // Ensure no right margin
       display: flex; // Keep the items in a row
       justify-content: space-around; // Improved spacing handling
 

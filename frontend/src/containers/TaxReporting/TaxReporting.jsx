@@ -47,7 +47,7 @@ const TaxReporting = () => {
   } = getTaxYearBoundaries();
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/donations/all-donations", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/all-donations`, {
       method: "GET",
       credentials: "include",
     })

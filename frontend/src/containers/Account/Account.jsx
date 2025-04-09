@@ -85,7 +85,7 @@ const Account = () => {
       .then((data) => {
         const userId = data.userId;
 
-        return fetch(`http://localhost:3001/api/users/${userId}/preferences`, {
+        return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}/preferences`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ causes: causes }),

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./login.module.scss";
+import styles from "./Login.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
@@ -31,31 +31,32 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
-    const url = new URL("http://localhost:3001/api/login"); // Adjust based on your backend
-
+  
+    const url = `${process.env.REACT_APP_API_URL}/api/login`;  // Directly concatenate the URL
+  
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include", // Include cookies
+      credentials: "include", // Include cookies for session management
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           throw new Error(data.error);
         }
-
+  
         setLoading(false);
-        navigate("/dashboard", { replace: true }); // Add { replace: true } to navigate correctly
+        navigate("/dashboard", { replace: true }); // Navigate to dashboard on successful login
       })
       .catch((err) => {
         setLoading(false);
-        setError(" Wrong email or password"); // Set error message for display
+        setError("Wrong email or password"); // Set error message for display
       });
   };
+  
   return (
     <div className={styles.pageContainer}>
       <h1 className="title">GivingTracker</h1>
