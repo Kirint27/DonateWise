@@ -5,11 +5,12 @@ const PrivateRoute = ({ element: Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL;  // Log this to check if it's being set correctly
+    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
+    // Log this to check if it's being set correctly
   
-    console.log("API URL:", apiUrl);  // Add this to ensure the URL is being set correctly
+    console.log("API URL:", url);  // Add this to ensure the URL is being set correctly
   
-    fetch(`${apiUrl}/api/auth-status`, {
+    fetch(`${url}/api/auth-status`, {
       method: "GET",
       credentials: "include",
     })
