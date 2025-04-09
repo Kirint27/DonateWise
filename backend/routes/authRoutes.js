@@ -112,7 +112,11 @@ router.post("/login", (req, res) => {
 
   const query = "SELECT * FROM users WHERE email = ?";
   connection.query(query, [email], (err, results) => {
-    if (err || results.length === 0) {
+    if (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (results.length === 0) {
       return res.status(400).json({ error: "User not found" });
     }
 
@@ -120,10 +124,13 @@ router.post("/login", (req, res) => {
 
     // Compare passwords
     bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) return res.status(500).json({ error: "Internal server error" });
+      if (err) {
+        return res.status(500).json({ error: "Internal server error" });
+      }
 
-      if (!isMatch)
+      if (!isMatch) {
         return res.status(400).json({ error: "Incorrect password" });
+      }
 
       // Generate JWT
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
@@ -142,6 +149,7 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
 
 router.get("/auth-status", (req, res) => {
   const token = req.cookies.authToken;
