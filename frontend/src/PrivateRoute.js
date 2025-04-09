@@ -5,7 +5,7 @@ const PrivateRoute = ({ element: Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-     fetch(`${process.env.REACT_APP_API_URL}/api/auth-status`, {
+     fetch(`https://charitytrackr.onrender.com/api/auth-status`, {
       method: "GET",
       credentials: "include",
     })
