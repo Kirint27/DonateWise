@@ -5,7 +5,7 @@ const PrivateRoute = ({ element: Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
+    const url = `https://charitytrackr.onrender.com`;  // Directly concatenate the URL
     // Log this to check if it's being set correctly
   
     console.log("API URL:", url);  // Add this to ensure the URL is being set correctly
