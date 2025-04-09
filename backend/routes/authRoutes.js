@@ -153,18 +153,20 @@ router.post("/login", (req, res) => {
 
 router.get("/auth-status", (req, res) => {
   const token = req.cookies.authToken;
-
+  console.log("Token from cookie:", token);  // Check the token value here
   if (!token) {
     return res.json({ authenticated: false });
   }
-
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
+      console.error("JWT verify error:", err);  // Log any error with verification
       return res.json({ authenticated: false });
     }
+    console.log("Decoded JWT:", decoded);  // Check if the token was decoded correctly
     return res.json({ authenticated: true, userId: decoded.userId });
   });
 });
+
 
 router.post("/logout", (req, res) => {
   res.clearCookie("authToken");
