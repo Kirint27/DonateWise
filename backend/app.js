@@ -6,6 +6,7 @@ const charityRouter = require("./routes/charitySearchRoutes");
 const goalRouter = require("./routes/goalRoutes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
 const app = express();
 
