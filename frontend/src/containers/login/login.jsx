@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
     setError("");
     setLoading(true);
   
-    const url = `${process.env.REACT_APP_API_URL}/api/login`;  // Directly concatenate the URL
+    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
   
     fetch(url, {
       method: "POST",
@@ -49,6 +49,8 @@ const Login = ({ onLogin }) => {
         }
   
         setLoading(false);
+        console.log("Navigating to dashboard");
+
         navigate("/dashboard", { replace: true }); // Navigate to dashboard on successful login
       })
       .catch((err) => {
