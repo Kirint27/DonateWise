@@ -1,5 +1,5 @@
 const express = require("express");
-const authRouter = require("./routes/authRoutes"); // ✅ Make sure the path is correct
+const authRouter = require("./routes/authRoutes"); 
 const donationRouter = require("./routes/donationRoutes");
 const profileRouter = require("./routes/profileRoutes");
 const charityRouter = require("./routes/charitySearchRoutes");
@@ -12,10 +12,9 @@ const app = express();
 app.use(express.json()); // Middleware to parse JSON in requests
 app.use(cookieParser()); // Enable cookie parsing
 
-// ✅ Ensure correct CORS settings for frontend
 app.use(cors({
-    origin: "http://localhost:3000", 
-    credentials: true 
+    origin: process.env.FRONTEND_URL || "http://localhost:3000", // Default to localhost during local development
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
 
 // ✅ Register auth routes under `/api`
