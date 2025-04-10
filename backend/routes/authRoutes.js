@@ -141,7 +141,7 @@ router.post("/login", (req, res) => {
       res.cookie("authToken", token, {
         httpOnly: true, // Now, the token can't be accessed via JavaScript
         secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS in production
-        sameSite: "Strict", // Prevent CSRF
+        sameSite: "Lax",  // Change from "Strict" to "Lax"
         maxAge: 3600000, // 1 hour expiry
       });
 
