@@ -5,12 +5,7 @@ const PrivateRoute = ({ element: Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const url = `https://charitytrackr.onrender.com`;  // Directly concatenate the URL
-    // Log this to check if it's being set correctly
-  
-    console.log("API URL:", url);  // Add this to ensure the URL is being set correctly
-  
-    fetch(`${url}/api/auth-status`, {
+    fetch(`https://charitytrackr.onrender.com/api/auth-status`, {
       method: "GET",
       credentials: "include",
     })
@@ -24,14 +19,15 @@ const PrivateRoute = ({ element: Component }) => {
         setIsAuthenticated(false);
       });
   }, []);
-  
-  if (isAuthenticated === null) return <p>Loading...</p>; // ✅ Show loading state until check completes
 
-  return isAuthenticated ? Component : <Navigate to="/" />;
-};
-
-
- 
-
-export default PrivateRoute;
-
+      if (isAuthenticated === null) return <p>Loading...</p>; // ✅ Show loading state until check completes
+    
+      return isAuthenticated ? Component : <Navigate to="/" />;
+    };
+    
+    
+     
+    
+    export default PrivateRoute;
+    
+    
