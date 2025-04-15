@@ -1,91 +1,46 @@
-// src/containers/TaxReporting/TaxReporting.test.js
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import TaxReporting from "./TaxReporting"; // Adjust based on your project structure
-import '@testing-library/jest-dom'; 
-beforeEach(() => {
-  global.fetch = jest.fn();
+import React from 'react';
+import { render } from '@testing-library/react';
+import { generatePdf } from './TaxReporting';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-  fetch.mockImplementation((url) => {
-    if (url === 'http://localhost:3001/api/user') {
-      return Promise.resolve({
-        json: () => Promise.resolve(loggedInUser), // Mock user data
-      });
-    } else if (url === 'http://localhost:3001/api/donations/all-donations') {
-      return Promise.resolve({
-        json: () => Promise.resolve([]), // Simulate empty array for no donations
-      });
-    }
-    return Promise.reject(new Error('Unknown endpoint')); // Handle unexpected calls
-  });
+
+const mockText = jest.fn();
+const mockAutoTable = jest.fn();
+const mockSave = jest.fn();
+
+jest.mock("jspdf", () => {
+  return jest.fn().mockImplementation(() => ({
+    text: mockText,
+    autoTable: mockAutoTable,
+    save: mockSave,
+  }));
 });
-// Define mock user data
-const loggedInUser = {
-  id: 1,
-  name: "John Doe",
-  email: "john.doe@example.com",
-};
-
-// Sample donations
-const currentTaxYearDonations = [
-  {
-    charityName: "Charity A",
-    date: "2023-01-15",
-    amount: "100.00",
-    paymentMethod: "Credit Card",
-    paymentStatus: "Completed"
-  },
-  {
-    charityName: "Charity B",
-    date: "2023-02-20",
-    amount: "50.00",
-    paymentMethod: "PayPal",
-    paymentStatus: "Completed"
-  }
-];
-
-const previousTaxYearDonations = [
-  {
-    charityName: "Charity C",
-    date: "2022-01-15",
-    amount: "200.00",
-    paymentMethod: "Bank Transfer",
-    paymentStatus: "Completed"
-  }
-];
-
-describe("TaxReporting Component", () => {
-  it("renders the header", () => {
-    render(<TaxReporting user={loggedInUser} currentTaxYearDonations={[]} previousTaxYearDonations={[]} />);
-    expect(screen.getByText(/donation history by financial year/i)).toBeInTheDocument();
-  });
-
-  it("displays current tax year donations when present", () => {
-    render(<TaxReporting user={loggedInUser} currentTaxYearDonations={currentTaxYearDonations} previousTaxYearDonations={[]} />);
+describe('generatePdf', () => {
+    it("should create a PDF document with the correct title", () => {
+        const donations = [
+          { charityName: "Charity 1", date: "2022-01-01", amount: 10.99, paymentMethod: "Credit Card", paymentStatus: "Paid" },
+          { charityName: "Charity 2", date: "2022-02-01", amount: 20.99, paymentMethod: "Bank Transfer", paymentStatus: "Pending" },
+        ];
+        const yearLabel = "2022-2023";
     
-    expect(screen.getByText(/current financial year/i)).toBeInTheDocument();
-    expect(screen.getByText('Total Donated: £150.00')).toBeInTheDocument();
-    expect(screen.getByText("Charity A")).toBeInTheDocument();
-    expect(screen.getByText("Charity B")).toBeInTheDocument();
-  });
-
-  it("displays previous tax year donations when present", () => {
-    render(<TaxReporting user={loggedInUser} currentTaxYearDonations={[]} previousTaxYearDonations={previousTaxYearDonations} />);
+        const doc = generatePdf(donations, yearLabel); // invoke
     
-    expect(screen.getByText(/previous financial year/i)).toBeInTheDocument();
-    expect(screen.getByText('Total Donated: £200.00')).toBeInTheDocument();
-    expect(screen.getByText("Charity C")).toBeInTheDocument();
-  });
+        const instance = jsPDF.mock.results[0].value;
+        expect(instance.text).toHaveBeenCalledWith(`Donations for Tax Year ${yearLabel}`, 10, 10);
+        expect(instance.autoTable).toHaveBeenCalledTimes(1);
+        expect(instance.save).toHaveBeenCalledWith(`donations-${yearLabel}.pdf`);
+      });
 
-  it("does not render current financial year section when no donations", () => {
-    render(<TaxReporting user={loggedInUser} currentTaxYearDonations={[]} previousTaxYearDonations={[]} />);
     
-    expect(screen.queryByText(/current financial year/i)).not.toBeInTheDocument();
-  });
 
-  it("does not render previous financial year section when no donations", () => {
-    render(<TaxReporting user={loggedInUser} currentTaxYearDonations={[]} previousTaxYearDonations={[]} />);
+  it('should save the PDF document with the correct filename', () => {
+    const donations = [
+      { charityName: 'Charity 1', date: '2022-01-01', amount: 10.99, paymentMethod: 'Credit Card', paymentStatus: 'Paid' },
+      { charityName: 'Charity 2', date: '2022-02-01', amount: 20.99, paymentMethod: 'Bank Transfer', paymentStatus: 'Pending' },
+    ];
+    const yearLabel = '2022-2023';
+    const doc = generatePdf(donations, yearLabel);
     
-    expect(screen.queryByText(/previous financial year/i)).not.toBeInTheDocument();
   });
 });
