@@ -8,6 +8,10 @@
   min-height: 160vh;
   padding: 0;
 }
+
+.noDonations {
+  margin-left: 40%;
+}
 .totalDonated {
   margin-left: 40%;
   font-size: 18px;
@@ -160,4 +164,11 @@ table {
   font-size: 14px;
   font-weight: 500;
   color: #333;
+}
+.noPreviousDonations,
+.noDonations {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+  margin: 20px 0;
 }

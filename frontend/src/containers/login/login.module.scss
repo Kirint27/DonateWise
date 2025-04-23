@@ -7,7 +7,7 @@ $secondary-color: #ffffff; // Adjusted from #ffff to #ffffff for clarity
   align-items: center;
 
 
-min-height: 100vh;
+min-height: 108vh;
 }
 
 .loginBox {
@@ -18,7 +18,8 @@ min-height: 100vh;
   border-radius: 10px;
   background-color: $secondary-color;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 .loginLogo {
   width: 50%; /* Keep this for your layout */
@@ -33,10 +34,10 @@ min-height: 100vh;
   padding: 20px; /* Add some padding for spacing */
 }
 
-img {
+.logo {
   width: 100%; /* Full width of the container */
-  height: auto; /* Maintain aspect ratio */
-  margin: 0 0 10px; /* Remove top margin, keep bottom margin */
+  height: 200px; /* Maintain aspect ratio */
+  margin: 0 10px 0px; /* Remove top margin, keep bottom margin */
   display: block; /* Ensure it's a block for spacing */
   background: transparent; /* Keep the background clean */
 }
@@ -51,6 +52,8 @@ img {
 .loginForm {
   width: 50%;
   height: 100%;
+  cursor: default;
+
   padding: 20px;
 
   h2 {
@@ -111,7 +114,7 @@ img {
   }
 
   .learn {
-    margin-top: 20px;
+margin: 30px 0 20px 5px ; // Top margin combined, consistent spacing
     color: #000;
 
     a {
