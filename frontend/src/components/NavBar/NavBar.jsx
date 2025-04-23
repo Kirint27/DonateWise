@@ -21,18 +21,19 @@ const Navbar = () => {
   return (
     <>
       <nav>
-        <div className={styles.navbar}>
-          <ul>
+      <div className={styles.navbar}>
+             <img src={require('../../containers/Login/logo.jpg')} alt="" />
+   <ul>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
             <li className={styles.iconText}>
-              {/* <FontAwesomeIcon
+              <FontAwesomeIcon
                 icon={faUser}
                 style={{ fontSize: 20 }}
                 title="Account"
-              /> */}
+              />
             </li>
             <button className={styles.logoutButton} onClick={handleLogout}>
               Logout

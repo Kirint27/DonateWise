@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styles from "./login.module.scss";
+import styles from "./Login.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
 import { useNavigate, Link } from "react-router-dom";
-
+import logo from './logo.jpg'; // Change to the correct file name if necessary
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,42 +31,42 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-  
-    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
-  
+    console.log("Sending login request with:");
+    console.log(email);
+    console.log(password);
+    const url = `http://localhost:3001/api/login`;  // Directly concatenate the URL
+
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include", // Include cookies for session management
+      credentials: "include", // Include cookies
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           throw new Error(data.error);
         }
-  
-        setLoading(false);
-        console.log("Navigating to dashboard");
+        console.log("Navigation triggered");
 
-        navigate("/dashboard", { replace: true }); // Navigate to dashboard on successful login
+        setLoading(false);
+        navigate("/dashboard", { replace: true }); // Add { replace: true } to navigate correctly
       })
       .catch((err) => {
         setLoading(false);
-        setError("Wrong email or password"); // Set error message for display
+        setError(" Wrong email or password"); // Set error message for display
       });
   };
-  
   return (
     <div className={styles.pageContainer}>
-      <h1 className="title">GivingTracker</h1>
+      <h1 className="title">DonateWise</h1>
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <div className={styles.loginLogo}>
-            <img alt="" />
-            <br />
+          <img className={styles.logo} src={logo} alt="Logo" />
+          <br />
             <p className={styles.slogan}>
               "Track Your Giving, Amplify Your Impact".
             </p>
@@ -125,7 +125,9 @@ const Login = ({ onLogin }) => {
       <p className={styles.learn}>
         New to GivingTracker: <Link to="/LearnMore">Learn more</Link>
       </p>
+    <Footer />
     </div>
+
   );
 };
 
