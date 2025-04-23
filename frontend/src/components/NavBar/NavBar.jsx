@@ -3,7 +3,7 @@ import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import logo from '../../containers/Login/logo.jpg'
+import logo from '../../containers/login/logo.jpg'
 const Navbar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
