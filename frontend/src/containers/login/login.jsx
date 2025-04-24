@@ -34,7 +34,7 @@ const Login = ({ onLogin }) => {
     console.log("Sending login request with:");
     console.log(email);
     console.log(password);
-    const url = `http://localhost:3001/api/login`;  // Directly concatenate the URL
+    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
 
     fetch(url, {
       method: "POST",
