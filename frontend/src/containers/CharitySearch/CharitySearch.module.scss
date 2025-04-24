@@ -1,0 +1,212 @@
+// Variables for colors and spacing
+$primary-color: #007bff;
+$secondary-color: #ffffff;
+$text-color: #333;
+$border-radius: 5px;
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 40px;
+  justify-content: space-between;
+
+  min-height: 100vh;
+  padding: 0;
+}
+// Main container for the content
+.mainContent {
+  max-width: 800px;
+  margin: 0 auto; // Center the content horizontally
+  padding-left: 2%;
+  padding-right: 2%;
+
+  border-radius: $border-radius;
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px; // Adds some space below the heading
+}
+
+// Form for searching
+.searchForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5%;
+  width: 100%; // Use full width
+  max-width: 600px; // Limit form width for better control on larger screens
+  margin: 0 auto; // Center form horizontally
+
+  .searchInput {
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: $border-radius;
+    font-size: 16px;
+    width: 80%; // Input takes up most of the space
+  }
+
+  .searchButton {
+    padding: 10px 15px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-bottom: 30px;
+
+    &:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+// Loading, Error, and No Results Text
+.loading,
+.error,
+.noResults {
+  color: $text-color;
+  font-size: 20px;
+  margin-top: 2%;
+}
+
+// Results container
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; // Add more space between results
+  width: 100%;
+  max-height: calc(
+    100vh - 300px
+  ); /* Adjust height to ensure button and footer are visible */
+
+  margin-top: 20px; // Adds space between search form and results
+  overflow-y: auto; /* Allow scrolling */
+
+  /* Hide the scrollbar */
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  -ms-overflow-style: none; /* For Internet Explorer */
+  scrollbar-width: none; /* For Firefox */
+}
+
+// Charity card for each result
+.charityCard {
+  padding: 2% 5%;
+  background: $secondary-color;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+  width: 95%; // Make charity card responsive
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .charityName {
+    margin: 0;
+    font-size: 20px;
+    color: $text-color;
+  }
+
+  .charityLogo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: $border-radius;
+    margin-top: 10px;
+    margin-left: 40%;
+  }
+
+  .charityDescription {
+    margin-top: 2%;
+    font-size: 15px;
+    width: 100%;
+    color: $text-color;
+  }
+
+  .charityDescription ::first-letter {
+    text-transform: uppercase;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .websiteButton {
+    margin-top: 2%;
+    padding: 8px 12px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.filterContainer {
+  width: 200px;
+  margin-left: 75%;
+  select {
+    margin-top: 10px;
+  }
+}
+
+.loadMoreButton {
+  display: block;
+  margin: 20 auto 20px;
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative; /* Ensure the button stays visible in the layout flow */
+  margin-left: 0%;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: lighten($primary-color, 20%);
+    cursor: not-allowed;
+  }
+}
+
+// Media Query for smaller screens (max-width 768px)
+@media (max-width: 768px) {
+  .searchForm {
+    margin-left: 0;
+    justify-content: flex-start;
+    width: 90%; // Adjust the width to fit on smaller screens
+    margin: 0 auto; // Center form horizontally
+  }
+
+  .searchInput {
+    width: 100%; // Use full width on smaller screens
+    max-width: none;
+    margin-right: 10px;
+  }
+
+  .charityCard {
+    width: 100%;
+    padding: 10px;
+  }
+}

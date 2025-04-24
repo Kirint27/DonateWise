@@ -1,0 +1,45 @@
+footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Pushes text left & links right */
+  align-items: center; /* Centers content vertically */
+  height: 80px;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  background-color: #2e7d32;
+  overflow: hidden;
+  color: #ffffff; /* White text */
+}
+
+footer p {
+  margin-left: 10px; /* Remove default margin */
+}
+.links {
+  list-style: none; /* Remove bullet points */
+  display: flex; /* Makes it a flex container */
+  height: 30px;
+  width: 150px;
+  
+}
+
+@media (max-width: 768px) {
+  footer {
+    height: 80px;
+
+    width: 100%;
+
+    flex-direction: row; /* Stack items vertically on small screens */
+    align-items: flex-start; /* Align items to the start */
+    margin-top: 20px;
+  }
+
+  .links {
+    margin-left: 40%;
+
+    margin-top: 5px; /* Add spacing above the links when stacked */
+
+    margin-right: 0 !important;
+  }
+}

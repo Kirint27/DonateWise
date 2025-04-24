@@ -1,0 +1,90 @@
+@import "../../Styles/Form.scss";
+$text-color: #333;
+
+.accountPage {
+  height: fit-content;
+  font-family: "Open Sans", sans-serif;
+  background-color: #e0e0e0;
+  overflow: hidden;
+}
+
+.causes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 10px;
+}
+
+.confirmationText {
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.confirmationMessage {
+  text-align: center;
+  padding: 20px;
+  width: 420px;
+  height: 300px;
+  margin-left: 30%;
+  margin-top: 10%;
+  background-color: white;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.confirmationText {
+  font-size: 18px;
+  line-height: 30px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+
+
+input[type="checkbox"] {
+  margin-top: 5px; /* Space between checkbox and the label above it */
+  margin-bottom: 10px; /* Space between checkboxes */
+  cursor: pointer;
+}
+
+.causes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 3 columns layout */
+  gap: 20px; /* space between the checkboxes */
+  margin-bottom: 20px;
+}
+
+.causes label {
+  font-size: 14px;
+  color: #333;
+  display: block; /* Ensure label is block-level */
+  text-align: center; /* Align label text to the center */
+}
+
+.causes input[type="checkbox"] {
+  display: block; /* Ensure checkbox is block-level and takes up full width */
+  margin-top: 10px; /* Ensure space between checkbox and label */
+  margin-left: auto;
+  margin-right: auto;
+}
+.form1 {
+  background-color: #fefefe;
+  width: 50%;
+  color: #333;
+  margin-left: 25%;
+  margin-bottom: 20px;
+}
+.registerForm {
+  @media (max-width: 768px) {
+    width: 70%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  form {
+    width: 80%;
+    margin-left: 10%;
+  }
+}

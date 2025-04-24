@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  background-color: #e0e0e0;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 105vh; /* full viewport height */
+}
+
+h1 {
+  font-size: 2.5rem; /* 36px */
+}
+
+h2 {
+  font-size: 1.5rem; /* 24px */
+  color: #000;
+  font-family: "Poppins", sans-serif;
+  margin: 5% 38% 2%;
+}
+
+h3 {
+  font-size: 1.2rem; /* 18px */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 50px;
+  font-family: "verdana", sans-serif;
+  font-size: 40px;
+
+  font-weight: bold;
+  color: #d4af37;
+}
+.backButton {
+  background: none;
+  color: black;
+  box-shadow: none;
+  margin-left: 15px;
+  font-size: 15px;
+}
+button {
+  height: 40px;
+  width: 120px;
+  margin: 20px 0px 10px 10px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out;
+  &:hover {
+    background-color: #1a237e;
+  }
+}
+
+.secondaryButton {
+  color: #000;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  width: 50%; /* add this to make the buttons full-width */
+  margin-top: 30px; /* add some space between the buttons */
+}
+.divider {
+  border-bottom: 1px solid #000;
+  margin: 50px 0;
+  opacity: 0.7;
+}
