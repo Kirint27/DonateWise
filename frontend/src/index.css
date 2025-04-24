@@ -1,27 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 body {
+  height: 100%;
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 0;
   position: relative;
   background-color: #e0e0e0;
-
-  min-height: 100vh;
- 
-
 }
- 
-.main-wrapper {
-  min-height: 100vh; /* Ensures the page fills at least the viewport */
-  position: relative; /* Allows absolute positioning of footer */
-  padding-bottom: 40px; /* Reserves space for the footer */
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 105vh; /* full viewport height */
 }
+
 h1 {
   font-size: 2.5rem; /* 36px */
 }
@@ -29,7 +26,7 @@ h1 {
 h2 {
   font-size: 1.5rem; /* 24px */
   color: #000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 5% 38% 2%;
 }
 
@@ -44,15 +41,15 @@ code {
 
 .title {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
   font-family: "verdana", sans-serif;
   font-size: 40px;
 
   font-weight: bold;
-  color:#D4AF37;
+  color: #d4af37;
 }
 .backButton {
-  background:none;
+  background: none;
   color: black;
   box-shadow: none;
   margin-left: 15px;

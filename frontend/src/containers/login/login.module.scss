@@ -1,63 +1,65 @@
-$secondary-color: #ffffff; // Adjusted from #ffff to #ffffff for clarity
+$secondary-color: #ffffff;
 
 .pageContainer {
   background-color: #edebeb;
+  flex: 1; // This makes it stretch to fill space between header and footer
   display: flex;
   flex-direction: column;
   align-items: center;
 
-
-min-height: 108vh;
 }
 
 .loginBox {
   display: flex;
-  width: 660px;
-  height: 500px;
+  width: 850px;
+  height: 520px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: $secondary-color;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 80px;
   margin-bottom: 30px;
 }
+
 .loginLogo {
-  width: 50%; /* Keep this for your layout */
-  height: auto; /* Set to auto for better scaling */
+  width: 50%;
+height: 100%;
   background-color: #2e7d32;
-  display: flex; /* Use flex to center items */
-  flex-direction: column; /* Stack logo and slogan */
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
-  margin: 0;
-  text-align: center; /* Center text for slogan */
-  padding: 20px; /* Add some padding for spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.title {
+  margin-bottom: 30px;
 }
 
 .logo {
-  width: 100%; /* Full width of the container */
-  height: 200px; /* Maintain aspect ratio */
-  margin: 0 10px 0px; /* Remove top margin, keep bottom margin */
-  display: block; /* Ensure it's a block for spacing */
-  background: transparent; /* Keep the background clean */
+  width: 80%;
+  height: 200px;
+  margin: 0 10px 0 10px;
+  display: block;
+  background: transparent;
 }
 
 .slogan {
-  color: $secondary-color; /* Ensure the color is defined somewhere */
-  padding: 0 5px; /* Consistent padding */
-  font-size: 14px; /* Uniform font size */
-  text-align: center; /* Ensure slogan text is centered */
-  margin-top: 10px; /* Space above slogan */
+  color: $secondary-color;
+  padding: 0 5px;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
 }
+
 .loginForm {
   width: 50%;
   height: 100%;
+  padding: 20px;
   cursor: default;
 
-  padding: 20px;
-
   h2 {
-    margin: 0 0 20px 30%;  // Use margin for spacing
+    margin: 0 0 20px 10%;
   }
 
   form {
@@ -74,20 +76,15 @@ min-height: 108vh;
     padding: 10px 2px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
   }
 
   input[type="email"],
   input[type="password"] {
     font-size: 20px;
   }
-  .passwordVisibilityIcon{
-    position: 'absolute';
-      right: '10px'; 
-      top: '50%';
-      transform: 'translateY(-50%)';
-      cursor: 'pointer';
-      z-index:  1,
-  }
+
+  .passwordVisibilityIcon,
   span {
     position: absolute;
     right: 10px;
@@ -101,7 +98,7 @@ min-height: 108vh;
     font-size: 14px;
     color: #666;
     text-decoration: underline;
-    margin: 5px 0 0 5px; // Top margin combined, consistent spacing
+    margin: 5px 0 0 5px;
   }
 
   .primaryButton {
@@ -114,7 +111,7 @@ min-height: 108vh;
   }
 
   .learn {
-margin: 30px 0 20px 5px ; // Top margin combined, consistent spacing
+    margin: 30px 0 20px 5px;
     color: #000;
 
     a {
@@ -122,41 +119,41 @@ margin: 30px 0 20px 5px ; // Top margin combined, consistent spacing
     }
   }
 }
-@media (max-width: 768px) {
 
+@media (max-width: 768px) {
   .mainWrapper {
-    min-height: 130vh;
-    
+    min-height: 1300px;
     background-color: #edebeb;
-    /* Ensures the wrapper takes the full height of the viewport */
     display: flex;
     flex-direction: column;
-}    .pageContainer {
-    padding-top: 0;
-height: fit-content;
-flex: 1; /* Allow the page container to grow */
-
   }
+
+  .pageContainer {
+    padding-top: 0;
+    height: auto;
+    flex: 1;
+  }
+
   .loginBox {
     width: 90%;
-    margin-left: 5%;
     height: 800px;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
-}
+    margin: 10px auto 30px auto;
+  }
+
   .loginLogo {
-    width: 90%; /* Make it full width */
-    height: 250px; /* Reduce height */
+    width: 90%;
+    height: 250px;
   }
 
   .loginForm {
-    width: 90%; /* Full width on mobile */
-    height: auto; /* Adjust dynamically */
+    width: 90%;
+    height: auto;
     padding: 15px;
- h2{
-  text-align: center;
- }
- }
-  
+
+    h2 {
+      text-align: center;
+    }
+  }
 }
