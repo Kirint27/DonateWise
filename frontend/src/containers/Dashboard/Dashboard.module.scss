@@ -23,11 +23,11 @@ section {
   margin-bottom: 150px;
 }
 .section {
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 }
 h2,
 h3 {
-  margin: 20px 0;
+  margin: 30px 0;
   text-align: center;
 }
 
@@ -199,5 +199,8 @@ h3 {
 @media screen and (min-width: 1500px) {
   .donationList {
     margin-left: 40%;
+  }
+  .customProgressBar {
+    margin-left: 30px;
   }
 }

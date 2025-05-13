@@ -19,11 +19,11 @@
     border: none;
   }
 
-  ul {
+  .navbarList {
     list-style: none;
-    margin: 48%;
     padding: 0;
     display: flex;
+    margin: 25% !important;
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
@@ -79,6 +79,15 @@
 
     &:hover {
       background-color: #b71c1c;
+    }
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .navbar {
+    .navbarList {
+      margin-left: 75%;
     }
   }
 }
