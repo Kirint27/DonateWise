@@ -4,30 +4,35 @@
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  min-height: 100vh;
-  padding: 0;
-  padding-bottom: 40px; /* adjust this value to match the height of the footer */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+scroll-behavior: smooth ;
+  min-height: 140vh;
+  padding: 0 0 40px 0; /* padding-bottom for footer space */
 }
 
 .addDonation {
-  margin-left: 90%;
   transform: translateX(-90%);
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 0px; /* reduced margin-bottom to 0px */
   width: 150px;
   height: 50px;
 }
-
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end; /* aligns the button to the right */
+  padding: 10px; /* optional padding */
+  margin-left: 0;
+}
 section {
   height: 150px;
-  margin-bottom: 150px;
+  margin-top: 10px; /* added margin-top to 10px */
+  margin-bottom: 5px;  
+
 }
-.section {
-  margin-bottom: 70px;
-}
+
 h2,
 h3 {
-  margin: 30px 0;
   text-align: center;
 }
 
@@ -46,18 +51,29 @@ h3 {
   margin-left: 30%;
 }
 
+/* For larger screens, align donation list */
+@media screen and (min-width: 1500px) {
+  .donationList {
+    margin-left: 40%;
+  }
+}
+
+/* Donation items container for cards */
 .donationItem {
   margin-bottom: 15px;
   display: flex;
-  flex: 1 1 calc(33.33% - 20px); /* Makes three cards per row */
+  flex: 1 1 calc(33.33% - 20px); /* 3 cards per row with gap */
 }
 
+/* Donation card styling */
 .donationCard {
-  background: white;
+  background: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   height: 120px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
   width: 100%;
   text-align: center;
 }
@@ -72,29 +88,35 @@ h3 {
 .amount {
   font-weight: bold;
   color: #2c7a7b;
+  font-size: 18px;
 }
 
 .charityName {
   font-weight: 600;
   color: #1a202c;
+  font-size: 18px;
 }
 
 .date {
   color: #666;
   font-size: 18px;
 }
+
 .showcase {
   text-align: center;
+  margin-bottom: 70px;
+
 }
+
+/* Responsive styles for tablets and mobile devices */
 @media (max-width: 768px) {
   .dashboard {
-    flex-grow: 1; /* Allows dashboard to take up available space */
-    display: flex;
+    flex-grow: 1;
     flex-direction: column;
-    min-height: 0; /* Override the min-height property on mobile screens */
-    height: 1200px;
+    min-height: 0; /* override min-height on small screens */
+    height: 1200px; /* fixed height for small screens */
     justify-content: flex-start;
-    padding-bottom: 60px; /* Ensure space for footer */
+    padding-bottom: 60px;
   }
 
   .donationList {
@@ -122,14 +144,17 @@ h3 {
     height: auto;
     margin-bottom: 20px;
   }
+
   .showcase {
     margin-top: 300px;
   }
+
   footer {
-    margin-top: auto; /* Push footer to bottom */
+    margin-top: auto; /* push footer to bottom */
   }
 }
 
+/* Smaller screens (phones) */
 @media (max-width: 480px) {
   .donationCard {
     width: 95%;
@@ -140,7 +165,7 @@ h3 {
   }
 
   .amount {
-    font-size: 16px;
+    font-size: 16px; /* unchanged, optional to adjust */
   }
 
   .charityName {
@@ -149,58 +174,5 @@ h3 {
 
   .date {
     font-size: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .donationCard {
-    width: 95%;
-  }
-
-  .donationText {
-    font-size: 14px;
-  }
-
-  .amount {
-    font-size: 16px;
-  }
-
-  .charityName {
-    font-size: 14px;
-  }
-
-  .date {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .donationCard {
-    width: 90%;
-  }
-
-  .donationText {
-    font-size: 14px;
-  }
-
-  .amount {
-    font-size: 16px;
-  }
-
-  .charityName {
-    font-size: 14px;
-  }
-
-  .date {
-    font-size: 16px;
-  }
-}
-
-@media screen and (min-width: 1500px) {
-  .donationList {
-    margin-left: 40%;
-  }
-  .customProgressBar {
-    margin-left: 30px;
   }
 }

@@ -5,11 +5,12 @@
   // border: 1px solid #ddd;
   border-radius: 8px;
   // background-color: #fff;
+  margin-bottom: 20px;
 }
 
 .progressTitle {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -17,29 +18,32 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px 30px;
 
   position: relative;
 }
 
 .progressText {
-  font-size: 15px;
-  color: #555;
-  margin-right: 10px;
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-weight: bold;
+  padding-left: 10px;
+  font-size: 18px; /* adjust as needed */
 }
 
 .progressBar {
   background-color: #fff;
+  position: relative;
   border-radius: 10px;
   border: 2px solid black;
   height: 25px;
   width: 70%;
   height: 30px;
   overflow: hidden;
-  position: relative;
-  margin-right: 10px;
+  margin-right: 50px;
+  margin-left: auto;
 }
 
 .progressFill {
@@ -54,20 +58,22 @@
 
 .highProgress {
   background-color: #4caf50;
+  color: #fff;
 }
 
 .goalAmount {
   font-size: 18px;
-  font-weight: bold;
   color: #333;
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 5px;
+  padding: 1px;
+  margin-right: 50px;
 }
 .donationInfo {
   font-size: 18px;
-  color: #555;
-  text-align: center;
+  color: #363636;
+  font-weight: bold;
+  margin-left: 40%;
   margin-top: 10px;
 }
 
