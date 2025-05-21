@@ -4,10 +4,10 @@
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
-scroll-behavior: smooth ;
-  min-height: 140vh;
+  scroll-behavior: smooth;
+  min-height: 120vh; // changed to 100vh to make it more responsive
   padding: 0 0 40px 0; /* padding-bottom for footer space */
 }
 
@@ -16,19 +16,25 @@ scroll-behavior: smooth ;
   font-weight: bold;
   margin-bottom: 0px; /* reduced margin-bottom to 0px */
   width: 150px;
+  margin-top: -40px;
   height: 50px;
 }
+
 .buttonContainer {
   display: flex;
   justify-content: flex-end; /* aligns the button to the right */
   padding: 10px; /* optional padding */
   margin-left: 0;
 }
+
 section {
   height: 150px;
   margin-top: 10px; /* added margin-top to 10px */
-  margin-bottom: 5px;  
+  margin-bottom: 15px;
+}
 
+.dashboard {
+  padding-top: 0; /* or a smaller value, e.g. 20px */
 }
 
 h2,
@@ -47,14 +53,20 @@ h3 {
   gap: 20px;
   list-style: none;
   padding: 0;
-  width: 500px;
-  margin-left: 30%;
+  width: 100%; // changed to 100% to make it more responsive
+  margin-left: 0;
 }
-
+.noDonations {
+  margin-left: 40%;
+  margin-top: 20px;
+}
 /* For larger screens, align donation list */
 @media screen and (min-width: 1500px) {
   .donationList {
     margin-left: 40%;
+  }
+  .noDonations{
+    margin-left: 5%;
   }
 }
 
@@ -73,7 +85,6 @@ h3 {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   height: 120px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
-
   width: 100%;
   text-align: center;
 }
@@ -105,7 +116,6 @@ h3 {
 .showcase {
   text-align: center;
   margin-bottom: 70px;
-
 }
 
 /* Responsive styles for tablets and mobile devices */
@@ -113,10 +123,36 @@ h3 {
   .dashboard {
     flex-grow: 1;
     flex-direction: column;
-    min-height: 0; /* override min-height on small screens */
-    height: 1200px; /* fixed height for small screens */
+    min-height: auto;
     justify-content: flex-start;
-    padding-bottom: 60px;
+    padding: 0 10px 80px; /* add horizontal padding + more bottom space */
+  }
+
+  .buttonContainer {
+    justify-content: center; /* center the Add Donation button on mobile */
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+.noDonations{
+  margin-left: 20%;
+}
+  .addDonation {
+    transform: none; /* remove the translateX that breaks it on mobile */
+    margin: 0 auto;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  section {
+    height: auto;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .goal {
+    margin-bottom: 20px;
+    padding: 0 10px;
   }
 
   .donationList {
@@ -124,10 +160,11 @@ h3 {
     align-items: center;
     width: 100%;
     margin-left: 0;
+    gap: 10px;
   }
 
   .donationItem {
-    width: 90%;
+    width: 95%;
     margin-bottom: 20px;
   }
 
@@ -136,23 +173,16 @@ h3 {
     width: 100%;
   }
 
-  .goal {
-    margin-bottom: 20px;
-  }
-
-  section {
-    height: auto;
-    margin-bottom: 20px;
-  }
-
   .showcase {
-    margin-top: 300px;
+    margin-top: 60px;
+    padding: 0 10px;
   }
 
   footer {
-    margin-top: auto; /* push footer to bottom */
+    margin-top: auto;
   }
 }
+
 
 /* Smaller screens (phones) */
 @media (max-width: 480px) {

@@ -1,39 +1,32 @@
 .formSection {
-  background-color: #ffffff; /* cleaner white background */
   border: 1px solid #e0e0e0; /* softer border */
   border-radius: 8px; /* slightly rounded corners */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtler shadow */
-  padding: 30px 25px;
-  width: 90%;
-  max-width: 500px;
-  margin: 60px auto;
+  padding: 40px 30px;
+  width: 450px;
+  margin: 70px auto;
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* make form fields stretch nicely */
-  gap: 16px; /* spacing between children */
+  align-items: center; /* center form fields */
+  gap: 25px; /* spacing between children */
 }
 
 .formGroup {
-  width: 100%;
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* align form fields to the left */
+  margin: 10px auto; /* center form group */
 }
 
-label,
-input,
-select {
-  margin-left: 1%;
-}
-select{
-  height: 50px;
-}
 label {
-  display: block;
-  margin-bottom: 8px;
   font-weight: bold;
-  margin-top: 20px;
-  font-size: 14px;
+  font-size: 18px;
   color: #333;
+  margin-bottom: 12px;
+  margin-left: 5px;
 }
 
 input[type="text"],
@@ -41,20 +34,20 @@ input[type="email"],
 input[type="password"],
 input[type="number"],
 input[type="search"],
+input[type="select"],
 select {
-  display: block;
-  width: 100%!important; /* ensures full width */
-  padding: 12px;
+  width: 90%; /* width of input fields within form group */
+  padding: 15px;
   border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 18px;
+
+  height: 60px; /* height of input fields */
   font-family: "Open Sans", sans-serif;
   color: #333;
   background-color: #fafafa;
   box-sizing: border-box; /* ensures padding doesn't affect width */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-  /* Consistent styling across input types */
 }
 
 input[type="text"]:focus,
@@ -68,10 +61,35 @@ select:focus {
   outline: none; /* removes default focus outline */
 }
 
-
-
 .short {
-  width: 80%;
-  margin-left: 10%;
-  padding: 10px;
+  width: 100%;
+  padding: 15px;
+}
+
+/* Media Queries */
+
+/* Desktop */
+@media (min-width: 1200px) {
+  .formSection {
+    width: 550px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .formSection {
+    width: 90%;
+    padding: 25px;
+  }
+  .formGroup {
+    gap: 20px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  select {
+    padding: 12px;
+  }
 }

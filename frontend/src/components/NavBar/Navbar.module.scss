@@ -18,7 +18,9 @@
     margin-left: 20px;
     border: none;
   }
-
+.title{
+  margin-top: 45px;
+}
   .navbarList {
     list-style: none;
     padding: 0;
@@ -84,10 +86,10 @@
 }
 
 
-@media (min-width: 1200px) {
+@media (min-width: 1500px) {
   .navbar {
     .navbarList {
-      margin-left: 75%;
+      margin-left: 75% !important;
     }
   }
 }

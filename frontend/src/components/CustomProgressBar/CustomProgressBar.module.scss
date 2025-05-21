@@ -1,5 +1,5 @@
 .progressContainer {
-  margin: 0px 50px;
+  margin: 0px 10%;
   width: 80%;
   padding: 10px;
   // border: 1px solid #ddd;
@@ -7,11 +7,10 @@
   // background-color: #fff;
   margin-bottom: 20px;
 }
-
 .progressTitle {
   font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+ text-align: center;
+ margin-bottom: 50px;
 }
 
 .progressBarContainer {
@@ -73,11 +72,23 @@
   font-size: 18px;
   color: #363636;
   font-weight: bold;
-  margin-left: 40%;
-  margin-top: 10px;
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+
+margin-top: 10px;
 }
 
-
+@media screen and (min-width: 1500px) {
+.progressContainer{
+  margin: 0;
+}
+.progressBarContainer{
+  margin-bottom: 30px !important
+}
+.progressTitle{
+text-align: center;}
+}
 @media (max-width: 768px) {
   .progressContainer {
     margin-left: 0;

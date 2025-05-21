@@ -5,7 +5,15 @@ $text-color: #333;
   height: fit-content;
   font-family: "Open Sans", sans-serif;
   background-color: #e0e0e0;
-  overflow: hidden;
+min-height: 150vh;
+}
+ 
+.backLink {
+  font-size: 1rem;
+  color: #0d64c1;
+  text-decoration: underline;
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .causes {
@@ -46,6 +54,7 @@ input[type="checkbox"] {
   margin-top: 5px; /* Space between checkbox and the label above it */
   margin-bottom: 10px; /* Space between checkboxes */
   cursor: pointer;
+  
 }
 
 .causes {
