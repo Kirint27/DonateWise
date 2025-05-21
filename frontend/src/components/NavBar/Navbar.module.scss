@@ -1,26 +1,28 @@
 .navbar {
   top: 0;
-  left: 0;
   width: 100%;
+
   height: 80px;
   background-color: #2e7d32;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  margin-left: -20px;
+  overflow: hidden;
 
   img {
     height: 40px;
     width: 100px;
-    margin:10px 0 10px 0;
+    margin: 10px 0 10px 0;
     background: transparent;
     transform: scale(2);
     margin-left: 20px;
     border: none;
   }
-.title{
-  margin-top: 45px;
-}
+  .title {
+    margin-top: 45px;
+  }
   .navbarList {
     list-style: none;
     padding: 0;
@@ -31,7 +33,6 @@
     background-color: transparent;
     border-radius: 5px;
 
-    
     li {
       font-size: 16px;
       font-weight: bold;
@@ -84,7 +85,20 @@
     }
   }
 }
+.hamburger {
+  display: none;
+}
 
+.hamburgerList {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+
+  padding: 10px;
+  border-bottom: 1px solid #fff;
+}
 
 @media (min-width: 1500px) {
   .navbar {
@@ -94,43 +108,49 @@
   }
 }
 
-// Mobile Styles
 @media (max-width: 768px) {
-  .navbar {
-    padding: 5px; // Maintain reduced padding for mobile
-    height: 50px;
-    margin-bottom: 10px;
+  .navbarList {
+    display: none !important;
+  }
 
-    img {
-      display: none; // Hide the logo on mobile
-    }
+  .hamburger {
+    display: block;
 
-    ul {
-      margin-right: 200px; // Ensure no right margin
-      display: flex; // Keep the items in a row
-      justify-content: space-around; // Improved spacing handling
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .hamburgerIcon {
+    display: block;
+    cursor: pointer;
+    color: #000;
+  }
 
-      li {
-        margin: 2px; // Reduce individual item margin
-        padding: 0 10px; // Maintain padding inside items
-        flex: 1; // Allow items to grow equally
-        font-size: 14px; // Adjust font size for mobile
-        height: 40px; // Adjust height for mobile
+  .hamburgerList {
+    display: block; /* changed from none to block */
+    position: absolute; /* changed from fixed to absolute */
+    z-index: 1000;
+    top: 50px;
+    right: 0px;
+    height: 300px;
+    background-color: #fff; /* changed from #fff to #2e7d32 */
+    padding: 10px;
+    border: 1px solid #fff;
+  }
 
-        &:not(:first-child) {
-          border-left: 1px solid #fff; // Maintain border for subsequent items
-        }
+  .hamburgerList ul {
+    padding: 10px;
+    border: 1px solid #fff;
+  }
+  li,
+  a {
+    list-style: none;
+    text-decoration: none;
+    padding-bottom: 50px;
+    color: #000;
+  }
 
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.2);
-        }
-      }
-    }
-
-    .logoutButton {
-      margin: 5px; // Adjust margin for the button
-      padding: 5px 10px; // Smaller padding on mobile
-      font-size: 14px; // Adjusted font size for mobile
-    }
+  .hamburgerList li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }

@@ -1,11 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../containers/login/logo.jpg'
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
+
+
+
+
+
 const Navbar = () => {
   const navigate = useNavigate();
+  const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
+
   const handleLogout = () => {
     fetch(`${process.env.REACT_APP_API_URL}/api/logout`, {
       method: "POST",
@@ -17,13 +26,47 @@ const Navbar = () => {
       })
       .catch((error) => console.error("Logout error:", error));
   };
-
+  const handleHamburgerClick = () => {
+    setShowHamburgerMenu(!showHamburgerMenu);
+  };
   return (
     <>
       <nav>
       <div className={styles.navbar}>
-      <img className={styles.logo} src={logo} alt="Logo" />
-      <ul>
+      <h3 style={{fontSize: "25px"}} className="title">DonateWise</h3>
+      <div className={styles.hamburger}>
+      <div
+  className={styles.hamburgerIcon}
+  onClick={handleHamburgerClick}
+  style={{ display: "block", cursor: "pointer" }}
+>
+  <FontAwesomeIcon icon={faBars}  />
+</div>
+{showHamburgerMenu && (
+  <ul
+    className={styles.hamburgerList}
+  >
+    <li>
+      <a href="/dashboard">Dashboard</a>
+    </li>
+    <li>
+      <a href="/tax-reporting">Tax Reporting</a>
+    </li>
+    <li>
+      <a href="/charity-search">Charity Search</a>
+    </li>
+    <li>
+      <a href="/account">Account</a>
+    </li>
+    <li>
+      <button className={styles.logoutButton} onClick={handleLogout}>
+        Logout
+      </button>
+    </li>
+  </ul>
+)}
+        </div>
+      <ul className={styles.navbarList}>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
