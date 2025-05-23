@@ -91,25 +91,31 @@ text-align: center;}
 }
 @media (max-width: 768px) {
   .progressContainer {
-    margin-left: 0;
-    width: 95%;
+    width: 400px;
+    margin: 0;
+    padding: 10px; /* Add some padding to make it look better */
   }
   .highProgress {
     height: 30px !important; /* Make it bigger only on mobile */
     background-color: #28a745; /* Stronger green for full completion */
-    width: 100% !important; /* Force full width */
+    width:  300px;
+    border-radius: 5px; /* Add some rounded corners to make it look better */
 
   }
   .progressBar {
-    height: 25px; /* Make it slightly bigger for mobile */
+    height: 25px;
+    width: 200px;
+    margin-right: 50px;
+
   }
 
   .progressText {
-    font-size: 14px;
+    font-size: 12px;
+    color: #333; /* Make the text color a bit darker to improve readability */
   }
 
-  .goalAmount, .donationInfo {
-    font-size: 16px;
+  .goalAmount{
+   display: none;
   }
 }
 

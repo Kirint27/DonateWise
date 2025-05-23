@@ -103,7 +103,7 @@
 @media (min-width: 1500px) {
   .navbar {
     .navbarList {
-      margin-left: 75% !important;
+      margin-left: 65% !important;
     }
   }
 }
@@ -115,7 +115,6 @@
 
   .hamburger {
     display: block;
-
     top: 10px;
     right: 10px;
     cursor: pointer;
@@ -124,6 +123,9 @@
     display: block;
     cursor: pointer;
     color: #000;
+
+    margin-right: 10px;
+
   }
 
   .hamburgerList {
@@ -136,6 +138,7 @@
     background-color: #fff; /* changed from #fff to #2e7d32 */
     padding: 10px;
     border: 1px solid #fff;
+    margin-left: 0px;
   }
 
   .hamburgerList ul {
@@ -146,8 +149,9 @@
   a {
     list-style: none;
     text-decoration: none;
-    padding-bottom: 50px;
+    padding-top: 20px;
     color: #000;
+    font-weight: bold;
   }
 
   .hamburgerList li:hover {

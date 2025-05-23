@@ -55,4 +55,15 @@
       text-decoration: underline;
     }
   }
-  
+
+  @media (max-width: 768px) {
+    .privacyPolicy{
+      width: 90%; /* Adjust width for smaller screens */
+      margin-left: 5%; /* Center the content */
+      
+    }
+    p{
+     width: 90%; 
+     margin-left: 5%;
+    }
+  }  
