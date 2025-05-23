@@ -10,11 +10,13 @@ import LearnMore from "./containers/LearnMore/LearnMore";
 import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
 import ResetPassword from "./containers/ResetPassword/ResetPassword";
 import PrivacyPolicy from "./containers/PrivacyPolicy/PrivacyPolicy";
+import  UpdateAccount from "./containers/UpdateAccount/UpdateAccount";
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/update-account" element={<UpdateAccount />} />
         <Route path ="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword/>} />
         <Route path="/LearnMore" element={<LearnMore />} />

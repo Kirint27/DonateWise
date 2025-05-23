@@ -10,7 +10,6 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 
 
-
 const Navbar = () => {
   const navigate = useNavigate();
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
@@ -38,9 +37,8 @@ const Navbar = () => {
       <div
   className={styles.hamburgerIcon}
   onClick={handleHamburgerClick}
-  style={{ display: "block", cursor: "pointer" }}
 >
-  <FontAwesomeIcon icon={faBars}  />
+  <FontAwesomeIcon icon={faBars} size="lg"   />
 </div>
 {showHamburgerMenu && (
   <ul
@@ -56,7 +54,7 @@ const Navbar = () => {
       <a href="/charity-search">Charity Search</a>
     </li>
     <li>
-      <a href="/account">Account</a>
+      <a href="/update-account">Account</a>
     </li>
     <li>
       <button className={styles.logoutButton} onClick={handleLogout}>
@@ -76,9 +74,10 @@ const Navbar = () => {
                 icon={faUser}
                 style={{ fontSize: 20 }}
                 title="Account"
+                onClick={() => navigate("/update-account")}
               />
             </li>
-            <button className={styles.logoutButton} onClick={handleLogout}>
+            <button className={`${styles.logoutButton}  ${styles.hamburgerButton}`} onClick={handleLogout}>
               Logout
             </button>
           </ul>
