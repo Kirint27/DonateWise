@@ -5,7 +5,11 @@ const PrivateRoute = ({ element: Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/auth-status", {
+    const apiUrl = process.env.REACT_APP_API_URL;  // Log this to check if it's being set correctly
+  
+    console.log("API URL:", apiUrl);  // Add this to ensure the URL is being set correctly
+  
+    fetch(`${apiUrl}/api/auth-status`, {
       method: "GET",
       credentials: "include",
     })
@@ -19,7 +23,7 @@ const PrivateRoute = ({ element: Component }) => {
         setIsAuthenticated(false);
       });
   }, []);
-
+  
   if (isAuthenticated === null) return <p>Loading...</p>; // ✅ Show loading state until check completes
 
   return isAuthenticated ? Component : <Navigate to="/" />;
@@ -29,4 +33,6 @@ const PrivateRoute = ({ element: Component }) => {
  
 
 export default PrivateRoute;
+
+
 
