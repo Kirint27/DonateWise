@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Signup Route- includes setting goals
 // Signup route
-router.post("/signup", async (req, res) => {
+router.post("/signup", (req, res) => {
   const {
     fullName,
     email,
@@ -24,55 +24,50 @@ router.post("/signup", async (req, res) => {
 
   console.log("Incoming Signup Request:", req.body);
 
+  // Basic validation
   if (!email || !password || !fullName || !annualSalary) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  try {
-    // Hash the password asynchronously
-    const hashedPassword = await bcrypt.hash(password, 10);
+  // Hash password
+  bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+    if (hashErr) {
+      console.error("Error hashing password:", hashErr);
+      return res.status(500).json({ error: "Internal server error" });
+    }
 
-    // SQL query to include goalType and goalAmount
     const query = `
       INSERT INTO users 
-      (email, password, full_name, annual_salary, location, gift_aid, goal_type, goal_amount) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      (email, password, full_name, annual_salary, location, giftAid, goaltype, goal_amount) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    const result = await new Promise((resolve, reject) => {
-      connection.query(
-        query,
-        [
-          email,
-          hashedPassword,
-          fullName,
-          annualSalary,
-          location,
-          giftAid,
-          goalType, // Added goalType
-          goalAmount, // Added goalAmount
-        ],
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
+    const values = [
+      email,
+      hashedPassword,
+      fullName,
+      annualSalary,
+      location,
+      giftAid,
+      goalType,
+      goalAmount,
+    ];
+
+    connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting user:", err);
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(400).json({ error: "Email already exists" });
         }
-      );
-    });
+        return res.status(500).json({ error: "Internal server error" });
+      }
 
-    const userId = result.insertId;
-    console.log("User ID:", userId);
-    res.status(201).json({ userId });
-  } catch (error) {
-    console.error("Error inserting user:", error);
-    console.error(error.stack);
-    if (error.code === "ER_DUP_ENTRY") {
-      return res.status(400).json({ error: "Email already exists" });
-    }
-    res.status(500).json({ error: "Internal server error" });
-  }
-}); // ✅ Correctly closed the signup route
+      const userId = result.insertId;
+      console.log("User ID:", userId);
+      res.status(201).json({ userId });
+    });
+  });
+});
 
 // Preferences route with correct parameter name
 router.post("/users/:id/preferences", (req, res) => {
@@ -88,7 +83,7 @@ router.post("/users/:id/preferences", (req, res) => {
 
   // Prepare the values for bulk insert
   const query = `INSERT INTO user_preferences (user_id, preference_key, preference_value) VALUES ?`;
-  const values = causes.map((cause) => [userId, cause, true]); // ✅ Structure is correct
+  const values = causes.map((cause) => [userId, cause, true]); 
 
   console.log("Values being inserted into preferences:", values);
 
@@ -101,10 +96,11 @@ router.post("/users/:id/preferences", (req, res) => {
   });
 });
 
-
+// Login Route
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
+  console.log("Login route hit with body:", req.body);
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -112,25 +108,26 @@ router.post("/login", (req, res) => {
 
   const query = "SELECT * FROM users WHERE email = ?";
   connection.query(query, [email], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: "Internal server error" });
-    }
-
-    if (results.length === 0) {
+    if (err || results.length === 0) {
       return res.status(400).json({ error: "User not found" });
     }
-
+    if (err) {
+      console.error("SQL error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    console.log("Login query results:", results);
+    if (!results[0]) {
+      // Add this check
+      return res.status(400).json({ error: "User not found" });
+    }
     const user = results[0];
 
     // Compare passwords
     bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) {
-        return res.status(500).json({ error: "Internal server error" });
-      }
+      if (err) return res.status(500).json({ error: "Internal server error" });
 
-      if (!isMatch) {
+      if (!isMatch)
         return res.status(400).json({ error: "Incorrect password" });
-      }
 
       // Generate JWT
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
@@ -139,9 +136,9 @@ router.post("/login", (req, res) => {
 
       // Set token as HTTP-only cookie
       res.cookie("authToken", token, {
-        httpOnly: true, // Now, the token can't be accessed via JavaScript
-        secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS in production
-        sameSite: "None",  // Allow the cookie to be sent in cross-origin requests
+        httpOnly: false, // Prevent JavaScript access (XSS protection)
+        secure: process.env.NODE_ENV === "production", // HTTPS in production
+        sameSite: "Strict", // Prevent CSRF
         maxAge: 3600000, // 1 hour expiry
       });
 
@@ -150,136 +147,142 @@ router.post("/login", (req, res) => {
   });
 });
 
-
 router.get("/auth-status", (req, res) => {
   const token = req.cookies.authToken;
-  console.log("Token from cookie:", token);  // Check the token value here
+
   if (!token) {
     return res.json({ authenticated: false });
   }
+
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.error("JWT verify error:", err);  // Log any error with verification
       return res.json({ authenticated: false });
     }
-    console.log("Decoded JWT:", decoded);  // Check if the token was decoded correctly
     return res.json({ authenticated: true, userId: decoded.userId });
   });
 });
-
 
 router.post("/logout", (req, res) => {
   res.clearCookie("authToken");
   res.json({ message: "Logout successful" });
 });
 
-require("dotenv").config();
 const sgMail = require("@sendgrid/mail");
+const { verifyJWT } = require("../middleware/authMiddleware");
+const e = require("express");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post("/forgot-password", (req, res) => {
-  try {
-    const { email } = req.body;
+  const { email } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ error: "Email is required" });
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  const query = "SELECT * FROM users WHERE email = ?";
+  connection.query(query, [email], (err, results) => {
+    if (err || results.length === 0) {
+      return res.status(400).json({ error: "User not found" });
     }
 
-    const query = "SELECT * FROM users WHERE email = ?";
-    connection.query(query, [email], (err, results) => {
+    const resetToken = jwt.sign(
+      { userId: results[0].id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    const resetLink = `https://charitytrackr-1.onrender.com/reset-password?token=${resetToken}`;
+    const msg = {
+      to: email, // User's email
+      from: "c", // SendGrid's default sender email
+      subject: "Password Reset Request",
+      text: `Click the following link to reset your password: ${resetLink}`,
+      html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+    };
+
+    sgMail
+      .send(msg)
+      .then(() => {
+        res.json({ message: "Password reset link sent to your email" });
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+        res.status(500).json({ error: "Failed to send reset email" });
+      });
+  });
+});
+
+router.put("/update", verifyJWT, (req, res) => {
+  const {
+    annualSalary,
+    goalAmount,
+    fullName,
+    email,
+    password,
+    confirmPassword,
+    location,
+    causes,
+  } = req.body;
+
+  console.log("req.user:", req.user);
+
+  if (!req.user?.userId) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: User not authenticated" });
+  }
+
+  const userId = req.user.userId;
+  const updates = {};
+  if (fullName) updates.full_name = fullName;
+  if (email) updates.email = email;
+  if (annualSalary) updates.annual_salary = annualSalary;
+  if (goalAmount) updates.goal_amount = goalAmount;
+  if (location) updates.location = location;
+  const updateUser = (hashedPassword = null) => {
+    if (hashedPassword) {
+      updates.password = hashedPassword;
+    }
+    const fields = Object.keys(updates);
+    if (fields.length === 0) {
+      return res.status(400).json({ message: "No fields to update" });
+    }
+    const sql = `UPDATE users SET ${fields
+      .map((f) => `${f} = ?`)
+      .join(", ")} WHERE id = ?`;
+    const values = [...fields.map((f) => updates[f]), userId];
+
+    connection.query(sql, values, (err, results) => {
       if (err) {
-        console.error("Database error:", err);
+        console.error("Error updating user:", err);
         return res.status(500).json({ error: "Database error" });
       }
-
-      if (results.length === 0) {
-        return res.status(400).json({ error: "User not found" });
-      }
-
-      const resetToken = jwt.sign(
-        { userId: results[0].id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-      const resetLink = `https://charitytrackr.onrender.com/reset-password?token=${resetToken}`;
-
-      const msg = {
-        to: email, // User's email
-        from: "kirinthapar86@gmail.com", 
-        subject: "Password Reset Request",
-        text: `Click the following link to reset your password: ${resetLink}`,
-        html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
-      };
-
-      sgMail
-        .send(msg)
-        .then((response) => {
-          console.log("Email sent successfully:", response);
-          res.json({
-            success: true,
-            message: "Password reset link sent to your email",
-          });
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-          res.status(500).json({ error: "Failed to send reset email" });
+      if (causes) {
+        const causesQuery = `UPDATE user_preferences SET preference_value = ? WHERE user_id = ? AND preference_key = 'causes'`;
+        connection.query(causesQuery, [causes, userId], (err, results) => {
+          if (err) {
+            console.error("Error updating causes:", err);
+            return res.status(500).json({ error: "Database error" });
+          }
+          return res.json({ message: "User info and causes updated" });
         });
-    });
-  } catch (error) {
-    console.error("Server-side error:", error);
-    res.status(500).json({ error: "Server-side error" });
-  }
-});
-// GET route to validate the reset token
-router.get("/reset-password", (req, res) => {
-  res.json({
-    success: true,
-    message: "Token is valid. You can now reset your password.",
-    token: req.query.token, // Return token to frontend if needed
-  });
-});
-
-// POST route to reset the password
-router.post("/reset-password", (req, res) => {
-  const { token, newPassword } = req.body;
-
-  if (!token || !newPassword) {
-    return res
-      .status(400)
-      .json({ error: "Token and New Password are required" });
-  }
-
-  // Verify the token before proceeding
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(400).json({ error: "Invalid or expired token" });
-    }
-
-    const userId = decoded.userId; // Extract user ID from token
-
-    // Hash the new password before saving it
-    bcrypt.hash(newPassword, 10, (hashErr, hashedPassword) => {
-      if (hashErr) {
-        console.error("Error hashing password:", hashErr);
-        return res.status(500).json({ error: "Failed to hash password" });
+      } else {
+        return res.json({ message: "User info updated" });
       }
-
-      // Update the user's password in the database
-      const query = "UPDATE users SET password = ? WHERE id = ?";
-      connection.query(query, [hashedPassword, userId], (queryErr, result) => {
-        if (queryErr) {
-          console.error("Database error:", queryErr);
-          return res.status(500).json({ error: "Database error" });
-        }
-
-        if (result.affectedRows === 0) {
-          return res.status(400).json({ error: "User not found" });
-        }
-
-        res.json({ success: true, message: "Password reset successfully" });
-      });
     });
-  });
+  };
+
+
+  if (password) {
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error("Error hashing password:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      updateUser(hashedPassword);
+    });
+  } else {
+    updateUser();
+  }
 });
 
 module.exports = router;

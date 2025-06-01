@@ -10,20 +10,19 @@ const { verifyJWT } = require("../middleware/authMiddleware");
 // GET donations route
 router.get('/', verifyJWT, (req, res) => {
   console.log('Decoded user:', req.user);
-  getDonations(req, res); // Ensure getDonations is defined elsewhere
 });
 
 
 // POST add a donation
 router.post('/', verifyJWT, async (req, res) => {
-  const { charityName, donationAmount, donationType, donationDate, paymentMethod, gifAid, charity_cause } = req.body;
+  const { charityName, donationAmount, donationType, donationDate, paymentMethod, giftAid, charity_cause } = req.body;
   console.log('req.user:', req.user);
   
   const userId = req.user.userId; // Ensure consistent userId access
   console.log('userId:', userId);
   
   // Validate required fields
-  if (!charityName || !donationAmount || !donationType || !paymentMethod || !goFundMe || !charity_cause) {
+  if (!charityName || !donationAmount || !donationType || !paymentMethod  || !charity_cause) {
     return res.status(400).json({ error: 'All fields are required' });
   }
   
@@ -32,12 +31,20 @@ router.post('/', verifyJWT, async (req, res) => {
 
   // Updated query
   const query = `
-    INSERT INTO donations 
-    (charity_name, donation_amount, donation_type, donation_date, payment_method, giftAid, user_id, charity_cause) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-  
-  connection.query(query, [charityName, donationAmount, donationType, donationDate, paymentMethod, gifAid, userId, charityCauses], (err, results) => {
+  INSERT INTO donations 
+  (charity_name, donation_amount, donation_date, payment_method, giftAid,charity_cause,  user_id) 
+  VALUES (?, ?, ?, ?, ?, ?, ?)
+`;
+
+connection.query(query, [
+  charityName,
+  donationAmount,
+  donationDate,
+  paymentMethod,   
+  giftAid,
+  charityCauses,
+  userId
+], (err, results) => {
     if (err) {
       console.error('Error inserting donation:', err);
       return res.status(500).json({ error: 'Internal server error' });
