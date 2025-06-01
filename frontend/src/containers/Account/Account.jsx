@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Account.module.scss";
+import { Link } from "react-router-dom";
 
 const Account = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -57,7 +58,7 @@ const Account = () => {
     console.log("Goal Amount:", goalAmountValue);
 
     setGoalAmount(goalAmountValue);
-    const url = new URL("http://localhost:3001/api/signup");
+    const url = new URL(`${process.env.REACT_APP_API_URL}/api/signup`);
     const headers = { "Content-Type": "application/json" };
 
     const body = JSON.stringify({
@@ -130,9 +131,10 @@ const Account = () => {
       ) : (
         <div className={styles.registerForm}>
           {" "}
+          
           <form onSubmit={handleSubmit} className={styles.regsi}>
             <h3 className="title">CharityTrackr</h3>
-
+            <Link to="/" className={styles.backLink}> &larr; Back to Login</Link>
             <div className={styles.formGroup}>
               <label>Full Name</label>
               <input
@@ -230,7 +232,7 @@ const Account = () => {
               />
 
               <label>
-                <input type="checkbox" name="giftAid" />
+                <input type="checkbox" name="giftAid" o />
                 Gift aid (optional)
               </label>
 

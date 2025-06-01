@@ -101,7 +101,7 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
   
         console.log("Causes to be submitted:", charityCauses); // Verify causes before submission
   
-        const url = new URL("http://localhost:3001/api/donations");
+        const url = new URL(`${process.env.REACT_APP_API_URL}/api/donations`);
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({
           charityName,
@@ -142,7 +142,7 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
           <h2>Add Donation</h2>
-          <form action="/" method="post" onSubmit={handleSubmit}>
+          <form className={styles.donationForm} action="/" method="post" onSubmit={handleSubmit}>
   <label>Charity Name</label>
   <input name="charityName" type="text" />
   <label>Donation Amount (£)</label>

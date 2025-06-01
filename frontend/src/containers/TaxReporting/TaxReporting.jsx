@@ -124,57 +124,64 @@ const TaxReporting = () => {
     <div className={styles.mainWrapper}>
       <Navbar />
       <h2>Donation History by Financial Year</h2>
-
-      {/* Loading state */}
+  
+ 
       {isLoading ? (
         ""
       ) : (
         <>
-          {currentTaxYearDonations.length > 0 && (
-            <div className={styles.section}>
-              <h3>Current Financial Year ({currentLabel})</h3>
-              <p className={styles.totalDonated}>
-                Total Donated: £
-                {currentTaxYearDonations
-                  .reduce((sum, d) => sum + parseFloat(d.amount), 0)
-                  .toFixed(2)}
-              </p>
-              <div className={styles.downloadContainer}>
-                <button
-                  className={styles.downloadButton}
-                  onClick={() => generatePdf(currentTaxYearDonations, currentLabel)}
-                >
-                  Download PDF
-                </button>
-              </div>
-              {renderDonationTable(currentTaxYearDonations)}
-            </div>
-          )}
+        {console.log('donations:', donations)}
 
-          {previousTaxYearDonations.length > 0 && (
-            <div className={styles.previousTaxYear}>
-              <h3>Previous Financial Year ({previousLabel})</h3>
-              <p className={styles.totalDonated}>
-                Total Donated: £
-                {previousTaxYearDonations
-                  .reduce((sum, d) => sum + parseFloat(d.amount), 0)
-                  .toFixed(2)}
-              </p>
-              <div className={styles.downloadContainer}>
-                <button
-                  className={styles.downloadButton}
-                  onClick={() =>
-                    generatePdf(previousTaxYearDonations, previousLabel)
-                  }
-                >
-                  Download PDF
-                </button>
-              </div>
-              {renderDonationTable(previousTaxYearDonations)}
-            </div>
+          {(currentTaxYearDonations.length === 0 && previousTaxYearDonations.length === 0) ? (
+             <p className="noDonations">
+No donations have been made yet.</p>
+          ) : (
+            <>
+              {currentTaxYearDonations.length > 0 && (
+                <div className={styles.section}>
+                  <h3>Current Financial Year ({currentLabel})</h3>
+                  <p className={styles.totalDonated}>
+                    Total Donated: £
+                    {currentTaxYearDonations
+                      .reduce((sum, d) => sum + parseFloat(d.amount), 0)
+                      .toFixed(2)}
+                  </p>
+                  <div className={styles.downloadContainer}>
+                    <button
+                      className={styles.downloadButton}
+                      onClick={() => generatePdf(currentTaxYearDonations, currentLabel)}
+                    >
+                      Download PDF
+                    </button>
+                  </div>
+                  {renderDonationTable(currentTaxYearDonations)}
+                </div>
+              )}
+  
+              {previousTaxYearDonations.length > 0 && (
+                <div className={styles.previousTaxYear}>
+                  <h3>Previous Financial Year ({previousLabel})</h3>
+                  <p className={styles.totalDonated}>
+                    Total Donated: £
+                    {previousTaxYearDonations
+                      .reduce((sum, d) => sum + parseFloat(d.amount), 0)
+                      .toFixed(2)}
+                  </p>
+                  <div className={styles.downloadContainer}>
+                    <button
+                      className={styles.downloadButton}
+                      onClick={() =>
+                        generatePdf(previousTaxYearDonations, previousLabel)
+                      }
+                    >
+                      Download PDF
+                    </button>
+                  </div>
+                  {renderDonationTable(previousTaxYearDonations)}
+                </div>
+              )}
+            </>
           )}
-
-          {donations.length === 0 && <p>No donations to display</p>}
         </>
       )}
       <Footer />
