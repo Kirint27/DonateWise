@@ -34,7 +34,7 @@ const Login = ({ onLogin }) => {
     console.log("Sending login request with:");
     console.log(email);
     console.log(password);
-    const url = `https://charitytrackr.onrender.com/api/login`;  // Directly concatenate the URL
+    const url = `https://charitytrackr.onrender.com/api/login`;  
 
     fetch(url, {
       method: "POST",
@@ -63,10 +63,9 @@ const Login = ({ onLogin }) => {
       <div className="mainWrapper">
         <div className={styles.pageContainer}>
           <div className={styles.loginContainer}>
-            <div className={styles.loginBox}>
-              <div className={styles.loginLogo}>
+          <div className={`${styles.loginBox} ${styles.mobile}`}>
+                          <div className={styles.loginLogo}>
                 <h1 className="title">DonateWise</h1>
-                <img className={styles.logo} src={logo} alt="Logo" />
                 <br />
                 <p className={styles.slogan}>
                   "Track Your Giving, Amplify Your Impact".
@@ -74,7 +73,7 @@ const Login = ({ onLogin }) => {
               </div>
     
               <div className={styles.loginForm}>
-                <h2>Login</h2>
+                <h2 className={styles.formTitle}>Login</h2>
                 <form onSubmit={handleLogin}>
                   <div className={styles.formGroup}>
                     <label>Email</label>
