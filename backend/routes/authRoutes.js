@@ -136,11 +136,12 @@ router.post("/login", (req, res) => {
 
       // Set token as HTTP-only cookie
       res.cookie("authToken", token, {
-        httpOnly: false, // Prevent JavaScript access (XSS protection)
-        secure: process.env.NODE_ENV === "production", // HTTPS in production
-        sameSite: "Strict", // Prevent CSRF
-        maxAge: 3600000, // 1 hour expiry
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        maxAge: 3600000,
       });
+      
 
       res.json({ message: "Login successful" });
     });
