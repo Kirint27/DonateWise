@@ -35,7 +35,7 @@ input[type="number"],
 input[type="search"],
 input[type="select"],
 select {
-  width: 90%; /* width of input fields within form group */
+  width: 92%; /* width of input fields within form group */
   padding: 15px;
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -91,6 +91,6 @@ select:focus {
   input[type="search"],
   select {
     padding: 12px;
-    width: 280px;
+    width: 290px;
   }
 }

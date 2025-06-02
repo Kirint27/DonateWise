@@ -7,7 +7,7 @@
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
   scroll-behavior: smooth;
-  min-height: 120vh; // changed to 100vh to make it more responsive
+  min-height: 140vh; // changed to 100vh to make it more responsive
   padding: 0 0 40px 0; /* padding-bottom for footer space */
 }
 
@@ -30,7 +30,7 @@
 section {
   height: 150px;
   margin-top: 10px; /* added margin-top to 10px */
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .dashboard {
@@ -48,14 +48,28 @@ h3 {
 }
 
 .donationList {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 280px);
   gap: 20px;
   list-style: none;
   padding: 0;
-  width: 100%; // changed to 100% to make it more responsive
-  margin-left: 0;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 60px;
 }
+.donationCard {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  height: 120px;
+  width: 150px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  text-align: center;
+}
+
 .noDonations {
   margin-left: 40%;
   margin-top: 20px;
@@ -78,16 +92,6 @@ h3 {
 }
 
 /* Donation card styling */
-.donationCard {
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  height: 120px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-  width: 100%;
-  text-align: center;
-}
 
 .donationText {
   font-size: 16px;
@@ -133,9 +137,9 @@ h3 {
     margin-top: 10px;
     margin-bottom: 20px;
   }
-.noDonations{
-  margin-left: 20%;
-}
+  .noDonations {
+    margin-left: 20%;
+  }
   .addDonation {
     transform: none; /* remove the translateX that breaks it on mobile */
     margin: 0 auto;
@@ -145,7 +149,7 @@ h3 {
 
   section {
     height: auto;
-    margin-bottom: 30px;
+
     margin-top: 10px;
     width: 100%;
   }
@@ -160,6 +164,7 @@ h3 {
     align-items: center;
     width: 100%;
     margin-left: 0;
+    margin-bottom: 140px;
     gap: 10px;
   }
 
@@ -182,7 +187,6 @@ h3 {
     margin-top: auto;
   }
 }
-
 
 /* Smaller screens (phones) */
 @media (max-width: 480px) {
