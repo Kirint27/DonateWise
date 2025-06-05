@@ -76,9 +76,7 @@ h3 {
 }
 /* For larger screens, align donation list */
 @media screen and (min-width: 1500px) {
-  .donationList {
-    margin-left: 40%;
-  }
+
   .noDonations{
     margin-left: 5%;
   }
@@ -131,7 +129,9 @@ h3 {
     justify-content: flex-start;
     padding: 0 10px 80px; /* add horizontal padding + more bottom space */
   }
-
+.donationList {
+    gap: 5px; /* reduced gap size for smaller screens */
+  }
   .buttonContainer {
     justify-content: center; /* center the Add Donation button on mobile */
     margin-top: 10px;
@@ -166,6 +166,7 @@ h3 {
     margin-left: 0;
     margin-bottom: 140px;
     gap: 10px;
+    height: 300px;
   }
 
   .donationItem {
