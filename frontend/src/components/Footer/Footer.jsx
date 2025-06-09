@@ -13,12 +13,9 @@ const Footer = () => {
   return (
     <>
       <footer>
-        <p>Copyright by Kirin Thapar &#169; {getCurrentYear()}</p>
-
-        <ul className={styles.links}>
-          <li onClick={() => navigate("/privacy-policy")}>Privacy Policy</li>
-        </ul>
-      </footer>
+  <p className={styles.copyright}> Copyright by Kirin Thapar &#169; {getCurrentYear()}</p>
+  <p className={styles.privacyPolicy} onClick={() => navigate("/privacy-policy")}>Privacy Policy</p>
+</footer>
     </>
   );
 };
