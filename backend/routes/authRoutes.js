@@ -168,10 +168,19 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logout successful" });
 });
 
-const sgMail = require("@sendgrid/mail");
+
+const nodemailer = require('nodemailer');
 const { verifyJWT } = require("../middleware/authMiddleware");
-const e = require("express");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const transport = nodemailer.createTransport({
+  host: process.env.BREVO_SMTP_SERVER,
+  port: process.env.BREVO_SMTP_PORT,
+  secure: false, // or 'STARTTLS'
+  auth: {
+    user: process.env.BREVO_SMTP_LOGIN,
+    pass: process.env.BREVO_SMTP_PASSWORD,
+  },
+});
 
 router.post("/forgot-password", (req, res) => {
   const { email } = req.body;
@@ -191,27 +200,28 @@ router.post("/forgot-password", (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const resetLink = `https://charitytrackr-1.onrender.com/reset-password?token=${resetToken}`;
-    const msg = {
-      to: email, // User's email
-      from: "c", // SendGrid's default sender email
-      subject: "Password Reset Request",
+    const resetLink = `http://localhost:3001/reset-password?token=${resetToken}`;
+
+    const mailOptions = {
+      from: process.env.FROM_EMAIL,
+      to: email,
+      subject: 'Password Reset Request',
       text: `Click the following link to reset your password: ${resetLink}`,
-      html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+      html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
     };
 
-    sgMail
-      .send(msg)
-      .then(() => {
-        res.json({ message: "Password reset link sent to your email" });
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
+    transport.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
         res.status(500).json({ error: "Failed to send reset email" });
-      });
+      } else {
+        console.log(info);
+        res.json({ success: true, message: "Password reset link sent to your email" });
+      }
+    });
   });
 });
-
+// Update user info
 router.put("/update", verifyJWT, (req, res) => {
   const {
     annualSalary,
@@ -221,7 +231,6 @@ router.put("/update", verifyJWT, (req, res) => {
     password,
     confirmPassword,
     location,
-    causes,
   } = req.body;
 
   console.log("req.user:", req.user);
@@ -257,18 +266,7 @@ router.put("/update", verifyJWT, (req, res) => {
         console.error("Error updating user:", err);
         return res.status(500).json({ error: "Database error" });
       }
-      if (causes) {
-        const causesQuery = `UPDATE user_preferences SET preference_value = ? WHERE user_id = ? AND preference_key = 'causes'`;
-        connection.query(causesQuery, [causes, userId], (err, results) => {
-          if (err) {
-            console.error("Error updating causes:", err);
-            return res.status(500).json({ error: "Database error" });
-          }
-          return res.json({ message: "User info and causes updated" });
-        });
-      } else {
-        return res.json({ message: "User info updated" });
-      }
+      return res.json({ message: "User info updated" });
     });
   };
 
@@ -284,6 +282,25 @@ router.put("/update", verifyJWT, (req, res) => {
   } else {
     updateUser();
   }
+});
+
+// Update causes
+router.put("/update-causes", verifyJWT, (req, res) => {
+  const causes = req.body.causes;
+  const userId = req.user.userId;
+
+  if (!causes) {
+    return res.status(400).json({ message: "Causes is required" });
+  }
+
+  const causesQuery = `UPDATE user_preferences SET preference_value = ? WHERE user_id = ? AND preference_key = 'causes'`;
+  connection.query(causesQuery, [causes, userId], (err, results) => {
+    if (err) {
+      console.error("Error updating causes:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({ message: "Causes updated" });
+  });
 });
 
 module.exports = router;
