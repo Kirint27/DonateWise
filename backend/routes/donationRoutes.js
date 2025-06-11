@@ -131,52 +131,76 @@ router.get('/current-amount', verifyJWT, async (req, res) => {
   });
 });
 
-
-
 router.get('/all-donations', verifyJWT, async (req, res) => {
-  console.log('Received request for /all-donations');
-  console.log('Request headers:', req.headers);
-
   const userId = req.user?.userId;
-  console.log('Extracted userId:', userId); // Debug log
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+  }
+
+  try {
+    const query = `
+      SELECT donation_date, charity_name, donation_amount,  payment_method
+      FROM donations 
+      WHERE user_id = ?
+      ORDER BY donation_date DESC
+    `;
+
+    const results = await connection.promise().query(query, [userId]);
+
+    if (results[0].length === 0) {
+      return res.status(200).json({ donations: [] });
+    }
+
+    const donations = results[0].map(donation => ({
+      date: donation.donation_date
+        ? new Date(donation.donation_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+        : 'N/A',
+      charityName: donation.charity_name,
+      amount: donation.donation_amount, 
+      paymentMethod: donation.payment_method, 
+    }));
+
+    res.json(donations);
+  } catch (err) {
+    console.error('Database error:', err);
+    res.status(500).json({ message: 'Database error' });
+  }
+});
+
+const MAX_CAUSES = 2;
+
+router.get('/charity-causes/last-12-months', verifyJWT, async (req, res) => {
+  const userId = req.user?.userId;
 
   if (!userId) {
     return res.status(401).json({ message: 'Unauthorized: User ID missing' });
   }
 
   const query = `
-    SELECT donation_date, charity_name, donation_amount,  payment_method
-    FROM donations 
-    WHERE user_id = ?
-    ORDER BY donation_date DESC
+    SELECT charity_cause, donation_amount
+    FROM donations
+WHERE user_id = ? AND donation_date >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
   `;
 
-  console.log('Executing query:', query, 'with userId:', userId);
+  const results = await connection.promise().query(query, [userId]);
 
-  connection.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Database error:', err); // Log error for debugging
-      return res.status(500).json({ message: 'Error fetching donations', error: err.message });
+  if (results[0].length === 0) {
+    return res.status(200).json({ breakdown: {} });
+  }
+
+  const categoryTotals = {};
+
+  results[0].forEach(({ charity_cause, donation_amount }) => {
+    if (charity_cause) {
+      const causes = JSON.parse(charity_cause);
+
+      causes.slice(0, MAX_CAUSES).forEach((cause) => {
+        categoryTotals[cause] = (categoryTotals[cause] || 0) + donation_amount;
+      });
     }
-
-    console.log('Query results:', results); // Log fetched donations
-
-    if (results.length === 0) {
-      return res.status(200).json({ donations: [] });
-    }
-
-    const donations = results.map(donation => ({
-      date: donation.donation_date
-        ? new Date(donation.donation_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-        : 'N/A',
-      charityName: donation.charity_name,
-      amount: donation.donation_amount, // Corrected column name
-      paymentMethod: donation.payment_method, // Corrected aliasing
-    }));
-
-    res.json(donations);
   });
+
+  res.json({ breakdown: categoryTotals });
 });
-
-
 module.exports = router;
