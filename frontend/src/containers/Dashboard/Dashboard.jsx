@@ -152,23 +152,23 @@ const Dashboard = ({ user }) => {
         />
       </section>
       <section  className={styles.sectionCauses}>
-<h3> Your Donations by Cause (last 12 months)</h3>  
-{sortedCauses.length === 0 && totalDonations > 0 ? (
+  <h3> Your Donations by Cause (last 12 months)</h3>  
+  {loading ? (
+    <p>Loading...</p>
+  ) : sortedCauses.length === 0 && totalDonations > 0 ? (
     <p>No causes recorded for your donations.</p>
   ) : sortedCauses.length === 0 ? (
     <p>No donations recorded.</p>
   ) : (
-
-        <ul className={styles.causesList}>
-          {sortedCauses.map(([cause, amount]) => (
-          <li key={cause} className={styles.causeItem}>
+    <ul className={styles.causesList}>
+      {sortedCauses.map(([cause, amount]) => (
+        <li key={cause} className={styles.causeItem}>
           <span className={styles.causeName}>{cause}</span>
           <span className={styles.causeAmount}>£{amount.toFixed(2)}</span>
         </li>
       ))}
     </ul>
-      )}
-
+  )}
 </section>
       {/* Recent Donations Section */}
       <section className={styles.section}>

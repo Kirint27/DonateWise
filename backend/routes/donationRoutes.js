@@ -192,12 +192,15 @@ WHERE user_id = ? AND donation_date >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
   const categoryTotals = {};
 
   results[0].forEach(({ charity_cause, donation_amount }) => {
-    if (charity_cause) {
-      const causes = JSON.parse(charity_cause);
-
-      causes.slice(0, MAX_CAUSES).forEach((cause) => {
-        categoryTotals[cause] = (categoryTotals[cause] || 0) + donation_amount;
-      });
+    if (charity_cause && charity_cause !== '') {
+      try {
+        const causes = JSON.parse(charity_cause);
+        causes.slice(0, MAX_CAUSES).forEach((cause) => {
+          categoryTotals[cause] = (categoryTotals[cause] || 0) + donation_amount;
+        });
+      } catch (error) {
+        console.error('Error parsing charity cause:', error);
+      }
     }
   });
 
