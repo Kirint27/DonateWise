@@ -40,8 +40,8 @@ const Dashboard = ({ user }) => {
         console.error("Error fetching recent donations:", error)
       );
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
-      method: "GET",
+      fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
+        method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -56,8 +56,8 @@ const Dashboard = ({ user }) => {
       .then((data) => setGoalAmount(parseFloat(data.goalAmount) || 0))
       .catch((error) => console.error("Error fetching goal amount:", error));
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
-      method: "GET",
+      fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
+        method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -73,6 +73,7 @@ const Dashboard = ({ user }) => {
       .catch((error) => console.error("Error fetching current amount:", error));
   }, []);
 
+  console.log('Current amount:', currentAmount);
 
 
   const openModal = () => {
@@ -121,6 +122,9 @@ const Dashboard = ({ user }) => {
   .sort((a, b) => b[1] - a[1]);
 
   console.log("Sorted causes:", sortedCauses);
+
+
+  const totalDonations = donations.reduce((acc, donation) => acc + donation.donation_amount, 0);
   return (
     <div className={styles.dashboard}>
       <Navbar />
@@ -149,10 +153,12 @@ const Dashboard = ({ user }) => {
       </section>
       <section  className={styles.sectionCauses}>
 <h3> Your Donations by Cause (last 12 months)</h3>  
+{sortedCauses.length === 0 && totalDonations > 0 ? (
+    <p>No causes recorded for your donations.</p>
+  ) : sortedCauses.length === 0 ? (
+    <p>No donations recorded.</p>
+  ) : (
 
-{sortedCauses.length === 0 ? (
-        <p>No donations recorded.</p>
-      ) : (
         <ul className={styles.causesList}>
           {sortedCauses.map(([cause, amount]) => (
           <li key={cause} className={styles.causeItem}>
