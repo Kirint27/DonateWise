@@ -27,7 +27,7 @@
 
 section {
   height: 150px;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 100px;
 }
 
@@ -46,9 +46,13 @@ h3 {
 }
 .sectionCauses{
   margin-bottom: 150px;
+P{
+  margin-left: 40%;
+}
+
 }
 .causesList{
-  margin-left: 35%;
+  margin-left: 38%;
   margin-bottom: 20px;
   background-color: #ffffff;
 height: fit-content;
@@ -106,6 +110,9 @@ padding-right: 20px;
   .noDonations{
     margin-left: 5%;
   }
+}
+.progress-bar {
+  margin-left: 20px; /* adjust the margin to move the progress bar to the left */
 }
 
 /* Donation items container for cards */
