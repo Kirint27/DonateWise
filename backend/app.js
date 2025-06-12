@@ -14,10 +14,9 @@ app.use(express.json()); // Middleware to parse JSON in requests
 app.use(cookieParser()); // Enable cookie parsing
 
 app.use(cors({
-  origin: "https://charitytrackr-1.onrender.com"|| "http://localhost:3000", // Default to localhost during local development
-  credentials: true 
-  }));
-
+  origin: process.env.FRONTEND_URL || "http://localhost:3000", // Default to localhost during local development
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+}));
 // ✅ Register auth routes under `/api`
 app.use("/api", authRouter); // This must match frontend requests
 app.use("/api/donations", donationRouter);
@@ -29,5 +28,7 @@ app.use("/api/charities", charityRouter);
 app.get("/", (req, res) => {
     res.send("Welcome to the Charity Tracker API!");
 });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 module.exports = app;
