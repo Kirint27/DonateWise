@@ -41,7 +41,7 @@ const Dashboard = ({ user }) => {
         console.error("Error fetching recent donations:", error)
       );
 
-      fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
         method: "GET",
       headers: {
         "Content-Type": "application/json",
