@@ -57,7 +57,7 @@ const Dashboard = ({ user }) => {
       .then((data) => setGoalAmount(parseFloat(data.goalAmount) || 0))
       .catch((error) => console.error("Error fetching goal amount:", error));
 
-    fetch(`${process.env.REACT_APP_API_URL}api/donations/current-amount`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
