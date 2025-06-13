@@ -1,14 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import logo from '../../containers/login/logo.jpg'
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-
-
-
-
+import logo from "../../containers/login/logo.jpg";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -31,40 +28,43 @@ const Navbar = () => {
   return (
     <>
       <nav>
-      <div className={styles.navbar}>
-      <h3 style={{fontSize: "25px"}} className="title">DonateWise</h3>
-      <div className={styles.hamburger}>
-      <div
-  className={styles.hamburgerIcon}
-  onClick={handleHamburgerClick}
->
-  <FontAwesomeIcon icon={faBars} size="lg"   />
-</div>
-{showHamburgerMenu && (
-  <ul
-    className={styles.hamburgerList}
-  >
-    <li>
-      <a href="/dashboard">Dashboard</a>
-    </li>
-    <li>
-      <a href="/tax-reporting">Tax Reporting</a>
-    </li>
-    <li>
-      <a href="/charity-search">Charity Search</a>
-    </li>
-    <li>
-      <a href="/update-account">Account</a>
-    </li>
-    <li>
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        Logout
-      </button>
-    </li>
-  </ul>
-)}
-        </div>
-      <ul className={styles.navbarList}>
+        <div className={styles.navbar}>
+          <h3 style={{ fontSize: "25px" }} className="title">
+            DonateWise
+          </h3>
+          <div className={styles.hamburger}>
+            <div
+              className={styles.hamburgerIcon}
+              onClick={handleHamburgerClick}
+            >
+              <FontAwesomeIcon icon={faBars} size="lg" />
+            </div>
+            {showHamburgerMenu && (
+              <ul className={styles.hamburgerList}>
+                <li>
+                  <a href="/dashboard">Dashboard</a>
+                </li>
+                <li>
+                  <a href="/tax-reporting">Tax Reporting</a>
+                </li>
+                <li>
+                  <a href="/charity-search">Charity Search</a>
+                </li>
+                <li>
+                  <a href="/update-account">Account</a>
+                </li>
+                <li>
+                  <button
+                    className={styles.logoutButton}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
+          <ul className={styles.navbarList}>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
@@ -72,12 +72,17 @@ const Navbar = () => {
             <li className={styles.iconText}>
               <FontAwesomeIcon
                 icon={faUser}
-                style={{ fontSize: 20 }}
-                title="Account"
+                style={{ fontSize: 20, cursor: "pointer" }}
+                data-tooltip-id="account-tooltip"
+                data-tooltip-content="Update your account information"
                 onClick={() => navigate("/update-account")}
               />
+              <Tooltip id="account-tooltip" place="top" />
             </li>
-            <button className={`${styles.logoutButton}  ${styles.hamburgerButton}`} onClick={handleLogout}>
+            <button
+              className={`${styles.logoutButton}  ${styles.hamburgerButton}`}
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </ul>

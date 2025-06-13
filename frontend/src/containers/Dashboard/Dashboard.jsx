@@ -23,7 +23,7 @@ const Dashboard = ({ user }) => {
   const [breakdown, setBreakdown] = useState({});
 
   useEffect(() => {
-    fetch("{process.env.REACT_APP_API_URL}/api/donations/recent-donations ", {
+    fetch(`{process.env.REACT_APP_API_URL}/api/donations/recent-donations `, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     console.log("Fetching breakdown data...");  
-    fetch("{process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months", {
+    fetch(`{process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
