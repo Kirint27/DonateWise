@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "homepage": "",
-
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.9",
     "cypress": "^13.17.0",
     "dotenv": "^16.4.7",
     "firebase": "^10.14.1",
@@ -39,6 +39,7 @@
     "react-router-dom": "^6.30.0",
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.2",
+    "react-tooltip": "^5.29.0",
     "sass": "^1.84.0",
     "url": "^0.11.4",
     "web-vitals": "^2.1.4"
