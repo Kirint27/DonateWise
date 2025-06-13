@@ -3,6 +3,7 @@ import styles from "./Dashboard.module.scss";
 import Navbar from "../../components/NavBar/NavBar";
 import Donations from "../../components/Donations";
 import CustomProgressBar from "../../components/CustomProgressBar";
+import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
 const Dashboard = ({ user }) => {
   console.log("Cookie:", document.cookie);
@@ -22,7 +23,7 @@ const Dashboard = ({ user }) => {
   const [breakdown, setBreakdown] = useState({});
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
+    fetch("{process.env.REACT_APP_API_URL}/api/donations/recent-donations ", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +41,7 @@ const Dashboard = ({ user }) => {
         console.error("Error fetching recent donations:", error)
       );
 
-      fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
         method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,8 +57,8 @@ const Dashboard = ({ user }) => {
       .then((data) => setGoalAmount(parseFloat(data.goalAmount) || 0))
       .catch((error) => console.error("Error fetching goal amount:", error));
 
-      fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
-        method: "GET",
+    fetch(`{process.env.REACT_APP_API_URL}api/donations/current-amount`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -93,7 +94,7 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     console.log("Fetching breakdown data...");  
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months`, {
+    fetch("{process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,6 +123,7 @@ const Dashboard = ({ user }) => {
   .sort((a, b) => b[1] - a[1]);
 
   console.log("Sorted causes:", sortedCauses);
+
 
 
   const totalDonations = donations.reduce((acc, donation) => acc + donation.donation_amount, 0);
@@ -155,9 +157,9 @@ const Dashboard = ({ user }) => {
   <h3> Your Donations by Cause (last 12 months)</h3>  
   {loading ? (
     <p>Loading...</p>
-  ) : sortedCauses.length === 0 && totalDonations > 0 ? (
+  ) : donations.length > 0 && (!sortedCauses || sortedCauses.length === 0) ? (
     <p>No causes recorded for your donations.</p>
-  ) : sortedCauses.length === 0 ? (
+  ) : donations.length === 0 ? (
     <p>No donations recorded.</p>
   ) : (
     <ul className={styles.causesList}>
