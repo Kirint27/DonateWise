@@ -160,7 +160,7 @@ const Dashboard = ({ user }) => {
   ) : donations.length > 0 && (!sortedCauses || sortedCauses.length === 0) ? (
     <p>No causes recorded for your donations.</p>
   ) : donations.length === 0 ? (
-    <p>No donations recorded.</p>
+    <p>No donations have been made yet.</p>
   ) : (
     <ul className={styles.causesList}>
       {sortedCauses.map(([cause, amount]) => (
