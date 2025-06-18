@@ -44,10 +44,24 @@ h3 {
   height: 100px;
 }
 .sectionCauses {
-  margin-bottom: 150px;
+margin-bottom: 800px;
+  overflow: visible;
   P {
     margin-left: 40%;
   }
+}
+.chartContainer {
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.causesChart {
+  width: 100% !important;
+
+  height: 100% !important;
 }
 .causesList {
   margin-left: 38%;
@@ -134,7 +148,7 @@ span {
 }
 
 .sectionCauses {
-  margin-bottom: 150px;
+  margin-bottom: 350px;
   p {
     margin-left: 45%;
   }
