@@ -27,7 +27,7 @@ const Dashboard = ({ user }) => {
   const [breakdown, setBreakdown] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/donations/recent-donations`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const Dashboard = ({ user }) => {
         console.error("Error fetching recent donations:", error)
       );
 
-    fetch(`http://localhost:3001/api/donations/goal-amount`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const Dashboard = ({ user }) => {
       .then((data) => setGoalAmount(parseFloat(data.goalAmount) || 0))
       .catch((error) => console.error("Error fetching goal amount:", error));
 
-    fetch(`http://localhost:3001/api/donations/current-amount`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     console.log("Fetching breakdown data...");
-    fetch(`http://localhost:3001/api/donations/charity-causes/last-12-months`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -257,7 +257,7 @@ const Dashboard = ({ user }) => {
           <p>No donations have been made yet.</p>
         ) : (
           <div className={styles.chartContainer}>
-            <canvas className={styles.causesChart}></canvas>
+            <canvas   className={styles.causesChart}></canvas>
           </div>
         )}
       </section>
