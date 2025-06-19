@@ -29,8 +29,10 @@ function HotjarRouteTracker() {
 }
 
 const App = () => {
-  useEffect(() => {
+  useEffect(() => {      console.log("Hotjar init running");
+
     if (process.env.NODE_ENV === 'production') {
+
       Hotjar.init(siteId, hotjarVersion);
     }
   }, []);
