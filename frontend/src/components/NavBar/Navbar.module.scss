@@ -1,34 +1,35 @@
 .navbar {
   top: 0;
   width: 100%;
-
   height: 80px;
   background-color: #2e7d32;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  margin-left: -20px;
+  margin-left: -20px; // default left margin for navbar
   overflow: hidden;
 
   img {
     height: 40px;
     width: 100px;
-    margin: 10px 0 10px 0;
+    margin: 10px 0;
     background: transparent;
     transform: scale(2);
     margin-left: 20px;
     border: none;
   }
+
   .title {
     margin-top: 45px;
     margin-left: 3px;
   }
+
   .navbarList {
     list-style: none;
-    padding: 0;
+width: 50%;
     display: flex;
-    margin: 25% !important;
+    margin-left: 300px; // default left margin to match navbar container
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
@@ -86,6 +87,7 @@
     }
   }
 }
+
 .hamburger {
   display: none;
 }
@@ -96,22 +98,25 @@
   top: 50px;
   left: 0;
   width: 100%;
-
   padding: 10px;
   border-bottom: 1px solid #fff;
 }
 
 @media (min-width: 1500px) {
   .navbar {
-    .navbarList {
-      margin-left: 65% !important;
+    justify-content: flex-start; // ensures margin-left: auto works
+
+    .navbarList.desktop {
+      margin-left: 65%; // correctly targets the ul with both classes
     }
   }
 }
 
+
 @media (max-width: 768px) {
-  .navbarList {
-    display: none !important;
+
+  .navbarList.mobile {
+    display: none; // hide navbarList on mobile
   }
 
   .hamburger {
@@ -120,32 +125,32 @@
     right: 10px;
     cursor: pointer;
   }
+
   .hamburgerIcon {
     display: block;
     cursor: pointer;
     color: #000;
-
     margin-right: 10px;
-
   }
 
   .hamburgerList {
-    display: block; /* changed from none to block */
-    position: absolute; /* changed from fixed to absolute */
+    display: block;
+    position: absolute;
     z-index: 1000;
     top: 50px;
-    right: 0px;
+    right: 300px;
     height: 300px;
-    background-color: #fff; /* changed from #fff to #2e7d32 */
+    background-color: #fff;
     padding: 10px;
     border: 1px solid #fff;
-    margin-left: 0px;
+    margin-left: 0;
   }
 
   .hamburgerList ul {
     padding: 10px;
     border: 1px solid #fff;
   }
+
   li,
   a {
     list-style: none;

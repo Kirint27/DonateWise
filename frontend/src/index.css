@@ -20,18 +20,19 @@ body {
 }
 
 h1 {
-  font-size: 2.5rem; /* 36px */
+  font-size: 30px;
 }
 
 h2 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 25px; /* 24px */
   color: #000;
   font-family: "Poppins", sans-serif;
-  margin: 5% 38% 2%;
+  margin: 2% 35% 5%;
 }
 
 h3 {
   font-size: 1.2rem; /* 18px */
+  margin-bottom: 3%;
 }
 
 code {
@@ -41,10 +42,10 @@ code {
 
 .title {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   font-family: "verdana", sans-serif;
   font-size: 40px;
-
+  margin-left: 5px;
   font-weight: bold;
   color: #d4af37;
 }
@@ -84,4 +85,7 @@ button {
   border-bottom: 1px solid #000;
   margin: 50px 0;
   opacity: 0.7;
+}
+.noDonations {
+  text-align: center;
 }

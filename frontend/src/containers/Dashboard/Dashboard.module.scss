@@ -59,9 +59,9 @@ margin-bottom: 800px;
 }
 
 .causesChart {
-  width: 100% !important;
+  width: auto;
 
-  height: 100% !important;
+  height: auto;
 }
 .causesList {
   margin-left: 38%;
@@ -88,6 +88,11 @@ margin-bottom: 800px;
 span {
   padding-right: 20px;
 }
+
+.sectionSmall {
+  height: 200px;
+  margin-bottom: 20px !important; // adjust this value to your liking
+}
 .donationList {
   display: grid;
   grid-template-columns: repeat(auto-fit, 280px);
@@ -112,7 +117,7 @@ span {
 }
 
 .noDonations {
-  margin-left: 40%;
+  margin-left: 10%;
   margin-top: 20px;
 }
 /* For larger screens, align donation list */
@@ -150,7 +155,7 @@ span {
 .sectionCauses {
   margin-bottom: 350px;
   p {
-    margin-left: 45%;
+    margin-left: 43%;
   }
 }
 
@@ -247,6 +252,7 @@ span {
   .donationCard {
     width: 95%;
   }
+  
 
   .donationText {
     font-size: 14px;
@@ -254,6 +260,9 @@ span {
 
   .amount {
     font-size: 16px; /* unchanged, optional to adjust */
+  }
+  p{
+    margin-left: 55%;
   }
   .causesList {
     margin-left: 5%;
@@ -263,6 +272,18 @@ span {
     font-size: 14px;
   }
 
+
+    .sectionCauses p {
+      margin-left: 10%; // or try 10–25% based on your layout
+      text-align: center; // optional: center text inside the <p>
+    }
+  .noDonations{
+    margin-left: 10%;
+  }
+  
+.showcase p{
+  margin-left: 10%;
+}
   .date {
     font-size: 16px;
   }
