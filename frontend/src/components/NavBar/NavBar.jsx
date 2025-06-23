@@ -3,7 +3,6 @@ import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../containers/login/logo.jpg";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "react-tooltip";
 
@@ -12,7 +11,7 @@ const Navbar = () => {
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
 
   const handleLogout = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/logout`, {
+    fetch(`{process.env.REACT_APP_API_URL}/api/logout`, {
       method: "POST",
       credentials: "include", // ✅ Ensures cookies are included in the request
     })
@@ -64,7 +63,7 @@ const Navbar = () => {
               </ul>
             )}
           </div>
-          <ul className={styles.navbarList}>
+          <ul className={`${styles.navbarList} ${styles.desktop} ${styles.mobile}`}>
             <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
