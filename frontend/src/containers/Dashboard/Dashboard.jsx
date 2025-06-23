@@ -246,24 +246,27 @@ const Dashboard = ({ user }) => {
           currentAmount={currentAmount ?? 0}
         />
       </section>
-      <section className={styles.sectionCauses}>
-        <h3> Your Donations by Cause (last 12 months)</h3>
-        {loading ? (
-          <p>Loading...</p>
-        ) : donations.length > 0 &&
-          (!sortedCauses || sortedCauses.length === 0) ? (
-          <p>No causes recorded for your donations.</p>
-        ) : donations.length === 0 ? (
-          <p>No donations have been made yet.</p>
-        ) : (
-          <div className={styles.chartContainer}>
-            <canvas   className={styles.causesChart}></canvas>
-          </div>
-        )}
-      </section>
+      <section className={`${styles.sectionCauses} ${(!loading && (donations.length === 0 || (!sortedCauses || sortedCauses.length === 0))) || loading ? styles.sectionSmall : ''}`}>
+      <h3> Your Donations by Cause (last 12 months)</h3>
+ 
+  {loading ? (
+    <p>Loading...</p>
+  ) : donations.length > 0 &&
+    (!sortedCauses || sortedCauses.length === 0) ? (
+
+    <p>No causes recorded for your donations.</p>
+  ) : donations.length === 0 ? (
+    <p>No donations have been made yet.</p>
+
+  ) : (
+        <div className={styles.chartContainer}>
+      <canvas   className={styles.causesChart}></canvas>
+    </div>   
+  )}
+</section>
       {/* Recent Donations Section */}
-      <section className={styles.section}>
-        <h3>Most Recent Donations</h3>
+      <section className={`${styles.section} ${donations.length === 0 ? styles.sectionSmall : ''}`}>
+      <h3>Most Recent Donations</h3>
         <ul className={styles.donationList}>
           {donations.length > 0 ? (
             donations.map((donation) => (

@@ -133,7 +133,9 @@ $secondary-color: #ffffff;
     height: auto;
     flex: 1;
   }
-
+.slogan{
+  margin-left: 10%;
+}
   .passwordVisibilityIcon,
   span {
     left: 85%;
@@ -149,7 +151,9 @@ $secondary-color: #ffffff;
     align-items: center;
     margin: 10px auto 50px auto;
   }
-
+.learn{
+  margin-left: 20%;
+}
   .loginLogo {
     width: 99%;
     height: 250px;
