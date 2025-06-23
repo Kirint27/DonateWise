@@ -219,7 +219,9 @@ const Dashboard = ({ user }) => {
     }
   }, [sortedCauses]);
 
-
+  const isSectionSmall =
+    loading || donations.length === 0 || sortedCauses.length === 0;
+  
   return (
     <div className={styles.dashboard}>
       <Navbar />
@@ -246,7 +248,7 @@ const Dashboard = ({ user }) => {
           currentAmount={currentAmount ?? 0}
         />
       </section>
-      <section className={`${styles.sectionCauses} ${(!loading && (donations.length === 0 || (!sortedCauses || sortedCauses.length === 0))) || loading ? styles.sectionSmall : ''}`}>
+      <section className={`${styles.sectionCauses} ${isSectionSmall ? styles.sectionSmall : ''}`}>
       <h3> Your Donations by Cause (last 12 months)</h3>
  
   {loading ? (
