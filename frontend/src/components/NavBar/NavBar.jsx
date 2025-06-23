@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,18 @@ import { Tooltip } from "react-tooltip";
 const Navbar = () => {
   const navigate = useNavigate();
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+
+
+  useEffect(() => {
+    const checkSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkSize();
+    window.addEventListener('resize', checkSize);
+    return () => window.removeEventListener('resize', checkSize);
+  }, []);
 
   const handleLogout = () => {
     fetch(`{process.env.REACT_APP_API_URL}/api/logout`, {
@@ -63,8 +75,8 @@ const Navbar = () => {
               </ul>
             )}
           </div>
-          <ul className={`${styles.navbarList} ${styles.desktop} ${styles.mobile}`}>
-            <li onClick={() => navigate("/dashboard")}>Dashboard </li>
+          <ul className={`${styles.navbarList} ${isMobile ? styles.mobile : styles.desktop}`}>
+          <li onClick={() => navigate("/dashboard")}>Dashboard </li>
             <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
