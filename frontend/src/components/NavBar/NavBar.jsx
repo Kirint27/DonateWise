@@ -23,7 +23,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    fetch(`{process.env.REACT_APP_API_URL}/api/logout`, {
+    fetch(`https://charitytrackr.onrender.com/api/logout`, {
       method: "POST",
       credentials: "include", // ✅ Ensures cookies are included in the request
     })
