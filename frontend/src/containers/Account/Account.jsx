@@ -58,7 +58,7 @@ const Account = () => {
     console.log("Goal Amount:", goalAmountValue);
 
     setGoalAmount(goalAmountValue);
-    const url = new URL(`http://localhost:3001/api/signup`);
+    const url = new URL(`${process.env.REACT_APP_API_URL}/api/signup`);
     const headers = { "Content-Type": "application/json" };
 
     const body = JSON.stringify({
@@ -86,7 +86,7 @@ const Account = () => {
       .then((data) => {
         const userId = data.userId;
 
-        return fetch(`http://localhost:3001/api/users/${userId}/preferences`, {
+        return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}/preferences`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ causes: causes }),

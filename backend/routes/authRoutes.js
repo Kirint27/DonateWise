@@ -38,7 +38,7 @@ router.post("/signup", (req, res) => {
 
     const query = `
       INSERT INTO users 
-      (email, password, full_name, annual_salary, location, giftAid, goaltype, goal_amount) 
+      (email, password, full_name, annual_salary, location, gift_aid, goal_type, goal_amount) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
