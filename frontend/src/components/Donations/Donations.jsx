@@ -1,9 +1,9 @@
-import React,{ useState} from "react";
+import React, { useState } from "react";
 import styles from "./Donations.module.scss";
 
-const Donations = ({ isOpen, onClose, onSubmit}) => {
+const Donations = ({ isOpen, onClose, onSubmit }) => {
   const [charityName, setCharityName] = useState("");
-  const [donationAmount, setDonationAmount] = useState("")
+  const [donationAmount, setDonationAmount] = useState("");
   const [donationType, setDonationType] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const API_KEY = process.env.REACT_APP_CHARITY_BASE_API_KEY;
@@ -31,13 +31,13 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
         }
       }
     `;
-    
+
     const variables = {
       filters: { search: charityName },
       skip: 0,
       sort: "default",
     };
-    
+
     return fetch("https://charitybase.uk/api/graphql", {
       method: "POST",
       headers: {
@@ -53,21 +53,21 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
       .then((data) => {
         // Debugging: print the entire data response to check causes
         console.log("GraphQL Response:", data);
-  
+
         const charities = data?.data?.CHC?.getCharities?.list || [];
         const matchingCharities = charities.filter((charity) =>
           charity.names.some((name) =>
             name.value.toLowerCase().includes(charityName.toLowerCase())
           )
         );
-  
+
         // Debugging: Check if we have matching charities
         console.log("Matching Charities:", matchingCharities);
-  
+
         if (matchingCharities.length > 0) {
           // Debugging: print the causes for the matched charity
           console.log("Charity Causes:", matchingCharities[0].causes);
-  
+
           return matchingCharities[0].causes.map((cause) => cause.name);
         } else {
           return [];
@@ -78,30 +78,36 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
         return [];
       });
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+
     const charityName = event.target.elements.charityName.value;
     const donationAmount = event.target.elements.donationAmount.value;
     const donationType = event.target.elements.donationType.value;
     const donationDate = event.target.elements.donationDate.value;
     const paymentMethod = event.target.elements.paymentMethod.value;
     const giftAid = event.target.elements["giftAid"].checked ? 1 : 0;
-  
+
     if (isNaN(donationAmount) || donationAmount <= 0) {
       alert("Please enter a valid donation amount.");
       return;
     }
-  
+    const today = new Date();
+    const selectedDate = new Date(donationDate);
+
+    if (selectedDate > today) {
+      alert("Donation date cannot be in the future.");
+      return;
+    }
     fetchCharityCauses(charityName)
       .then((causes) => {
         // Ensure causes is an array and not a string
         const charityCauses = causes.length > 0 ? causes : []; // Default to empty array if no causes
-  
+
         console.log("Causes to be submitted:", charityCauses); // Verify causes before submission
-  
-        const url = new URL(`${process.env.REACT_APP_API_URL}/api/donations`);
+
+        const url = new URL("https://charitytrackr.onrender.com/api/donations");
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({
           charityName,
@@ -112,12 +118,19 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
           giftAid,
           charity_cause: charityCauses, // Pass the causes as an array directly
         });
-  
-        return fetch(url, { method: "POST", headers, body, credentials: "include" });
+
+        return fetch(url, {
+          method: "POST",
+          headers,
+          body,
+          credentials: "include",
+        });
       })
       .then((response) => {
         if (!response.ok) {
-          if (response.headers.get('Content-Type').includes('application/json')) {
+          if (
+            response.headers.get("Content-Type").includes("application/json")
+          ) {
             return response.json().then((errorData) => {
               throw new Error(errorData.message || "Donation failed");
             });
@@ -136,45 +149,53 @@ const Donations = ({ isOpen, onClose, onSubmit}) => {
         alert(error.message);
       });
   };
-  
+
   return (
     <>
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
           <h2>Add Donation</h2>
-          <form className={styles.donationForm} action="/" method="post" onSubmit={handleSubmit}>
-  <label>Charity Name</label>
-  <input name="charityName" type="text" />
-  <label>Donation Amount (£)</label>
-  <input name="donationAmount" type="number" />
-  <label>Donation Date</label>
-  <input name="donationDate" type="date" />
-  <label>Donation Type</label>
-  <select name="donationType">
-    <option value="">Select Type</option>
-    <option value="one-time">One-time</option>
-    <option value="monthly">Monthly</option>
-    <option value="annually">Annually</option>
-  </select>
-  <label>Payment Method (Optional)</label>
-  <select name="paymentMethod">
-    <option value="">Select Payment Method</option>
-    <option value="credit-card">Credit Card</option>
-    <option value="direct-debit">Direct Debit</option>
-    <option value="bank-transfer">Bank Transfer</option>
-    <option value="cash">Cash</option>
-    <option value="other">Other</option>
-  </select>
+          <form
+            className={styles.donationForm}
+            action="/"
+            method="post"
+            onSubmit={handleSubmit}
+          >
+            <label>Charity Name</label>
+            <input name="charityName" type="text" />
+            <label>Donation Amount (£)</label>
+            <input name="donationAmount" type="number" />
+            <label>Donation Date</label>
+            <input name="donationDate" type="date" />
+            <label>Donation Type</label>
+            <select name="donationType">
+              <option value="">Select Type</option>
+              <option value="one-time">One-time</option>
+              <option value="monthly">Monthly</option>
+              <option value="annually">Annually</option>
+            </select>
+            <label>Payment Method (Optional)</label>
+            <select name="paymentMethod">
+              <option value="">Select Payment Method</option>
+              <option value="credit-card">Credit Card</option>
+              <option value="direct-debit">Direct Debit</option>
+              <option value="bank-transfer">Bank Transfer</option>
+              <option value="cash">Cash</option>
+              <option value="other">Other</option>
+            </select>
 
-  <label>
-    <input name="giftAid" type="checkbox" />Gift Aid
-  </label>
-  
-  <div className="buttonGroup">
-    <button type="submit">Add Donation</button>
-    <button onClick={onClose} type="button">Cancel</button>
-  </div>
-</form>
+            <label>
+              <input name="giftAid" type="checkbox" />
+              Gift Aid
+            </label>
+
+            <div className="buttonGroup">
+              <button type="submit">Add Donation</button>
+              <button onClick={onClose} type="button">
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
