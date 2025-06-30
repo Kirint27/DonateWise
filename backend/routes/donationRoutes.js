@@ -18,8 +18,13 @@ router.post('/', verifyJWT, async (req, res) => {
   const { charityName, donationAmount, donationType, donationDate, paymentMethod, giftAid, charity_cause } = req.body;
   console.log('req.user:', req.user);
   
-  const userId = req.user.userId; // Ensure consistent userId access
-  console.log('userId:', userId);
+  const userId = req.user?.userId; // Ensure userId is defined
+  console.log('PROD ENV: inserting donation for user:', req.user?.userId);
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+  }
+  console.log('User ID:', userId);
   
   // Validate required fields
   if (!charityName || !donationAmount || !donationType || !paymentMethod  || !charity_cause) {
@@ -28,22 +33,21 @@ router.post('/', verifyJWT, async (req, res) => {
   
   // Ensure charity_cause is an array and convert it to JSON if it's not already
   const charityCauses = Array.isArray(charity_cause) && charity_cause.length > 0 ? JSON.stringify(charity_cause) : JSON.stringify([]);
-
-  // Updated query
   const query = `
   INSERT INTO donations 
-  (charity_name, donation_amount, donation_date, payment_method, giftAid,charity_cause,  user_id) 
-  VALUES (?, ?, ?, ?, ?, ?, ?)
+  (charity_name, donation_amount, donation_date, donation_type, payment_method, giftaid,  user_id, charity_cause) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 `;
 
 connection.query(query, [
   charityName,
-  donationAmount,
+  parseFloat(donationAmount), // Convert to number
   donationDate,
+  donationType,
   paymentMethod,   
-  giftAid,
-  charityCauses,
-  userId
+  Boolean(giftAid), // Convert to boolean
+  userId,
+  charityCauses
 ], (err, results) => {
     if (err) {
       console.error('Error inserting donation:', err);

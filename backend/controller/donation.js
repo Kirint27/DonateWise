@@ -1,4 +1,3 @@
-// controller/donation.js
 const connection = require('../db/databaseConnection');
 
 const getDonations = (req, res) => {
@@ -12,6 +11,32 @@ const getDonations = (req, res) => {
         }
     });
 };
+
+// ⚠️ TEMPORARY: Drop the incorrect camelCase column if it exists
+const fixSchemaOnce = () => {
+    const checkColumnQuery = `
+        SHOW COLUMNS FROM donations LIKE 'paymentMethod'
+    `;
+    connection.query(checkColumnQuery, (err, results) => {
+        if (err) {
+            console.error('Error checking column:', err);
+            return;
+        }
+        if (results.length > 0) {
+            const dropColumnQuery = 'ALTER TABLE donations DROP COLUMN paymentMethod';
+            connection.query(dropColumnQuery, (err) => {
+                if (err) {
+                    console.error('Error dropping paymentMethod column:', err);
+                } else {
+                    console.log('Dropped column paymentMethod from donations table');
+                }
+            });
+        }
+    });
+};
+
+// Call this once at startup
+fixSchemaOnce();
 
 const addDonation = (req, res) => {
     const { charity_name, donation_amount, donation_date } = req.body;
@@ -42,4 +67,8 @@ const deleteDonation = (req, res) => {
     });
 };
 
-module.exports = { getDonations, addDonation,deleteDonation };  // Ensure this line is correct!
+module.exports = {
+    getDonations,
+    addDonation,
+    deleteDonation,
+};

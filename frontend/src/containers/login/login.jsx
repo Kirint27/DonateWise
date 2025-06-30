@@ -33,9 +33,8 @@ const Login = ({ onLogin }) => {
     console.log("Sending login request with:");
     console.log(email);
     console.log(password);
-    const url = "http://localhost:3001/api/login"; // Adjust based on your backend
 
-    fetch(url, {
+    fetch('https://charitytrackr.onrender.com/api/login', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
