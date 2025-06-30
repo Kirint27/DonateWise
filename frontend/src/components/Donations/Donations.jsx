@@ -172,7 +172,7 @@ const Donations = ({ isOpen, onClose, onSubmit }) => {
               <option value="">Select Type</option>
               <option value="one-time">One-time</option>
               <option value="monthly">Monthly</option>
-              <option value="annually">Annually</option>
+
             </select>
             <label>Payment Method (Optional)</label>
             <select name="paymentMethod">
