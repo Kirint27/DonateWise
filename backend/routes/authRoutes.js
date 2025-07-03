@@ -25,8 +25,41 @@ router.post("/signup", (req, res) => {
   console.log("Incoming Signup Request:", req.body);
 
   // Basic validation
-  if (!email || !password || !fullName || !annualSalary) {
-    return res.status(400).json({ error: "All fields are required" });
+  if (
+    !email ||
+    !password ||
+    !fullName ||
+    !annualSalary ||
+    !goalType ||
+    goalAmount == null
+  ) {
+    return res.status(400).json({ error: "All required fields are missing" });
+  }
+
+  const salaryNum = parseFloat(annualSalary);
+  const goalNum = parseFloat(goalAmount);
+
+  if (isNaN(salaryNum) || salaryNum < 0) {
+    return res.status(400).json({ error: "Invalid salary" });
+  }
+
+  let finalGoalAmount = 0;
+
+  if (goalType === "percentage") {
+    // Validate percentage goal
+    if (isNaN(goalNum) || goalNum <= 0 || goalNum > 100) {
+      return res.status(400).json({ error: "Invalid goal percentage" });
+    }
+    // Calculate actual goal based on salary
+    finalGoalAmount = (salaryNum * goalNum) / 100;
+  } else if (goalType === "manual") {
+    // Validate manual goal amount
+    if (isNaN(goalNum) || goalNum <= 0) {
+      return res.status(400).json({ error: "Invalid goal amount" });
+    }
+    finalGoalAmount = goalNum; // Use the manual amount directly
+  } else {
+    return res.status(400).json({ error: "Invalid goal type" });
   }
 
   // Hash password
@@ -38,7 +71,7 @@ router.post("/signup", (req, res) => {
 
     const query = `
       INSERT INTO users 
-      (email, password, full_name, annual_salary, location, gift_aid, goal_type, goal_amount) 
+      (email, password, full_name, annual_salary, location, giftAid, goalType, goal_amount) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -46,11 +79,11 @@ router.post("/signup", (req, res) => {
       email,
       hashedPassword,
       fullName,
-      annualSalary,
+      salaryNum,
       location,
       giftAid,
       goalType,
-      goalAmount,
+      finalGoalAmount, // Store the calculated or manual goal amount
     ];
 
     connection.query(query, values, (err, result) => {
@@ -200,7 +233,7 @@ router.post("/forgot-password", (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const resetLink = `http://localhost:3001/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}reset-password?token=${resetToken}`;
 
     const mailOptions = {
       from: process.env.FROM_EMAIL,
