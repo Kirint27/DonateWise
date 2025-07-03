@@ -154,7 +154,7 @@ const Donations = ({ isOpen, onClose, onSubmit }) => {
     <>
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
-          <h2>Add Donation</h2>
+          <h2 className={styles.modalTitle}>Add Donation</h2>
           <form
             className={styles.donationForm}
             action="/"
