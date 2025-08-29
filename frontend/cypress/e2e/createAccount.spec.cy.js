@@ -75,7 +75,7 @@ describe("account", () => {
                 cy.get('input[type="email"]').eq(0).type('johnSmith.@test.com');
                 cy.get('input[type="password"]').eq(0).type('password124');
                 cy.get('input[type="password"]').eq(1).type('password124');
-                cy.get('input[type="text"][placeholder="Enter your Annual salary"]').type('one hundred thousand');
+                cy.get('input[type="number"]').type('50000');
 
                 // Check 'Gift Aid' checkbox (ensure no extra space in name attribute)
               
