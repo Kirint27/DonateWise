@@ -33,8 +33,9 @@ const Login = ({ onLogin }) => {
     console.log("Sending login request with:");
     console.log(email);
     console.log(password);
+    const url = `https://charitytrackr.onrender.com/api/login`; // Adjust based on your backend
 
-    fetch('https://charitytrackr.onrender.com/api/login', {
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +76,7 @@ const Login = ({ onLogin }) => {
             </div>
 
             <div className={styles.loginForm}>
-              <h2 className={styles.formTitle}>Login</h2>
+              <p className={styles.formTitle}>Login</p>
               <form onSubmit={handleLogin}>
                 <div className={styles.formGroup}>
                   <label>Email</label>
