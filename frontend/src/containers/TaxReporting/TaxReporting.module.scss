@@ -1,3 +1,6 @@
+@import '../../styles/variables.scss';
+@import '../../styles/index.scss';
+
 .mainWrapper {
   position: relative;
   width: 100%;
@@ -5,10 +8,27 @@
   padding-bottom: 30px;
   justify-content: space-between;
 
-  min-height: 160vh;
+  min-height: 180vh;
   padding: 0;
 }
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+}
 
+.disabledButton {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+.tableWrapper {
+  display: block;
+}
+
+.cardWrapper {
+  display: none;
+}
 .noDonations {
   margin-left: 40%;
 }
@@ -125,50 +145,64 @@ table {
   font-weight: 500;
   color: #333;
 }
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+}
+
+.disabledButton {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+@media screen and (min-width: 1500px) {
+.totalDonated{
+  margin-left: 45%;
+}
+}
+
+
 // Mobile - for very small screens
-@media (max-width: 480px) {
+@media (max-width: 580px) {
   .mainWrapper {
-    min-height: 150vh;
-    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
-  th,
-  td {
-    font-size: 12px;
-    padding: 6px;
+  .totalDonated{
+    margin-left: 25%;
   }
-
-  th:nth-child(1),
-  td:nth-child(1),
-  th:nth-child(2),
-  td:nth-child(2) {
-    width: 120px;
+  .downloadContainer {
+    margin-right: 5%;
+    margin-bottom: 20px;
   }
 
-  th:nth-child(3),
-  td:nth-child(3),
-  th:nth-child(4),
-  td:nth-child(4) {
-    width: 100px;
+  .tableWrapper {
+    display: none;
   }
 
-  th:nth-child(5),
-  td:nth-child(5) {
-    width: 80px;
+  .cardWrapper {
+    display: block;
+    flex: 1 0 auto;
+    padding-bottom: 80px; /* Add this for space before footer */
   }
+
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 12px;
+    width: 90%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .card p {
+    margin: 6px 0;
+  }
+footer{
+  margin-top: 300px;
 }
-
-// Tax Relief Section
-.taxRelief {
-  margin-left: 30px;
-  margin-bottom: 50px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-.noPreviousDonations,
-.noDonations {
-  text-align: center;
-  font-size: 16px;
-  color: #777;
-  margin: 20px 0;
+  
 }

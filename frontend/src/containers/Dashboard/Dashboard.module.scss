@@ -1,101 +1,84 @@
+@import '../../styles/variables.scss';
+@import '../../styles/index.scss';
+
 .dashboard {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #333;
+  justify-content: flex-start;
+  font-family: 'Segoe UI', Tahoma,  Verdana, sans-serif;
+  color: $gray-dark;
+  background-color: $bg-color;
   scroll-behavior: smooth;
-  min-height: 120vh;
-  padding: 0 0 100px 0;
-}
-.buttonContainer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start; /* align items to the top */
+  min-height: 100vh;
+  padding: 0 20px 80px 20px;
 }
 
-.addDonation {
-  transform: translateX(-90%);
-  font-weight: bold;
-  margin-bottom: 0px;
-  width: 150px;
-  height: 50px;
+h2 {
+  font-size: 32px;
+  color: $gray-dark;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 18px;
+  margin-left: 40%;
+  margin-bottom: 30px;
+  color: $gray-dark;
+  font-weight: 400;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.addDonation,
+.syncButton {
+  font-weight: 600;
+  width: 220px;
+  height: 60px;
+  border-radius: 8px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 0 20px;
+}
+
+.addDonation:hover,
+.syncButton:hover {
+  background-color: darken($primary-color, 10%);
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.donationHint {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  color: #777;
 }
 
 section {
-  height: 150px;
-  margin-top: 30px;
-  margin-bottom: 100px;
-}
-
-.dashboard {
-  padding-top: 0; /* or a smaller value, e.g. 20px */
-}
-
-h2,
-h3 {
-  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 60px;
 }
 
 .goal {
   margin-bottom: 30px;
-  height: 100px;
-}
-.sectionCauses {
-margin-bottom: 800px;
-  overflow: visible;
-  P {
-    margin-left: 40%;
-  }
-}
-.chartContainer {
-  width: 100%;
-  max-width: 800px;
-  height: 400px;
-  margin: 0 auto;
-  position: relative;
 }
 
-.causesChart {
-  width: auto;
-
-  height: auto;
-}
-.causesList {
-  margin-left: 38%;
-  margin-bottom: 20px;
-  background-color: #ffffff;
-  height: fit-content;
-  font-weight: bold;
-}
-.causeItem {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-}
-
-.causeName {
-  font-weight: medium;
-}
-
-.causeAmount {
-  font-weight: bold;
-  color: #34c759; // or any other color you prefer
-}
-span {
-  padding-right: 20px;
-}
-
-.sectionSmall {
-  height: 200px;
-  margin-bottom: 20px !important; // adjust this value to your liking
-}
 .donationList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 280px);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -104,127 +87,107 @@ span {
   max-width: 1200px;
   margin: 0 auto 60px;
 }
-.donationCard {
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  height: 120px;
-  width: 150px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
 
+.donationCard {
+  background: $card-bg;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-align: center;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
 }
 
-.noDonations {
-  margin-left: 10%;
-  margin-top: 20px;
+.donationCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
-/* For larger screens, align donation list */
-@media screen and (min-width: 1500px) {
-  .noDonations {
-    margin-left: 5%;
-  }
-}
-.progress-bar {
-  margin-left: 20px; /* adjust the margin to move the progress bar to the left */
-}
-
-/* Donation items container for cards */
-.donationItem {
-  margin-bottom: 15px;
-  display: flex;
-  flex: 1 1 calc(33.33% - 20px); /* 3 cards per row with gap */
-}
-
-/* Donation card styling */
 
 .donationText {
   font-size: 16px;
-  line-height: 20px;
-  color: #444;
-  margin-top: 5px;
+  color: $gray-dark;
 }
 
 .amount {
+  font-size: 20px;
+  color: $secondary-color;
   font-weight: bold;
-  color: #2c7a7b;
+}
+
+.donationType {
+  font-size: 14px;
+  color: #777;
+  font-weight: 500;
+}
+
+.noDonations {
+  text-align: center;
   font-size: 18px;
+  color: #777;
+  font-weight: 400;
 }
 
-.sectionCauses {
-  margin-bottom: 350px;
-  p {
-    margin-left: 43%;
-  }
-}
-
-.causesList {
+.charityShowcase {
   margin-left: 40%;
-}
-.charityName {
+  text-align: center;
+  font-size: 22px;
   font-weight: 600;
-  color: #1a202c;
-  font-size: 18px;
-  padding-right: 2px;
-}
-
-.date {
-  color: #666;
-  font-size: 18px;
+  color: $gray-dark;
 }
 
 .showcase {
   text-align: center;
+  padding: 0 20px;
 }
 
-/* Responsive styles for tablets and mobile devices */
-@media (max-width: 768px) {
+/* Responsive styles */
+@media screen and (min-width: 1500px) {
+  .donationList {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  }
+
+  .donationItem {
+    display: flex;
+    flex: 1 1 calc(33.33% - 20px); /* 3 cards per row with gap */
+  }
+
+  .donationCard {
+    height: 250px;
+  }
+
+  .progress-bar {
+    margin-left: 20px;
+  }
+
+  .charityShowcase {
+    margin-left: 40%;
+  }
+}
+
+@media (max-width: 580px) {
   .dashboard {
-    flex-grow: 1;
     flex-direction: column;
     min-height: auto;
     justify-content: flex-start;
-    padding: 0 10px 80px; /* add horizontal padding + more bottom space */
-  }
-  .donationList {
-    gap: 5px; /* reduced gap size for smaller screens */
-  }
-  .buttonContainer {
-    justify-content: center; /* center the Add Donation button on mobile */
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-  .noDonations {
-    margin-left: 20%;
-  }
-  .addDonation {
-    transform: none; /* remove the translateX that breaks it on mobile */
-    margin: 0 auto;
-    width: 80%;
-    max-width: 300px;
-  }
-
-  section {
-    height: auto;
-
-    margin-top: 10px;
-    width: 100%;
-  }
-
-  .goal {
-    margin-bottom: 20px;
-    padding: 0 10px;
+    padding: 20px 10px 80px;
   }
 
   .donationList {
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    margin-left: 0;
-    margin-bottom: 140px;
     gap: 10px;
-    height: 300px;
+    margin-bottom: 100px;
+  }
+
+  .addDonation,
+  .syncButton {
+    width: 80%;
+    max-width: 320px;
+    padding: 0 15px;
   }
 
   .donationItem {
@@ -233,58 +196,23 @@ span {
   }
 
   .donationCard {
-    height: auto;
     width: 100%;
+    height: auto;
+    padding: 15px;
   }
 
-  .showcase {
-    margin-top: 60px;
+  .goal {
+    margin-bottom: 20px;
     padding: 0 10px;
+  }
+
+  .charityShowcase {
+    margin-left: 0;
+    font-size: 18px;
+    margin-top: 20px;
   }
 
   footer {
     margin-top: auto;
-  }
-}
-
-/* Smaller screens (phones) */
-@media (max-width: 480px) {
-  .donationCard {
-    width: 95%;
-  }
-  
-
-  .donationText {
-    font-size: 14px;
-  }
-
-  .amount {
-    font-size: 16px; /* unchanged, optional to adjust */
-  }
-  p{
-    margin-left: 55%;
-  }
-  .causesList {
-    margin-left: 5%;
-  }
-
-  .charityName {
-    font-size: 14px;
-  }
-
-
-    .sectionCauses p {
-      margin-left: 10%; // or try 10–25% based on your layout
-      text-align: center; // optional: center text inside the <p>
-    }
-  .noDonations{
-    margin-left: 10%;
-  }
-  
-.showcase p{
-  margin-left: 10%;
-}
-  .date {
-    font-size: 16px;
   }
 }

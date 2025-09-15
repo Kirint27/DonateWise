@@ -1,0 +1,19 @@
+.chartContainer {
+    width: 100%;
+    max-width: 800px;
+    height: 350px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .causesChart {
+    width: auto;
+  
+    height: auto;
+  }
+
+.noCauses{ 
+ margin-left: 45%;
+  margin-bottom: 200px;
+  height: 100%; /* Ensure it takes full height to center vertically if necessary */
+}
