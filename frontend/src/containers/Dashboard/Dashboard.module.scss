@@ -1,5 +1,5 @@
-@import '../../styles/variables.scss';
-@import '../../styles/index.scss';
+@use '../../styles/variables' as *;
+@use '../../styles/index' as *;
 
 .dashboard {
   position: relative;
@@ -7,7 +7,6 @@
   flex-direction: column;
   justify-content: flex-start;
   font-family: 'Segoe UI', Tahoma,  Verdana, sans-serif;
-  color: $gray-dark;
   background-color: $bg-color;
   scroll-behavior: smooth;
   min-height: 100vh;

@@ -1,6 +1,5 @@
-@import '../../styles/variables.scss';
-@import '../../styles/index.scss';
-
+@use '../../styles/variables' as *;
+@use '../../styles/index' as *;
 .mainWrapper {
   position: relative;
   width: 100%;
