@@ -11,7 +11,6 @@ import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
 import ResetPassword from "./containers/ResetPassword/ResetPassword";
 import PrivacyPolicy from "./containers/PrivacyPolicy/PrivacyPolicy";
 import UpdateAccount from "./containers/UpdateAccount/UpdateAccount";
-import Hotjar from "@hotjar/browser";
 import "./Styles/index.scss";
 
 
