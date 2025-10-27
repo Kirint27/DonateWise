@@ -1,28 +1,6 @@
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh; // Full viewport height
-  background-color: rgba(0, 0, 0, 0.5); // Semi-transparent background
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+@use '../../styles/variables' as *;
+@use '../../styles/index' as *;
 
-.modalContent {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 10px;
-  width: 90%; // Use 90% of the viewport width
-  max-width: 800px; // Maximum width for larger screens
-  height: 90%; // Use 90% of the viewport height
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  position: relative;
-  animation: slideDown 0.3s ease;
-}
 
 .donationForm {
   display: flex;

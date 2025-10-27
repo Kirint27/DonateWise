@@ -1,17 +1,12 @@
 footer {
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Pushes text left & links right */
-  align-items: center; /* Centers content vertically */
+  justify-content: space-between;
+  align-items: center;
   height: 80px;
-  bottom: 0;
-  left: 0;
   font-size: 20px;
-  position: absolute;
-  right: 0;
-  background-color: #2e7d32;
-  overflow: hidden;
-  color: #ffffff; /* White text */
+  background-color: #276749;
+  color: #ffffff;
 }
 
 footer p {

@@ -1,176 +1,163 @@
-$secondary-color: #ffffff;
+@use "../../styles/variables" as *;
+@use "../../styles/index" as *;
 
+$secondary-color: #ffffff;
 .pageContainer {
-  background-color: #edebeb;
-  flex: 1; // This makes it stretch to fill space between header and footer
+  background-color: $bg-color;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  padding: 40px 20px;
 }
 
 .loginBox {
-  display: flex;
-  width: 850px;
+  width: 750px;   // balanced width between narrow and wide
   height: 550px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: $secondary-color;
-  justify-content: space-between;
-  margin-top: 80px;
-  margin-bottom: 30px;
+  display: flex;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  overflow: hidden;
+  background-color: #fff;
 }
 
 .loginLogo {
-  width: 50%;
-  height: 100%;
-  background-color: #2e7d32;
+  width: 45%;
+  background-color: #276749;  // green panel
+  color: #fff;
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-}
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 
-.title {
-  margin-bottom: 30px;
-}
+  h1 {
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
 
-.logo {
-  width: 80%;
-  height: 200px;
-  margin: 0 10px 0 10px;
-  display: block;
-  background: transparent;
-}
+  p {
+    font-size: 16px;
+    line-height: 1.4;
+    
+  }
 
-.slogan {
-  color: $secondary-color;
-  padding: 0 5px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 100px;
+
+  div{
+    margin-bottom: 40px;
+  }
 }
 
 .loginForm {
-  width: 50%;
-  height: 100%;
-  padding: 20px;
+  width: 55%;
+  padding: 50px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   cursor: default;
-  margin-top: 30px;
 
   .formTitle {
-    margin-bottom: 15px;
-    color: #000;
+    font-size: 24px;
+    font-weight: 300;
+    color: #222;
+    margin-bottom:40px;
     text-align: center;
-font-size: 20px;
   }
+
   form {
-    margin-top: 30px;
-  }
-
-  .formGroup {
-    margin-bottom: 20px;
-  }
-
-  input {
-    width: 100%;
-    height: 40px;
-    padding: 10px 2px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-bottom: 30px;
-  }
-
-  input[type="email"],
-  input[type="password"] {
-    font-size: 20px;
-  }
-
-  .passwordVisibilityIcon,
-  span {
-    position: absolute;
-    right: 50px;
-    top: 30%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 1;
-  }
-
-  .forgotten {
-    font-size: 14px;
-    color: #666;
-    text-decoration: underline;
-    margin: 5px 0 0 5px;
-  }
-
-  .primaryButton {
-    width: 50%;
-    height: 40px;
-    background-color: #0d64c1;
-    color: $secondary-color;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .learn {
-    margin: 30px 0 20px 5px;
-    color: #000;
-
-    a {
-      color: #000;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .mainWrapper {
-    background-color: #edebeb;
     display: flex;
     flex-direction: column;
   }
 
-  .pageContainer {
-    padding-top: 0;
-    min-height: 130vh;
-
-    height: auto;
-    flex: 1;
+  .formGroup {
+    margin-bottom: 25px;
   }
-.slogan{
-  margin-left: 10%;
+label{
+  font-weight: normal;
 }
-  .passwordVisibilityIcon,
-  span {
-    left: 85%;
-  }
-  a {
-    padding-bottom: 0;
+  input {
+    width: 100%;
+    height: 50px;
+    padding: 20px 12px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1.2px solid #ccc;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #2e7d32;
+      outline: none;
+      box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+    }
   }
 
+  .forgotten {
+    font-size: 13px;
+    color: #2e7d32;
+    margin-bottom: 25px;
+    margin-left: 4%;
+    cursor: pointer;
+    text-decoration: underline;
+    align-self: flex-start;
+
+    &:hover {
+      color: darken(#2e7d32, 10%);
+    }
+  }
+
+  .primaryButton {
+    background-color: #276749;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+
+    &:hover {
+      background-color: darken(#2e7d32, 10%);
+    }
+  }
+
+  .createAccountButton {
+    background-color: #d4af37;
+color: black;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+  }
+}
+
+@media (max-width: 768px) {
   .loginBox {
-    width: 400px;
-    height: 800px;
     flex-direction: column;
-    align-items: center;
-    margin: 10px auto 50px auto;
+    width: 100%;
+    height: auto;
   }
-.learn{
-  margin-left: 20%;
-}
+
   .loginLogo {
-    width: 99%;
-    height: 250px;
+    width: 90%;
+    border-radius: 15px 15px 0 0;
+    padding: 30px 20px;
   }
-  footer {
-    margin-top: auto; /* add this line */
-  }
+
   .loginForm {
     width: 90%;
-    height: auto;
-    padding: 15px;
-
-    h2 {
-      text-align: center;
-    }
+    padding: 30px 2px;
+    margin-right: 20%;
+  }
+  button{
+    margin-left:30%
   }
 }

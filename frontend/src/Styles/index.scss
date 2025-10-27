@@ -1,10 +1,10 @@
-@use 'variables' as *;  
+@use 'variables' as *;
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-/* index.scss */
-// index.scss
-// Import variables here
-// Other styles follow...
-/* Global Styles */
+
+/* ------------------------------------------------------
+   GLOBAL BASE STYLES (Laptop / Default)
+------------------------------------------------------ */
+
 body {
   height: 100%;
   margin: 0;
@@ -13,10 +13,11 @@ body {
   background-color: $bg-color;
 }
 
-.mainWrapper {
+.pageContainer {
   display: flex;
   flex-direction: column;
-  min-height: 110vh; /* full viewport height */
+  min-height: 120vh;
+  background-color: $bg-color;
 }
 
 h1 {
@@ -26,16 +27,13 @@ h1 {
 h2 {
   font-size: $font-size-xl;
   color: $gray-dark;
-  margin: 2% 40% 10% 45%;
+  margin: 2% auto 3%;
 }
 
 h3 {
   font-size: $font-size-lg;
-  margin: 5% 0% 2% 40%;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  margin: 2% auto 3%;
+  text-align: center;
 }
 
 .title {
@@ -54,18 +52,20 @@ button {
   background-color: $primary-color;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease-in-out;
 }
 
 button.primary {
   background-color: $primary-color;
   color: white;
-}
 
-button.primary:hover {
-  background-color: darken($primary-color, 10%);
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
 }
 
 button.secondary {
@@ -74,15 +74,13 @@ button.secondary {
   padding: 10px;
   font-size: $font-size-lg;
   cursor: pointer;
-
   width: 150px;
+
+  &:hover {
+    background-color: $gray-light;
+  }
 }
 
-button.secondary:hover {
-  background-color: $gray-light;
-}
-
-/* Divider Style */
 hr {
   background-color: $border-color;
   width: 90%;
@@ -90,7 +88,7 @@ hr {
   height: 1px;
 }
 
-/* Donation Card Styling */
+/* Donation Card */
 .donationCard {
   background: $card-bg;
   padding: 20px;
@@ -102,30 +100,30 @@ hr {
   justify-content: space-between;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+  }
 }
 
-.donationCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Progress Bar Styling */
+/* Progress Bar */
 .progress-bar {
   width: 100%;
   height: 30px;
   background-color: $gray-light;
   border-radius: 8px;
   position: relative;
+
+  &-fill {
+    height: 100%;
+    background-color: $secondary-color;
+    border-radius: 8px;
+    transition: width 0.4s ease;
+  }
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background-color: $secondary-color;
-  border-radius: 8px;
-  transition: width 0.4s ease;
-}
-
-/* Flexbox Utility Classes */
+/* Layout Utilities */
 .flex-center {
   display: flex;
   justify-content: center;
@@ -143,16 +141,16 @@ hr {
   align-items: center;
 }
 
-/* Section Styling */
+/* Sections */
 section {
   margin: 40px 0;
-}
 
-section .title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: $gray-dark;
-  font-weight: bold;
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: $gray-dark;
+    font-weight: bold;
+  }
 }
 
 .section-padding {
@@ -162,38 +160,78 @@ section .title {
   border-radius: 8px;
 }
 
-/* Media Queries for Responsiveness */
-@media screen and (min-width: 1500px) {
-  h2 {
-    margin-left: 45%; /* Adjust left margin for h2 */
-  }
+/* ------------------------------------------------------
+   MODAL STYLES (used in GoalPopup etc.)
+------------------------------------------------------ */
 
-  h3 {
-    margin-left: 42%; /* Adjust left margin for h3 */
-  }
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-@media screen and (max-width: 580px) {
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  height: fit-content;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  position: relative;
+  animation: slideDown 0.3s ease;
+}
+
+/* ------------------------------------------------------
+   MEDIA QUERIES
+------------------------------------------------------ */
+
+/* Mobile (phones/tablets) */
+@media screen and (max-width: 768px) {
   h2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+    font-size: 1.2rem;
+    margin: 1rem auto;
   }
 
   h3 {
-    margin-left: 15%; /* Adjust margin-left for h3 */
+    font-size: 1rem;
+    margin: 1rem auto;
   }
 
   .title {
-    margin-left: 5%;
+    font-size: 28px;
     margin-bottom: 20px;
-    margin-top: 0;
   }
 
-  .secondaryButton {
-    margin-top: 10px; /* Add space above secondary button */
+  button {
+    width: 120px;
+    font-size: 0.9rem;
+  }
+
+  .modalContent {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}
+
+/* Desktop / Large screens */
+@media screen and (min-width: 1400px) {
+
+
+  h3 {
+    margin: 2% auto 3%;
+    font-size: 1.4rem;
+  }
+
+  .modalContent {
+    max-width: 900px;
   }
 }
