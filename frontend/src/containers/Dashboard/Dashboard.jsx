@@ -5,29 +5,98 @@ import Donations from "../../components/Donations";
 import CustomProgressBar from "../../components/CustomProgressBar";
 import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
-import { Chart } from "chart.js/auto";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-Chart.register(ChartDataLabels);
+import { useAuth } from "../Context/authContext";
+import GoalPopup from "../../components/GoalPopup/GoalPopup";
+import Chart from "../../components/Charts/Charts";
+import TaxReporting from "../TaxReporting";
+
 
 const Dashboard = ({ user }) => {
-
-
-  // Rest of the code...
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [goalAmount, setGoalAmount] = useState(0);
   const [donations, setDonations] = useState([]);
   const [currentAmount, setCurrentAmount] = useState(0);
   const [causes, setCauses] = useState([]);
-  const [log, setLog] = useState("");
-  const [charityToShow, setCharityToShow] = useState(null);
-  const [randomCharity, setRandomCharity] = useState(null);
+  const [breakdown, setBreakdown] = useState({});
+  const [truelayerCheckDone, setTruelayerCheckDone] = useState(false);
+  const [canShowSyncButton, setCanShowSyncButton] = useState(true);
+  const [showGoalModal, setShowGoalModal] = useState(false);
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [breakdown, setBreakdown] = useState({});
+
+  const { user: currentUser } = useAuth();
+
+  const [salary, setSalary] = useState(0)
+  useEffect(() => {
+    setLoading(true);
+
+    fetch("http://localhost:3001/api/donations/goal-amount", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((goalData) => {
+        const needsGoal =
+          goalData.needsGoal ||
+          isNaN(goalData.goalAmount) ||
+          goalData.goalAmount <= 0;
+
+        if (needsGoal) {
+          setShowGoalModal(true);
+        }
+
+        setGoalAmount(parseFloat(goalData.goalAmount));
+
+        // Fetch current donation total
+        return fetch("http://localhost:3001/api/donations/current-amount", {
+          method: "GET",
+          credentials: "include",
+        });
+      })
+      .then((res) => res.json())
+      .then((currentData) => {
+        setCurrentAmount(parseFloat(currentData.currentAmount) || 0);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching goal or current amount:", err);
+        setLoading(false);
+      });
+  }, []);
+
+
+
+  // Remove the duplicated goal/current amount fetch useEffect
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/recent-donations`, {
+    fetch("http://localhost:3001/api/donations/truelayer/status", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch user info");
+        return res.json();
+      })
+      .then((data) => {
+        const { truelayer_connected, showModal } = data;
+
+        // Only show modal if user is not connected or if showModal is true
+        if (truelayer_connected && !showModal) {
+          setCanShowSyncButton(false); // Don't show modal if connected and no need to show
+        } else {
+          setCanShowSyncButton(true); // Force modal to show if not connected or showModal is true
+        }
+
+        setTruelayerCheckDone(true);
+      })
+      .catch((err) => {
+        console.error("Failed to check TrueLayer status:", err);
+        setTruelayerCheckDone(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/donations/recent-donations`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,38 +113,6 @@ const Dashboard = ({ user }) => {
       .catch((error) =>
         console.error("Error fetching recent donations:", error)
       );
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/goal-amount`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Goal amount failed: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then((data) => setGoalAmount(parseFloat(data.goalAmount) || 0))
-      .catch((error) => console.error("Error fetching goal amount:", error));
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/current-amount`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Current amount failed: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then((data) => setCurrentAmount(parseFloat(data.currentAmount) || 0))
-      .catch((error) => console.error("Error fetching current amount:", error));
   }, []);
 
   console.log("Current amount:", currentAmount);
@@ -94,7 +131,7 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     console.log("Fetching breakdown data...");
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/charity-causes/last-12-months`, {
+    fetch(`http://localhost:3001/api/donations/charity-causes/last-12-months`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -113,7 +150,7 @@ const Dashboard = ({ user }) => {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message);
+
         setLoading(false);
       });
   }, []);
@@ -129,111 +166,60 @@ const Dashboard = ({ user }) => {
     0
   );
 
-  useEffect(() => {
-    const canvases = document.querySelector(`.${styles.causesChart}`);
-    let chart;
-
-    if (canvases) {
-      // Destroy any existing chart
-      Chart.getChart(canvases)?.destroy();
-
-      if (sortedCauses && sortedCauses.length > 0) {
-        const totalAmount = sortedCauses.reduce(
-          (acc, [, amount]) => acc + amount,
-          0
-        );
-        const causesData = sortedCauses.map(([cause, amount]) => ({
-          cause,
-          percentage: (amount / totalAmount) * 100,
-        }));
-
-        chart = new Chart(canvases, {
-          type: "pie",
-          data: {
-            labels: causesData.map(({ cause }) => cause),
-            datasets: [
-              {
-                data: causesData.map(({ percentage }) => percentage),
-                backgroundColor: [
-                  "#8B9467", // a muted green, evoking growth and harmony
-                  "#6495ED", // a soft blue, conveying trust and stability
-                  "#F7DC6F", // a warm yellow, symbolizing hope and optimism
-                  "#C9E4CA", // a pale green, representing nature and renewal
-                  "#7A288A", // a deep purple, signifying luxury and creativity
-                  "#FFC499", // a soft orange, conveying warmth and energy
-                ],
-                borderColor: [
-                  "#f", // black border for contrast
-              
-                ],
-
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: {
-                  font: {
-                    size: 14,
-                  },
-                  padding: 10,
-                },
-              },
-              title: {
-                display: true,
-                text: ` Total Donations: ${totalAmount.toFixed(2)} `,
-              font: {
-                    size: 18,
-                    weight: "bold",
-                  
-                },
-                position: "top",
-                padding: {
-                    top: 10,
-                    bottom: 30
-                },
-                padding: {
-                    top: 10,
-                    bottom: 40
-                },
-              },
-              datalabels: {
-                color: "#000",
-                font: {
-                  weight: "bold",
-                  size: 14,
-                },
-                formatter: (value, context) => {
-                  return `${value.toFixed(1)}%`;
-                },
-              },
-            },
-          },
-        });
-      }
-    }
-  }, [sortedCauses]);
-
   const isSectionSmall =
     loading || donations.length === 0 || sortedCauses.length === 0;
-  
+
+
+
+  const renderDonationType = (donation) => {
+    return donation.donation_type ? (
+      donation.donation_type === "donation" ? (
+        <span>One-time</span>
+      ) : donation.donation_type === "Monthly" ? (
+        <span>Monthly</span>
+      ) : (
+        <span>
+          {donation.donation_type.charAt(0).toUpperCase() +
+            donation.donation_type.slice(1)}
+        </span>
+      )
+    ) : (
+      ""
+    );
+  };
+
   return (
-    <div className={styles.dashboard}>
-      <Navbar />
+    <div className="pageContainer">
+      <Navbar renderDonationType={renderDonationType} />
       <h2>Dashboard</h2>
+
+      {/* Goal Reset Modal */}
+      <GoalPopup
+
+  needsGoal={showGoalModal}
+  showGoalModal={showGoalModal}
+  setShowGoalModal={setShowGoalModal}
+  setGoalAmount={setGoalAmount}
+  salary={salary}
+/>
+
       <div className={styles.buttonContainer}>
+        {truelayerCheckDone && canShowSyncButton && (
+          <button
+            className={styles.addDonation}
+            aria-label="Sync a previous donation"
+          >
+            🔄 Sync Donations from your Bank
+          </button>
+        )}
+
         <button
           onClick={openModal}
           className={styles.addDonation}
           aria-label="Add a previous donation"
-          >
-  Add a Previous Donation
-  </button>
+        >
+          Add a Previous Donation
+        </button>
       </div>
       {isModalOpen ? (
         <Donations
@@ -248,30 +234,24 @@ const Dashboard = ({ user }) => {
           currentAmount={currentAmount ?? 0}
         />
       </section>
-      <section className={`${styles.sectionCauses} ${isSectionSmall ? styles.sectionSmall : ''}`}>
-      <h3> Your Donations by Cause (last 12 months)</h3>
- 
-  {loading ? (
-    <p>Loading...</p>
-  ) : donations.length > 0 &&
-    (!sortedCauses || sortedCauses.length === 0) ? (
-
-    <p>No causes recorded for your donations.</p>
-  ) : donations.length === 0 ? (
-    <p>No donations have been made yet.</p>
-
-  ) : (
-        <div className={styles.chartContainer}>
-      <canvas   className={styles.causesChart}></canvas>
-    </div>   
-  )}
-</section>
+      <section
+        className={`${styles.sectionCauses} ${
+          isSectionSmall ? styles.sectionSmall : ""
+        }`}
+      >
+        <Chart sortedCauses={sortedCauses} donations={donations} />
+      </section>
       {/* Recent Donations Section */}
-      <section className={`${styles.section} ${donations.length === 0 ? styles.sectionSmall : ''}`}>
-      <h3>Most Recent Donations</h3>
-        <ul className={styles.donationList}>
-          {donations.length > 0 ? (
-            donations.map((donation) => (
+      <section
+        className={`${styles.section} ${
+          donations.length === 0 ? styles.sectionSmall : ""
+        }`}
+      >
+        <h3>Most Recent Donations</h3>
+
+        {donations.length > 0 ? (
+          <ul className={styles.donationList}>
+            {donations.map((donation) => (
               <li className={styles.donationItem} key={donation.id}>
                 <div className={styles.donationCard}>
                   <p className={styles.donationText}>
@@ -279,7 +259,12 @@ const Dashboard = ({ user }) => {
                       £{donation.donation_amount}
                     </span>{" "}
                     <br />
-                    Donated to
+                    Donated by
+                    <span className={styles.donorName}>
+                      {" "}
+                      {donation.donor_name}
+                    </span>{" "}
+                    to
                     <span className={styles.charityName}>
                       {" "}
                       {donation.charity_name}
@@ -290,18 +275,23 @@ const Dashboard = ({ user }) => {
                       {new Date(donation.donation_date).toLocaleDateString()}
                     </span>
                   </p>
+                  <p className={styles.donationType}>
+                    {" "}
+                    Donation Type : {renderDonationType(donation)}
+                  </p>
                 </div>
               </li>
-            ))
-          ) : (
-            <p
-              className={styles.noDonations}
-              aria-label="No donations have been made yet"
-            >
-              No donations have been made yet.
-            </p>
-          )}
-        </ul>
+            ))}
+          </ul>
+        ) : (
+          <p
+            className={styles.noDonations}
+            aria-label="No donations have been made yet"
+            style={{ marginTop: "30px" }} // optional spacing
+          >
+            No donations have been made yet.
+          </p>
+        )}
       </section>
 
       <section className={styles.showcase}>

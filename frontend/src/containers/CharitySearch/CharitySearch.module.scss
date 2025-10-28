@@ -12,15 +12,12 @@ $border-radius: 5px;
 .mainContent {
   flex: 1;
   display: flex;
+  min-height: 100vh;
+
   flex-direction: column;
 }
 // Main container for the content
-.mainContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
 
-}
 
 h2 {
   margin-bottom: 20px; // Adds some space below the heading

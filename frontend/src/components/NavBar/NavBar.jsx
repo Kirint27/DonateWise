@@ -1,4 +1,6 @@
 import React, { useState,useEffect } from "react";
+import { useAuth } from "../../containers/Context/authContext";
+
 import styles from "./Navbar.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +10,8 @@ import { Tooltip } from "react-tooltip";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -22,16 +26,10 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', checkSize);
   }, []);
 
+
   const handleLogout = () => {
-    fetch(`https://charitytrackr.onrender.com/api/logout`, {
-      method: "POST",
-      credentials: "include", // ✅ Ensures cookies are included in the request
-    })
-      .then((response) => response.json())
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => console.error("Logout error:", error));
+    logout();  // Calls context logout, clears user state and makes API call
+    navigate("/"); // Redirect to home after logout
   };
   const handleHamburgerClick = () => {
     setShowHamburgerMenu(!showHamburgerMenu);
@@ -56,7 +54,7 @@ const Navbar = () => {
                   <a href="/dashboard">Dashboard</a>
                 </li>
                 <li>
-                  <a href="/tax-reporting">Tax Reporting</a>
+                  <a href="/DonationHistory">Donation History </a>
                 </li>
                 <li>
                   <a href="/charity-search">Charity Search</a>
@@ -77,7 +75,7 @@ const Navbar = () => {
           </div>
           <ul className={`${styles.navbarList} ${isMobile ? styles.mobile : styles.desktop}`}>
           <li onClick={() => navigate("/dashboard")}>Dashboard </li>
-            <li onClick={() => navigate("/tax-reporting")}>Tax-Reporting </li>
+            <li onClick={() => navigate("/DonationHistory")}>Donation History </li>
 
             <li onClick={() => navigate("/CharitySearch")}>Charity-Search</li>
             <li className={styles.iconText}>

@@ -3,6 +3,7 @@ import styles from "./TaxReporting.module.scss";
 import Navbar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import jsPDF from "jspdf";
+
 import "jspdf-autotable";
 
 const getTaxYearBoundaries = () => {
@@ -31,7 +32,7 @@ const getTaxYearBoundaries = () => {
   }
 };
 
-const TaxReporting = () => {
+const TaxReporting = ({  }) => {
   const [donations, setDonations] = useState([]);
   const [currentTaxYearDonations, setCurrentTaxYearDonations] = useState([]);
   const [previousTaxYearDonations, setPreviousTaxYearDonations] = useState([]);
@@ -47,7 +48,7 @@ const TaxReporting = () => {
   } = getTaxYearBoundaries();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/donations/all-donations`, {
+    fetch(`http://localhost:3001/api/donations/all-donations`, {
       method: "GET",
       credentials: "include",
     })
@@ -103,25 +104,34 @@ const TaxReporting = () => {
           <th>Date</th>
           <th>Amount</th>
           <th>Payment</th>
-          <th>Status</th>
+          <th>Type</th>
         </tr>
       </thead>
       <tbody>
-        {donations.map((donation, index) => (
-          <tr key={index}>
-            <td>{donation.charityName}</td>
-            <td>{donation.date}</td>
-            <td>£{parseFloat(donation.amount).toFixed(2)}</td>
-            <td>{donation.paymentMethod}</td>
-            <td>{donation.paymentStatus}</td>
-          </tr>
-        ))}
+      {donations.map((donation, index) => (
+  <tr key={index}>
+    <td>{donation.charityName}</td>
+    <td>{donation.date}</td>
+    <td>£{parseFloat(donation.amount).toFixed(2)}</td>
+    <td>{donation.paymentMethod}</td>
+    <td>
+      {donation.type === "one-time" ? (
+        <span>One-time</span>
+      ) : donation.type === "monthly" ? (
+        <span>Monthly</span>
+     
+      ) : (
+        <span>N/A</span>
+      )}
+    </td>
+  </tr>
+))}
       </tbody>
     </table>
   );
 
   return (
-    <div className={styles.mainWrapper}>
+    <div className="pageContainer">
       <Navbar />
       <h2>Donation History by Financial Year</h2>
   
